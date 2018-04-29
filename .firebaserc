@@ -1,1 +1,5 @@
-{}
+{
+  "projects": {
+    "staging": "ez-qc-00"
+  }
+}
