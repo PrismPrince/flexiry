@@ -44,17 +44,19 @@
               </p>
             </md-content>
           </div>
+
           <div class="md-layout-item">
             <md-content>
               <pre>code...</pre>
             </md-content>
           </div>
         </div>
+
         <div class="md-layout md-gutter options">
-          <div class="md-layout-item md-layout md-size-15">
-            <div class="md-layout-item product-kind">
-              <md-content>
-                <div class="md-title">Product Kind</div>
+          <div class="md-layout-item md-layout md-size-20">
+            <div class="md-layout-item">
+              <md-content class="product-kind">
+                <div class="md-subheading">Product Kind</div>
                 <md-field md-clearable>
                   <label>Custom</label>
                   <md-input v-model="reject.pk.custom"></md-input>
@@ -63,11 +65,9 @@
                   </md-button>
                 </md-field>
               </md-content>
-            </div>
 
-            <div class="md-layout-item colorway">
-              <md-content>
-                <div class="md-title">Colorways</div>
+              <md-content class="colorways">
+                <div class="md-subheading">Colorways</div>
                 <md-content class="md-scrollbar">
                   <md-checkbox v-model="reject.colorways" value="A">A</md-checkbox>
                   <md-checkbox v-model="reject.colorways" value="B">B</md-checkbox>
@@ -81,55 +81,58 @@
               </md-content>
             </div>
           </div>
-          <div class="md-layout-item md-size-15 accessories">
-            <md-content>
-              <div class="md-title">Accessories</div>
-              <md-field md-clearable>
-                <label>Custom</label>
-                <md-input v-model="reject.accessories.custom"></md-input>
-              </md-field>
-              <md-content>
-                <md-content class="md-scrollbar" :style="{height: !!reject.accessories.user.length ? '50%' : ''}">
-                  <md-checkbox v-for="(accessory, key) in reject.accessories.def" :key="key" v-model="reject.accessories.selected" :value="accessory.value">{{ accessory.name }}</md-checkbox>
-                </md-content>
-                <md-content v-if="!!reject.accessories.user.length" class="md-scrollbar" style="height: 50%">
-                  <md-checkbox v-for="(accessory, key) in reject.accessories.user" :key="key" v-model="reject.accessories.selected" :value="accessory.value">{{ accessory.name }}</md-checkbox>
-                </md-content>
+
+          <div class="md-layout-item md-size-20 accessories">
+            <div class="md-subheading">Accessories</div>
+            <md-field md-clearable>
+              <label>Custom</label>
+              <md-input v-model="reject.accessories.custom"></md-input>
+            </md-field>
+
+            <md-content class="md-scrollbar">
+              <md-checkbox v-for="(accessory, key) in reject.accessories.def" :key="key" v-model="reject.accessories.selected" :value="accessory.value" class="md-primary">{{ accessory.name }}</md-checkbox>
+              <md-checkbox v-for="(accessory, key) in reject.accessories.user" :key="key" v-model="reject.accessories.selected" :value="accessory.value">{{ accessory.name }}</md-checkbox>
+            </md-content>
+          </div>
+
+          <div class="md-layout-item md-size-60 rejections">
+              <div class="md-subheading">
+                <span>Rejections</span>
+                <md-menu md-size="auto">
+                  <md-button class="md-dense md-primary md-raised" md-menu-trigger>{{ reject.rejections.filter }}</md-button>
+                  <md-menu-content>
+                    <md-menu-item @click="reject.rejections.filter = 'general'">General</md-menu-item>
+                    <md-menu-item @click="reject.rejections.filter = 'tqc'">TQC</md-menu-item>
+                    <md-menu-item @click="reject.rejections.filter = 'cu3'">CU3</md-menu-item>
+                    <md-menu-item @click="reject.rejections.filter = 'csl'">CSL</md-menu-item>
+                    <md-menu-item @click="reject.rejections.filter = 'pdp'">PDP</md-menu-item>
+                  </md-menu-content>
+                </md-menu>
+              </div>
+
+              <div class="md-layout md-gutter">
+                <div class="md-layout-item md-size-75">
+                  <md-field md-clearable>
+                    <label>Custom</label>
+                    <md-input v-model="reject.rejections.custom"></md-input>
+                  </md-field>
+                </div>
+
+                <div class="md-layout-item md-size-25">
+                  <md-field md-clearable>
+                    <label>Screenshot</label>
+                    <md-input v-model="reject.rejections.screenshot"></md-input>
+                  </md-field>
+                </div>
+              </div>
+
+              <md-content class="md-scrollbar">
+                <md-checkbox v-for="(rejection, key) in reject.rejections.def" :key="key" v-model="reject.rejections.selected" :value="rejection.value" class="md-primary">{{ rejection.name }}</md-checkbox>
+                <md-checkbox v-for="(rejection, key) in reject.rejections.user" :key="key" v-model="reject.rejections.selected" :value="rejection.value">{{ rejection.name }}</md-checkbox>
               </md-content>
-            </md-content>
           </div>
-          <div class="md-layout-item md-size-55 rejections">
-            <md-content>
-              <div class="md-title">Rejections</div>
-              <md-field md-clearable>
-                <label>Custom</label>
-                <md-input v-model="reject.rejections.custom"></md-input>
-              </md-field>
-              <md-tabs md-alignment="right">
-                <md-tab id="tab-general" md-label="General">
-                  <md-content>
-                    //
-                  </md-content>
-                </md-tab>
-                <md-tab id="tab-tqc" md-label="TQC">
-                  <md-content>
-                    //
-                  </md-content>
-                </md-tab>
-                <md-tab id="tab-cu3" md-label="CU3">
-                  <md-content>
-                    //
-                  </md-content>
-                </md-tab>
-                <md-tab id="tab-pdp" md-label="PDP">
-                  <md-content>
-                    //
-                  </md-content>
-                </md-tab>
-              </md-tabs>
-            </md-content>
-          </div>
-          <div class="md-layout-item md-size-15 screenshot">Screenshot</div>
+
+          <!-- <div class="md-layout-item md-size-15 screenshot">Screenshot</div> -->
         </div>
       </md-app-content>
     </md-app>
@@ -193,14 +196,39 @@ export default {
               name: 'Thank You Open',
               value: 'ty_open',
               position: 8
+            },
+            {
+              name: 'Mini Card Front',
+              value: 'mini_frt',
+              position: 9
             }
           ]
         },
         rejections: {
+          filter: 'general',
           custom: '',
+          screenshot: '',
           selected: [],
-          def: [],
-          user: []
+          def: [
+            {
+              name: 'Round off colour values',
+              value: 'round off colour values'
+            },
+            {
+              name: 'Remove swatches',
+              value: 'remove swatches'
+            }
+          ],
+          user: [
+            {
+              name: 'Round a font size',
+              value: 'round a font size'
+            },
+            {
+              name: 'Set font size',
+              value: 'set font size'
+            }
+          ]
         }
       }
     }
@@ -223,7 +251,7 @@ export default {
   }
 
   .options {
-    height: 70%
+    height: 70%;
   }
 
   .md-field {
@@ -246,11 +274,7 @@ export default {
     height: 25%;
 
     > .md-content {
-      height: 100%;
-
-      > .md-content {
-        height: calc(100% - 26px);
-      }
+      height: calc(100% - 24px);
     }
 
     .md-field {
@@ -261,31 +285,37 @@ export default {
     }
   }
 
-  .colorway {
+  .colorways {
     height: 75%;
 
     > .md-content {
-      height: calc(100% - 26px);
-
-      > .md-content {
-        overflow-y: auto;
-        height: 100%;
-      }
+      height: calc(100% - 24px);
+      overflow-y: auto;
     }
   }
 
   .accessories {
 
     > .md-content {
-      height: 100%;
+      height: calc(100% - 72px);
+      overflow-y: auto;
+    }
+  }
 
-      > .md-content {
-        height: calc(100% - 74px);
+  .rejections {
 
-        > .md-content {
-          overflow-y: auto;
-        }
+    .md-menu {
+      float: right;
+
+      .md-button {
+        height: 24px;
       }
+    }
+
+    > .md-content {
+      height: calc(100% - 72px);
+      overflow-y: auto;
+
     }
   }
 </style>
