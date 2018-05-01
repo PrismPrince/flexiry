@@ -36,26 +36,22 @@
       </md-app-drawer>
 
       <md-app-content>
-        <div class="md-layout md-gutter preview">
-          <div class="md-layout-item">
-            <md-content>
-              <p>
-                // output code...
-              </p>
-            </md-content>
-          </div>
-
-          <div class="md-layout-item">
-            <md-content>
-              <pre>code...</pre>
-            </md-content>
-          </div>
-        </div>
-
-        <div class="md-layout md-gutter options">
-          <div class="md-layout-item md-layout md-size-20">
+        <md-content>
+          <div class="md-layout md-gutter preview">
             <div class="md-layout-item">
-              <md-content class="product-kind">
+              <md-content v-html="previeMarked"></md-content>
+            </div>
+
+            <div class="md-layout-item">
+              <md-content>
+                <pre v-html="preview.raw"></pre>
+              </md-content>
+            </div>
+          </div>
+
+          <div class="md-layout options">
+            <md-content class="md-scrollbar">
+              <div class="options-item product-kind-colorway">
                 <div class="md-subheading">Product Kind</div>
                 <md-field md-clearable>
                   <label>Custom</label>
@@ -64,11 +60,8 @@
                     <md-icon>{{ reject.pk.locked ? 'lock_outline' : 'lock_open' }}</md-icon>
                   </md-button>
                 </md-field>
-              </md-content>
-
-              <md-content class="colorways">
-                <div class="md-subheading">Colorways</div>
-                <md-content class="md-scrollbar">
+                <div class="md-subheading" style="margin-bottom: 20px;">Colorways</div>
+                <md-content class="options-list md-scrollbar">
                   <md-checkbox v-model="reject.colorways" value="A">A</md-checkbox>
                   <md-checkbox v-model="reject.colorways" value="B">B</md-checkbox>
                   <md-checkbox v-model="reject.colorways" value="C">C</md-checkbox>
@@ -78,73 +71,73 @@
                   <md-checkbox v-model="reject.colorways" value="G">G</md-checkbox>
                   <md-checkbox v-model="reject.colorways" value="H">H</md-checkbox>
                 </md-content>
-              </md-content>
-            </div>
-          </div>
+              </div>
 
-          <div class="md-layout-item md-size-20 accessories">
-            <div class="md-subheading">Accessories</div>
-            <md-field md-clearable>
-              <label>Custom</label>
-              <md-input v-model="reject.accessories.custom"></md-input>
-            </md-field>
+              <div class="options-item accessories">
+                <div class="md-subheading">Accessories</div>
+                <md-field md-clearable>
+                  <label>Custom</label>
+                  <md-input v-model="reject.accessories.custom"></md-input>
+                </md-field>
 
-            <md-content class="md-scrollbar">
-              <md-checkbox v-for="(accessory, key) in reject.accessories.def" :key="key" v-model="reject.accessories.selected" :value="accessory.value" class="md-primary">{{ accessory.name }}</md-checkbox>
-              <md-checkbox v-for="(accessory, key) in reject.accessories.user" :key="key" v-model="reject.accessories.selected" :value="accessory.value">{{ accessory.name }}</md-checkbox>
+                <md-content class="options-list md-scrollbar">
+                  <md-checkbox v-for="(accessory, key) in reject.accessories.def" :key="key" v-model="reject.accessories.selected" :value="accessory.value" class="md-primary">{{ accessory.name }}</md-checkbox>
+                  <md-checkbox v-for="(accessory, key) in reject.accessories.user" :key="key" v-model="reject.accessories.selected" :value="accessory.value">{{ accessory.name }}</md-checkbox>
+                </md-content>
+              </div>
+
+              <div class="options-item rejections">
+                  <div class="md-subheading">
+                    <span>Rejections</span>
+                    <md-menu md-size="auto">
+                      <md-button class="md-dense md-primary md-raised" md-menu-trigger>{{ reject.rejections.filter }}</md-button>
+                      <md-menu-content>
+                        <md-menu-item @click="reject.rejections.filter = 'general'">General</md-menu-item>
+                        <md-menu-item @click="reject.rejections.filter = 'tqc'">TQC</md-menu-item>
+                        <md-menu-item @click="reject.rejections.filter = 'cu3'">CU3</md-menu-item>
+                        <md-menu-item @click="reject.rejections.filter = 'csl'">CSL</md-menu-item>
+                        <md-menu-item @click="reject.rejections.filter = 'pdp'">PDP</md-menu-item>
+                      </md-menu-content>
+                    </md-menu>
+                  </div>
+
+                  <div class="md-layout md-gutter">
+                    <div class="md-layout-item md-size-75">
+                      <md-field md-clearable>
+                        <label>Custom</label>
+                        <md-input v-model="reject.rejections.custom"></md-input>
+                      </md-field>
+                    </div>
+
+                    <div class="md-layout-item md-size-25">
+                      <md-field md-clearable>
+                        <label>Screenshot</label>
+                        <md-input v-model="reject.rejections.screenshot"></md-input>
+                      </md-field>
+                    </div>
+                  </div>
+
+                  <md-content class="options-list md-scrollbar">
+                    <md-checkbox v-for="(rejection, key) in reject.rejections.def" :key="key" v-model="reject.rejections.selected" :value="rejection.value" class="md-primary">{{ rejection.name }}</md-checkbox>
+                    <md-checkbox v-for="(rejection, key) in reject.rejections.user" :key="key" v-model="reject.rejections.selected" :value="rejection.value">{{ rejection.name }}</md-checkbox>
+                  </md-content>
+              </div>
             </md-content>
           </div>
-
-          <div class="md-layout-item md-size-60 rejections">
-              <div class="md-subheading">
-                <span>Rejections</span>
-                <md-menu md-size="auto">
-                  <md-button class="md-dense md-primary md-raised" md-menu-trigger>{{ reject.rejections.filter }}</md-button>
-                  <md-menu-content>
-                    <md-menu-item @click="reject.rejections.filter = 'general'">General</md-menu-item>
-                    <md-menu-item @click="reject.rejections.filter = 'tqc'">TQC</md-menu-item>
-                    <md-menu-item @click="reject.rejections.filter = 'cu3'">CU3</md-menu-item>
-                    <md-menu-item @click="reject.rejections.filter = 'csl'">CSL</md-menu-item>
-                    <md-menu-item @click="reject.rejections.filter = 'pdp'">PDP</md-menu-item>
-                  </md-menu-content>
-                </md-menu>
-              </div>
-
-              <div class="md-layout md-gutter">
-                <div class="md-layout-item md-size-75">
-                  <md-field md-clearable>
-                    <label>Custom</label>
-                    <md-input v-model="reject.rejections.custom"></md-input>
-                  </md-field>
-                </div>
-
-                <div class="md-layout-item md-size-25">
-                  <md-field md-clearable>
-                    <label>Screenshot</label>
-                    <md-input v-model="reject.rejections.screenshot"></md-input>
-                  </md-field>
-                </div>
-              </div>
-
-              <md-content class="md-scrollbar">
-                <md-checkbox v-for="(rejection, key) in reject.rejections.def" :key="key" v-model="reject.rejections.selected" :value="rejection.value" class="md-primary">{{ rejection.name }}</md-checkbox>
-                <md-checkbox v-for="(rejection, key) in reject.rejections.user" :key="key" v-model="reject.rejections.selected" :value="rejection.value">{{ rejection.name }}</md-checkbox>
-              </md-content>
-          </div>
-
-          <!-- <div class="md-layout-item md-size-15 screenshot">Screenshot</div> -->
-        </div>
+        </md-content>
       </md-app-content>
     </md-app>
   </div>
 </template>
 
 <script>
-
 export default {
   name: 'HelloWorld',
   data () {
     return {
+      preview: {
+        raw: '`AIO` **ABC** frt - please set _"Anderson"_ as family name > https://screenshot.com :smiley:'
+      },
       reject: {
         pk: {
           custom: '',
@@ -232,30 +225,123 @@ export default {
         }
       }
     }
+  },
+  computed: {
+    previeMarked () {
+      return marked(this.preview.raw)
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .md-app {
+  .md-app-drawer {
     height: 100vh;
+    width: 250px;
+  }
 
-    &-drawer {
-      border: 1px solid rgba(#000, .12);
-      width: 250px;
+  .md-app-content {
+    position: relative;
+    padding: 0;
+
+    > .md-content {
+      min-height: 750px;
+      position: absolute;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
     }
   }
 
   .preview {
-    height: 30%;
+    width: 100%;
+    height: 350px;
+    margin: 0;
   }
 
   .options {
-    height: 70%;
+    width: auto;
+    height: calc(100% - 350px);
+    margin: 0;
+    position: relative;
+
+    > .md-content {
+      position: absolute;
+      overflow-x: auto;
+      overflow-y: hidden;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      white-space: nowrap;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+    }
+
+    &-item {
+      display: inline-block;
+      margin: 0 10px;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      vertical-align: top;
+
+      &:first-child {
+        margin-left: 20px;
+      }
+
+      &.product-kind-colorway {
+        width: 150px;
+
+        .md-field {
+
+          /deep/ .md-clear {
+            right: 32px;
+          }
+        }
+
+        .options-list {
+          height: calc(100% - 144px);
+          overflow-x: auto;
+          overflow-y: auto;
+        }
+      }
+
+      &.accessories {
+        width: 200px;
+
+        .options-list {
+          height: calc(100% - 100px);
+          overflow-x: auto;
+          overflow-y: auto;
+        }
+      }
+
+      &.rejections {
+        width: calc(100% - 440px);
+        min-width: 700px;
+
+        .md-menu {
+          float: right;
+
+          .md-button {
+            height: 24px;
+          }
+        }
+
+        .options-list {
+          height: calc(100% - 100px);
+          overflow-x: auto;
+          overflow-y: auto;
+        }
+      }
+    }
   }
 
   .md-field {
-    margin: 0;
 
     > input {
       width: 100%;
@@ -267,55 +353,6 @@ export default {
 
     /deep/ label {
       white-space: nowrap;
-    }
-  }
-
-  .product-kind {
-    height: 25%;
-
-    > .md-content {
-      height: calc(100% - 24px);
-    }
-
-    .md-field {
-
-      /deep/ .md-clear {
-        right: 32px;
-      }
-    }
-  }
-
-  .colorways {
-    height: 75%;
-
-    > .md-content {
-      height: calc(100% - 24px);
-      overflow-y: auto;
-    }
-  }
-
-  .accessories {
-
-    > .md-content {
-      height: calc(100% - 72px);
-      overflow-y: auto;
-    }
-  }
-
-  .rejections {
-
-    .md-menu {
-      float: right;
-
-      .md-button {
-        height: 24px;
-      }
-    }
-
-    > .md-content {
-      height: calc(100% - 72px);
-      overflow-y: auto;
-
     }
   }
 </style>
