@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="welcome">
     <md-app md-mode="reveal">
       <md-app-toolbar class="md-primary">
         <span class="md-title">My Title</span>
@@ -62,14 +62,7 @@
                 </md-field>
                 <div class="md-subheading" style="margin-bottom: 20px;">Colorways</div>
                 <md-content class="options-list md-scrollbar">
-                  <md-checkbox v-model="reject.colorways" value="A">A</md-checkbox>
-                  <md-checkbox v-model="reject.colorways" value="B">B</md-checkbox>
-                  <md-checkbox v-model="reject.colorways" value="C">C</md-checkbox>
-                  <md-checkbox v-model="reject.colorways" value="D">D</md-checkbox>
-                  <md-checkbox v-model="reject.colorways" value="E">E</md-checkbox>
-                  <md-checkbox v-model="reject.colorways" value="F">F</md-checkbox>
-                  <md-checkbox v-model="reject.colorways" value="G">G</md-checkbox>
-                  <md-checkbox v-model="reject.colorways" value="H">H</md-checkbox>
+                  <md-checkbox v-for="(colorway, key) in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']" :key="key" v-model="reject.colorways" :value="colorway">{{ colorway }}</md-checkbox>
                 </md-content>
               </div>
 
@@ -131,8 +124,10 @@
 </template>
 
 <script>
+import marked from 'marked'
+
 export default {
-  name: 'HelloWorld',
+  name: 'welcome',
   data () {
     return {
       preview: {
