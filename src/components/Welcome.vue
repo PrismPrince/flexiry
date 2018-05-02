@@ -39,12 +39,13 @@
         <md-content>
           <div class="md-layout md-gutter preview">
             <div class="md-layout-item">
-              <md-content v-html="previeMarked"></md-content>
+              <md-content v-html="markedPreview">
+              </md-content>
             </div>
 
             <div class="md-layout-item">
               <md-content>
-                <pre v-html="preview.raw"></pre>
+                <pre>{{ plainPreview }}</pre>
               </md-content>
             </div>
           </div>
@@ -55,14 +56,15 @@
                 <div class="md-subheading">Product Kind</div>
                 <md-field md-clearable>
                   <label>Custom</label>
-                  <md-input v-model="reject.pk.custom"></md-input>
-                  <md-button class="md-icon-button md-dense md-input-action" :class="reject.pk.locked ? 'md-accent' : 'md-primary'" @click="reject.pk.locked = !reject.pk.locked">
-                    <md-icon>{{ reject.pk.locked ? 'lock_outline' : 'lock_open' }}</md-icon>
+                  <md-input v-model="reject.prodkind.custom"></md-input>
+                  <md-button class="md-icon-button md-dense md-input-action" :class="reject.prodkind.locked ? 'md-accent' : 'md-primary'" @click="reject.prodkind.locked = !reject.prodkind.locked">
+                    <md-icon>{{ reject.prodkind.locked ? 'lock_outline' : 'lock_open' }}</md-icon>
                   </md-button>
                 </md-field>
+
                 <div class="md-subheading" style="margin-bottom: 20px;">Colorways</div>
                 <md-content class="options-list md-scrollbar">
-                  <md-checkbox v-for="(colorway, key) in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']" :key="key" v-model="reject.colorways" :value="colorway">{{ colorway }}</md-checkbox>
+                  <md-checkbox v-for="(colorway, key) in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']" :key="key" v-model="reject.colorways.selected" :value="colorway">{{ colorway }}</md-checkbox>
                 </md-content>
               </div>
 
@@ -74,8 +76,8 @@
                 </md-field>
 
                 <md-content class="options-list md-scrollbar">
-                  <md-checkbox v-for="(accessory, key) in reject.accessories.def" :key="key" v-model="reject.accessories.selected" :value="accessory.value" class="md-primary">{{ accessory.name }}</md-checkbox>
-                  <md-checkbox v-for="(accessory, key) in reject.accessories.user" :key="key" v-model="reject.accessories.selected" :value="accessory.value">{{ accessory.name }}</md-checkbox>
+                  <md-checkbox v-for="accessory in reject.accessories.choices.predefined" :key="accessory.id" v-model="reject.accessories.selected" :value="accessory.value" class="md-primary">{{ accessory.name }}</md-checkbox>
+                  <md-checkbox v-for="accessory in reject.accessories.choices.userdefined" :key="accessory.id" v-model="reject.accessories.selected" :value="accessory.value">{{ accessory.name }}</md-checkbox>
                 </md-content>
               </div>
 
@@ -111,8 +113,8 @@
                   </div>
 
                   <md-content class="options-list md-scrollbar">
-                    <md-checkbox v-for="(rejection, key) in reject.rejections.def" :key="key" v-model="reject.rejections.selected" :value="rejection.value" class="md-primary">{{ rejection.name }}</md-checkbox>
-                    <md-checkbox v-for="(rejection, key) in reject.rejections.user" :key="key" v-model="reject.rejections.selected" :value="rejection.value">{{ rejection.name }}</md-checkbox>
+                    <md-checkbox v-for="rejection in reject.rejections.choices.predefined" :key="rejection.id" v-model="reject.rejections.selected" :value="rejection.value" class="md-primary">{{ rejection.name }}</md-checkbox>
+                    <md-checkbox v-for="rejection in reject.rejections.choices.userdefined" :key="rejection.id" v-model="reject.rejections.selected" :value="rejection.value">{{ rejection.name }}</md-checkbox>
                   </md-content>
               </div>
             </md-content>
@@ -131,99 +133,114 @@ export default {
   data () {
     return {
       preview: {
-        raw: '`AIO` **ABC** frt - please set _"Anderson"_ as family name > https://screenshot.com :smiley:'
+        id_counter: 0,
+        active: {
+          id: 0,
+          prodkind: '',
+          colorways: ['B', 'A', 'D'],
+          accessories: {
+            selected: ['bkr', 'frt'],
+            custom: 'stamp'
+          },
+          rejections: {
+            selected: 'round off colour values',
+            screenshot: 'https://screenshot.com'
+          }
+        },
+        rejects: [
+          {
+            id: 0,
+            prodkind: 'HYC',
+            colorways: ['B', 'A', 'D'],
+            accessories: {
+              selected: ['bkr', 'frt'],
+              custom: '/stamp'
+            },
+            rejections: {
+              selected: 'round off colour values',
+              screenshot: 'https://screenshot.com'
+            }
+          },
+          {
+            id: 2,
+            prodkind: 'HMC',
+            colorways: ['B', 'D'],
+            accessories: {
+              selected: ['frt'],
+              custom: '/stamp'
+            },
+            rejections: {
+              selected: 'round off font size',
+              screenshot: 'https://screenshot.com'
+            }
+          }
+        ]
       },
       reject: {
-        pk: {
-          custom: '',
-          locked: false
+        prodkind: {
+          locked: false,
+          custom: ''
         },
-        colorways: [],
+        colorways: {
+          selected: []
+        },
         accessories: {
-          custom: '',
           selected: [],
-          def: [
-            {
-              name: 'Front',
-              value: 'frt',
-              position: 1
-            },
-            {
-              name: 'Back',
-              value: 'bkr',
-              position: 2
-            },
-            {
-              name: 'Liner',
-              value: 'lin',
-              position: 3
-            },
-            {
-              name: 'Label',
-              value: 'lbl',
-              position: 4
-            },
-            {
-              name: 'FRCP',
-              value: 'frcp',
-              position: 5
-            },
-            {
-              name: 'Stamp',
-              value: 'stamp',
-              position: 6
-            }
-          ],
-          user: [
-            {
-              name: 'Thank You Front',
-              value: 'ty_frt',
-              position: 7
-            },
-            {
-              name: 'Thank You Open',
-              value: 'ty_open',
-              position: 8
-            },
-            {
-              name: 'Mini Card Front',
-              value: 'mini_frt',
-              position: 9
-            }
-          ]
+          custom: '',
+          choices: {
+            predefined: [],
+            userdefined: []
+          }
         },
         rejections: {
+          selected: [],
           filter: 'general',
           custom: '',
           screenshot: '',
-          selected: [],
-          def: [
-            {
-              name: 'Round off colour values',
-              value: 'round off colour values'
-            },
-            {
-              name: 'Remove swatches',
-              value: 'remove swatches'
-            }
-          ],
-          user: [
-            {
-              name: 'Round a font size',
-              value: 'round a font size'
-            },
-            {
-              name: 'Set font size',
-              value: 'set font size'
-            }
-          ]
+          choices: {
+            predefined: [],
+            userdefined: []
+          }
         }
       }
     }
   },
   computed: {
-    previeMarked () {
-      return marked(this.preview.raw)
+    plainPreview () {
+      let str = ''
+      let prodkind = ''
+      let colorways = ''
+      let accessories = ''
+      let rejections = ''
+
+      for (let i = 0; i < this.preview.rejects.length; i++) {
+        let reject = this.preview.rejects[i]
+
+        prodkind = reject.prodkind
+        colorways = reject.colorways.sort().join('')
+        accessories = reject.accessories.selected.join('/') + reject.accessories.custom
+        rejections = reject.rejections.selected + (reject.rejections.screenshot === '' ? '' : ' > ' + reject.rejections.screenshot)
+
+        str += '`' + prodkind + '` **' + colorways + '** ' + accessories + ' - ' + rejections + '\n\r'
+      }
+
+      return str
+    },
+    markedPreview () {
+      return marked(this.plainPreview)
+    }
+  },
+  methods: {
+    format_marked (reject) {
+      return marked(reject)
+    },
+    format_plain (reject) {
+      let prodkind = reject.prodkind
+      let colorways = reject.colorways.sort().join('')
+      let accessories = reject.accessories.selected.join('/') + reject.accessories.custom
+      let rejections = reject.rejections.selected + (reject.rejections.screenshot === '' ? '' : ' > ' + reject.rejections.screenshot)
+
+      return '`' + prodkind + '` **' + colorways + '** ' + accessories + ' - ' + rejections
     }
   }
 }
