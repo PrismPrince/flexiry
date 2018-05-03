@@ -39,13 +39,14 @@
         <md-content>
           <div class="md-layout md-gutter preview">
             <div class="md-layout-item">
-              <md-content v-html="markedPreview">
+              <md-content>
+                <template v-for="reject in preview_marked"  v-html="reject.reject"></template>
               </md-content>
             </div>
 
             <div class="md-layout-item">
               <md-content>
-                <pre>{{ plainPreview }}</pre>
+                <pre v-for="reject in preview_plain" :key="reject.index">{{ reject.reject }}</pre>
               </md-content>
             </div>
           </div>
@@ -206,6 +207,42 @@ export default {
     }
   },
   computed: {
+    preview_plain () {
+      let reject = null
+      let rejects = []
+      let prodkind = ''
+      let colorways = ''
+      let accessories = ''
+      let rejections = ''
+
+      for (let i = 0; i < this.preview.rejects.length; i++) {
+        reject = this.preview.rejects[i]
+
+        prodkind = reject.prodkind
+        colorways = reject.colorways.sort().join('')
+        accessories = reject.accessories.selected.join('/') + reject.accessories.custom
+        rejections = reject.rejections.selected + (reject.rejections.screenshot === '' ? '' : ' > ' + reject.rejections.screenshot)
+
+        rejects.push({
+          index: i,
+          reject: '`' + prodkind + '` **' + colorways + '** ' + accessories + ' - ' + rejections
+        })
+      }
+
+      return rejects
+    },
+    preview_marked () {
+      let rejects = []
+
+      for (let i = 0; i < this.preview_plain.length; i++) {
+        rejects.push({
+          index: i,
+          reject: marked(this.preview_plain[i].reject).replace(/^<p>|<\/p>$/, '')
+        })
+      }
+
+      return rejects
+    },
     plainPreview () {
       let str = ''
       let prodkind = ''
@@ -232,7 +269,7 @@ export default {
   },
   methods: {
     format_marked (reject) {
-      return marked(reject)
+      return marked(this.format_plain(reject))
     },
     format_plain (reject) {
       let prodkind = reject.prodkind
