@@ -40,13 +40,15 @@
           <div class="md-layout md-gutter preview">
             <div class="md-layout-item">
               <md-content>
-                <template v-for="reject in preview_marked"  v-html="reject.reject"></template>
+                <h3>Styled Preview</h3>
+                <p v-for="reject in preview_marked"  :key="reject.id" v-html="reject.value"></p>
               </md-content>
             </div>
 
             <div class="md-layout-item">
               <md-content>
-                <pre v-for="reject in preview_plain" :key="reject.index">{{ reject.reject }}</pre>
+                <h3>Formated Preview</h3>
+                <pre v-for="reject in preview_plain" :key="reject.id">{{ reject.value }}</pre>
               </md-content>
             </div>
           </div>
@@ -77,8 +79,8 @@
                 </md-field>
 
                 <md-content class="options-list md-scrollbar">
-                  <md-checkbox v-for="accessory in reject.accessories.choices.predefined" :key="accessory.id" v-model="reject.accessories.selected" :value="accessory.value" class="md-primary">{{ accessory.name }}</md-checkbox>
-                  <md-checkbox v-for="accessory in reject.accessories.choices.userdefined" :key="accessory.id" v-model="reject.accessories.selected" :value="accessory.value">{{ accessory.name }}</md-checkbox>
+                  <md-checkbox v-for="accessory in reject.accessories.choices.predefined" :key="accessory.id" v-model="reject.accessories.selected" :value="accessory.id" class="md-primary">{{ accessory.name }}</md-checkbox>
+                  <md-checkbox v-for="accessory in reject.accessories.choices.userdefined" :key="accessory.id" v-model="reject.accessories.selected" :value="accessory.id">{{ accessory.name }}</md-checkbox>
                 </md-content>
               </div>
 
@@ -114,8 +116,8 @@
                   </div>
 
                   <md-content class="options-list md-scrollbar">
-                    <md-checkbox v-for="rejection in reject.rejections.choices.predefined" :key="rejection.id" v-model="reject.rejections.selected" :value="rejection.value" class="md-primary">{{ rejection.name }}</md-checkbox>
-                    <md-checkbox v-for="rejection in reject.rejections.choices.userdefined" :key="rejection.id" v-model="reject.rejections.selected" :value="rejection.value">{{ rejection.name }}</md-checkbox>
+                    <md-checkbox v-for="rejection in reject.rejections.choices.predefined" :key="rejection.id" v-model="reject.rejections.selected" :value="rejection.id" class="md-primary">{{ rejection.name }}</md-checkbox>
+                    <md-checkbox v-for="rejection in reject.rejections.choices.userdefined" :key="rejection.id" v-model="reject.rejections.selected" :value="rejection.id">{{ rejection.name }}</md-checkbox>
                   </md-content>
               </div>
             </md-content>
@@ -189,8 +191,20 @@ export default {
           selected: [],
           custom: '',
           choices: {
-            predefined: [],
-            userdefined: []
+            predefined: [
+              {
+                id: 0,
+                name: 'Front',
+                value: 'frt'
+              }
+            ],
+            userdefined: [
+              {
+                id: 1,
+                name: 'Stamp',
+                value: 'stamp'
+              }
+            ]
           }
         },
         rejections: {
@@ -199,8 +213,20 @@ export default {
           custom: '',
           screenshot: '',
           choices: {
-            predefined: [],
-            userdefined: []
+            predefined: [
+              {
+                id: 0,
+                name: 'Round off colour values',
+                value: 'please round off colour values'
+              }
+            ],
+            userdefined: [
+              {
+                id: 1,
+                name: 'Round off font size',
+                value: 'please round off font size'
+              }
+            ]
           }
         }
       }
@@ -224,8 +250,8 @@ export default {
         rejections = reject.rejections.selected + (reject.rejections.screenshot === '' ? '' : ' > ' + reject.rejections.screenshot)
 
         rejects.push({
-          index: i,
-          reject: '`' + prodkind + '` **' + colorways + '** ' + accessories + ' - ' + rejections
+          id: i,
+          value: '`' + prodkind + '` **' + colorways + '** ' + accessories + ' - ' + rejections
         })
       }
 
@@ -236,35 +262,12 @@ export default {
 
       for (let i = 0; i < this.preview_plain.length; i++) {
         rejects.push({
-          index: i,
-          reject: marked(this.preview_plain[i].reject).replace(/^<p>|<\/p>$/, '')
+          id: i,
+          value: marked(this.preview_plain[i].value).trim().replace(/^<p>/, '').replace(/<\/p>$/, '')
         })
       }
 
       return rejects
-    },
-    plainPreview () {
-      let str = ''
-      let prodkind = ''
-      let colorways = ''
-      let accessories = ''
-      let rejections = ''
-
-      for (let i = 0; i < this.preview.rejects.length; i++) {
-        let reject = this.preview.rejects[i]
-
-        prodkind = reject.prodkind
-        colorways = reject.colorways.sort().join('')
-        accessories = reject.accessories.selected.join('/') + reject.accessories.custom
-        rejections = reject.rejections.selected + (reject.rejections.screenshot === '' ? '' : ' > ' + reject.rejections.screenshot)
-
-        str += '`' + prodkind + '` **' + colorways + '** ' + accessories + ' - ' + rejections + '\n\r'
-      }
-
-      return str
-    },
-    markedPreview () {
-      return marked(this.plainPreview)
     }
   },
   methods: {
