@@ -40,15 +40,12 @@
           <div class="md-layout md-gutter preview">
             <div class="md-layout-item">
               <md-content>
-                <h3>Styled Preview</h3>
-                <p v-for="reject in preview_marked"  :key="reject.id" v-html="reject.value"></p>
-              </md-content>
-            </div>
-
-            <div class="md-layout-item">
-              <md-content>
-                <h3>Formated Preview</h3>
-                <pre v-for="reject in preview_plain" :key="reject.id">{{ reject.value }}</pre>
+                <md-table v-model="generated_preview" @md-selected="select">
+                  <md-table-row slot="md-table-row" slot-scope="{ item }" :class="getClass(item)" md-selectable="single">
+                    <md-table-cell md-label="Styled Preview" md-sort-by="marked" v-html="item.marked"></md-table-cell>
+                    <md-table-cell md-label="Formated Preview" md-sort-by="plain">{{ item.plain }}</md-table-cell>
+                  </md-table-row>
+                </md-table>
               </md-content>
             </div>
           </div>
@@ -233,13 +230,14 @@ export default {
     }
   },
   computed: {
-    preview_plain () {
+    generated_preview () {
       let reject = null
       let rejects = []
       let prodkind = ''
       let colorways = ''
       let accessories = ''
       let rejections = ''
+      let fuse = null
 
       for (let i = 0; i < this.preview.rejects.length; i++) {
         reject = this.preview.rejects[i]
@@ -249,28 +247,29 @@ export default {
         accessories = reject.accessories.selected.join('/') + reject.accessories.custom
         rejections = reject.rejections.selected + (reject.rejections.screenshot === '' ? '' : ' > ' + reject.rejections.screenshot)
 
+        fuse = '`' + prodkind + '` **' + colorways + '** ' + accessories + ' - ' + rejections
+
         rejects.push({
           id: i,
-          value: '`' + prodkind + '` **' + colorways + '** ' + accessories + ' - ' + rejections
+          plain: fuse,
+          marked: marked(fuse).trim().replace(/^<p>/, '').replace(/<\/p>$/, '')
         })
-      }
 
-      return rejects
-    },
-    preview_marked () {
-      let rejects = []
-
-      for (let i = 0; i < this.preview_plain.length; i++) {
-        rejects.push({
-          id: i,
-          value: marked(this.preview_plain[i].value).trim().replace(/^<p>/, '').replace(/<\/p>$/, '')
-        })
+        reject = null
+        fuse = null
       }
 
       return rejects
     }
   },
   methods: {
+    getClass: ({ id }) => ({
+      'md-primary': id === 2,
+      'md-accent': id === 3
+    }),
+    select (item) {
+      this.preview.active = item
+    },
     format_marked (reject) {
       return marked(this.format_plain(reject))
     },
