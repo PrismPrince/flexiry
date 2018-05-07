@@ -128,7 +128,7 @@
                       </md-menu-content>
                     </md-menu>
                     <span class="btn-options">
-                      <md-button v-if="active.id === null" class="md-dense md-raised md-primary" @click="addRejection">Add</md-button>
+                      <md-button v-if="active.id === null" class="md-dense md-raised md-primary" @click="addRejection" :disabled="!(active.rejections.selected || active.rejections.custom || active.rejections.screenshot)">Add</md-button>
                       <md-button v-else class="md-dense md-raised md-primary" @click="updateRejection">Save</md-button>
                       <md-button class="md-dense md-raised md-accent" @click="clearRejection">Clear Fields</md-button>
                     </span>
@@ -151,7 +151,7 @@
                   </div>
 
                   <md-content class="options-list md-scrollbar">
-                    <md-radio v-for="rejection in reject.rejections.choices" :key="rejection.id" v-model="active.rejections.selected" :value="rejection.id" :class="{'md-primary': rejection.defined_by === 'admin'}">{{ rejection.name }}</md-radio>
+                    <md-radio v-for="rejection in reject.rejections.choices.filter(choice => choice.filter.includes(reject.rejections.filter))" :key="rejection.id" v-model="active.rejections.selected" :value="rejection.id" :class="{'md-primary': rejection.defined_by === 'admin'}">{{ rejection.name }}</md-radio>
                   </md-content>
               </div>
             </md-content>
@@ -159,8 +159,8 @@
         </md-content>
       </md-app-content>
     </md-app>
-    <md-snackbar md-position="center" :md-duration="3000" :md-active.sync="preview.clipboard_copied.visible">
-      <span>{{ preview.clipboard_copied.msg }}</span>
+    <md-snackbar md-position="center" :md-duration="3000" :md-active.sync="preview.alert_info.visible">
+      <span>{{ preview.alert_info.msg }}</span>
     </md-snackbar>
   </div>
 </template>
@@ -181,7 +181,7 @@ export default {
         format: {
           prodkind: '`',
           colorways: '**',
-          accessories: '_',
+          accessories: '*',
           rejections: ''
         }
       },
@@ -203,7 +203,7 @@ export default {
       },
       preview: {
         id_counter: 1,
-        clipboard_copied: {
+        alert_info: {
           visible: false,
           msg: ''
         },
@@ -425,12 +425,21 @@ export default {
               id: 1,
               name: 'Round off colour values',
               value: 'please round off colour values',
+              filter: ['general', 'tqc'],
               defined_by: 'admin'
             },
             {
               id: 2,
               name: 'Round off font size',
+              value: 'please add shapes',
+              filter: ['general', 'cu3'],
+              defined_by: 'admin'
+            },
+            {
+              id: 3,
+              name: 'Round off font size',
               value: 'please round off font size',
+              filter: ['general', 'tqc'],
               defined_by: 'user'
             }
           ]
@@ -468,7 +477,7 @@ export default {
             selected === choice.id
           )
         ).map(accessory => accessory.value).sort().join('/')
-        accessories += !reject.accessories.custom ? '' : '/' + (this.user.format.accessories === '_' ? reject.accessories.custom.replace(/_/g, '\\_') : reject.accessories.custom).trim()
+        accessories += !reject.accessories.custom ? '' : (!reject.accessories.selected.length ? '' : '/') + reject.accessories.custom.trim().replace(/^\//, '').replace(/\/$/, '')
 
         rejections = !reject.rejections.selected ? '' : rejectionsChoices.find(choice => choice.id === reject.rejections.selected).value
         rejections += reject.rejections.custom
@@ -498,10 +507,36 @@ export default {
   },
   methods: {
     addRejection () {
-      //
+      let active = this.active
+
+      this.preview.rejects.push({
+        id: this.preview.id_counter++,
+        prodkind: active.prodkind,
+        colorways: active.colorways,
+        accessories: active.accessories,
+        rejections: active.rejections
+      })
+
+      this._setActiveDefault()
+
+      this.preview.alert_info.msg = 'Rejection added to list.'
+      this.preview.alert_info.visible = true
     },
     updateRejection () {
-      //
+      let reject = this.preview.rejects[this.preview.rejects.indexOf(this.preview.rejects.find(selected => selected.id === this.active.id))]
+
+      reject.prodkind = this.active.prodkind
+      reject.colorways.selected = this.active.colorways.selected
+      reject.accessories.selected = this.active.accessories.selected
+      reject.accessories.custom = this.active.accessories.custom
+      reject.rejections.selected = this.active.rejections.selected
+      reject.rejections.custom = this.active.rejections.custom
+      reject.rejections.screenshot = this.active.rejections.screenshot
+
+      this._setActiveDefault()
+
+      this.preview.alert_info.msg = 'Rejection updated.'
+      this.preview.alert_info.visible = true
     },
     selectRejection (item) {
       /* eslint curly: "off" */
@@ -527,29 +562,38 @@ export default {
     },
     clearRejection () {
       this._setActiveDefault()
+
+      this.preview.alert_info.msg = 'Edit cleared.'
+      this.preview.alert_info.visible = true
     },
     removeAllRejections () {
       if (this.active.id) this._setActiveDefault()
 
       this.preview.rejects = []
+      this.preview.alert_info.msg = 'All rejections are removed.'
+      this.preview.alert_info.visible = true
     },
     removeRejection (reject) {
       if (this.active.id) this._setActiveDefault()
 
       this.preview.rejects.splice(this.preview.rejects.indexOf(reject), 1)
       this.preview.id_counter = 1
+      this.preview.alert_info.msg = 'Rejection removed.'
+      this.preview.alert_info.visible = true
     },
     copyAllRejections () {
       document.getElementById('reject-all').select()
       document.execCommand('copy')
-      this.preview.clipboard_copied.msg = 'Copied all rejections to clipboard.'
-      this.preview.clipboard_copied.visible = true
+
+      this.preview.alert_info.msg = 'Copied all rejections to clipboard.'
+      this.preview.alert_info.visible = true
     },
     copyRejections (id) {
       document.getElementById(id).select()
       document.execCommand('copy')
-      this.preview.clipboard_copied.msg = 'Copied rejection to clipboard.'
-      this.preview.clipboard_copied.visible = true
+
+      this.preview.alert_info.msg = 'Copied rejection to clipboard.'
+      this.preview.alert_info.visible = true
     },
     _setActiveDefault () {
       this.active = {
@@ -634,6 +678,18 @@ export default {
 
     .md-table-row.md-selected-single {
       font-weight: normal;
+
+      /deep/ a:not(.md-button) {
+        color: #ff5252;
+
+        &:hover {
+          color: rgba(#ff5252, .8);
+        }
+      }
+    }
+
+    .md-table-cell:last-child /deep/ .md-table-cell-container {
+      white-space: nowrap;
     }
   }
 
