@@ -5,7 +5,7 @@ import VueFire from 'vuefire'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.css'
 
-import firebase from './firebase-init'
+import Firebase from './firebase'
 import router from './router'
 
 import App from './App'
@@ -18,7 +18,7 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 let app
 
-firebase.auth().onAuthStateChanged(auth => {
+Firebase.auth().onAuthStateChanged(auth => {
   if (!app) {
     app = new Vue({
       el: '#app',
