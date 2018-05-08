@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Firebase from 'firebase'
 
 // components
-import Welcome from '@/components/Welcome'
+import QCRejection from '@/components/QC-Rejection'
 import NotFound from '@/components/Not-Found'
 
 Vue.use(Router)
@@ -17,9 +17,9 @@ let router = new Router({
       component: NotFound
     },
     {
-      path: '/',
-      name: 'Welcome',
-      component: Welcome
+      path: '/qc-rejection',
+      name: 'QCRejection',
+      component: QCRejection
     }
   ]
 })
