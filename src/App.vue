@@ -51,3 +51,19 @@ export default {
 <style src="normalize.css/normalize.css"></style>
 <style src="vue-material/dist/vue-material.min.css"></style>
 <style src="vue-material/dist/theme/default.css"></style>
+
+<style lang="scss" scoped>
+  .md-app-drawer {
+    height: 100vh;
+    width: 250px;
+  }
+
+  .md-app /deep/ .md-app-container {
+    height: 100vh;
+  }
+
+  .md-app-content {
+    position: relative;
+    padding: 0;
+  }
+</style>

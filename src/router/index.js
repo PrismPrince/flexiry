@@ -3,8 +3,8 @@ import Router from 'vue-router'
 import Firebase from 'firebase'
 
 // components
-import QCRejection from '@/components/QC-Rejection'
 import NotFound from '@/components/Not-Found'
+import QCRejection from '@/components/QC-Rejection'
 
 Vue.use(Router)
 

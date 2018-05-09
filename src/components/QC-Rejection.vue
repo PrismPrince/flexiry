@@ -54,15 +54,15 @@
             <md-field md-clearable>
               <label>Custom</label>
               <md-input v-model="active.prodkind"></md-input>
-              <md-button class="md-icon-button md-dense md-input-action" :class="reject.prodkind.locked ? 'md-accent' : 'md-primary'" @click="reject.prodkind.locked = !reject.prodkind.locked">
-                <md-icon>{{ reject.prodkind.locked ? 'lock_outline' : 'lock_open' }}</md-icon>
+              <md-button class="md-icon-button md-dense md-input-action" :class="preview.locked_prodkind ? 'md-accent' : 'md-primary'" @click="preview.locked_prodkind = !preview.locked_prodkind">
+                <md-icon>{{ preview.locked_prodkind ? 'lock_outline' : 'lock_open' }}</md-icon>
                 <md-tooltip md-delay="300">Lock product kind for </md-tooltip>
               </md-button>
             </md-field>
 
             <div class="md-subheading" style="margin-bottom: 20px;">Colorways</div>
             <md-content class="options-list md-scrollbar">
-              <md-checkbox v-for="colorway in reject.colorways.choices" :key="colorway.id" v-model="active.colorways.selected" :value="colorway.id" class="md-primary">{{ colorway.name }}</md-checkbox>
+              <md-checkbox v-for="colorway in colorways" :key="colorway.id" v-model="active.colorways.selected" :value="colorway.id" class="md-primary">{{ colorway.name }}</md-checkbox>
             </md-content>
           </div>
 
@@ -74,7 +74,7 @@
             </md-field>
 
             <md-content class="options-list md-scrollbar">
-              <md-checkbox v-for="accessory in reject.accessories.choices" :key="accessory.id" v-model="active.accessories.selected" :value="accessory.id" :class="{'md-primary': accessory.defined_by === 'admin'}">{{ accessory.name }}</md-checkbox>
+              <md-checkbox v-for="accessory in accessories" :key="accessory.id" v-model="active.accessories.selected" :value="accessory.id" :class="{'md-primary': accessory.defined_by === 'admin'}">{{ accessory.name }}</md-checkbox>
             </md-content>
           </div>
 
@@ -82,13 +82,13 @@
               <div class="md-subheading">
                 <span>Rejections</span>
                 <md-menu md-size="auto">
-                  <md-button class="md-dense md-raised" md-menu-trigger>{{ reject.rejections.filter }}</md-button>
+                  <md-button class="md-dense md-raised" md-menu-trigger>{{ preview.filter }}</md-button>
                   <md-menu-content>
-                    <md-menu-item @click="reject.rejections.filter = 'general'">General</md-menu-item>
-                    <md-menu-item @click="reject.rejections.filter = 'tqc'">TQC</md-menu-item>
-                    <md-menu-item @click="reject.rejections.filter = 'cu3'">CU3</md-menu-item>
-                    <md-menu-item @click="reject.rejections.filter = 'csl'">CSL</md-menu-item>
-                    <md-menu-item @click="reject.rejections.filter = 'pdp'">PDP</md-menu-item>
+                    <md-menu-item @click="preview.filter = 'general'">General</md-menu-item>
+                    <md-menu-item @click="preview.filter = 'tqc'">TQC</md-menu-item>
+                    <md-menu-item @click="preview.filter = 'cu3'">CU3</md-menu-item>
+                    <md-menu-item @click="preview.filter = 'csl'">CSL</md-menu-item>
+                    <md-menu-item @click="preview.filter = 'pdp'">PDP</md-menu-item>
                   </md-menu-content>
                 </md-menu>
                 <span class="btn-options">
@@ -115,7 +115,7 @@
               </div>
 
               <md-content class="options-list md-scrollbar">
-                <md-radio v-for="rejection in reject.rejections.choices.filter(choice => choice.filter.includes(reject.rejections.filter))" :key="rejection.id" v-model="active.rejections.selected" :value="rejection.id" :class="{'md-primary': rejection.defined_by === 'admin'}">{{ rejection.name }}</md-radio>
+                <md-radio v-for="rejection in rejections.filter(choice => choice.filters.includes(preview.filter))" :key="rejection.id" v-model="active.rejections.selected" :value="rejection.id" :class="{'md-primary': rejection.defined_by === 'admin'}">{{ rejection.name }}</md-radio>
               </md-content>
           </div>
         </md-content>
@@ -130,6 +130,7 @@
 <script>
 import marked from 'marked'
 import trelloMarked from '@/components/formatters/trello-marked'
+import { __DB__ } from '../main'
 
 export default {
   name: 'qc-rejection',
@@ -164,37 +165,33 @@ export default {
         }
       },
       preview: {
-        id_counter: 1,
+        filter: 'general',
+        locked_prodkind: false,
         alert_info: {
           visible: false,
           msg: ''
         },
         rejects: []
       },
-      reject: {
-        prodkind: {
-          locked: false
-        },
-        colorways: {
-          choices: []
-        },
-        accessories: {
-          choices: []
-        },
-        rejections: {
-          filter: 'general',
-          choices: []
-        }
-      }
+      colorways: [],
+      accessories: [],
+      rejections: []
+    }
+  },
+  firestore () {
+    return {
+      colorways: __DB__.collection('colorways').orderBy('name'),
+      accessories: __DB__.collection('accessories'),
+      rejections: __DB__.collection('rejections')
     }
   },
   computed: {
     generated_preview () {
       let reject = null
       let format = this.user.format
-      let colorwaysChoices = this.reject.colorways.choices
-      let accessoriesChoices = this.reject.accessories.choices
-      let rejectionsChoices = this.reject.rejections.choices
+      let colorwaysChoices = this.colorways
+      let accessoriesChoices = this.accessories
+      let rejectionsChoices = this.rejections
       let rejects = []
       let prodkind = ''
       let colorways = ''
@@ -318,7 +315,6 @@ export default {
       if (this.active.id) this._setActiveDefault()
 
       this.preview.rejects.splice(this.preview.rejects.indexOf(reject), 1)
-      this.preview.id_counter = 1
       this.preview.alert_info.msg = 'Rejection removed.'
       this.preview.alert_info.visible = true
     },
@@ -339,7 +335,7 @@ export default {
     _setActiveDefault () {
       this.active = {
         id: null,
-        prodkind: this.reject.prodkind.locked ? this.active.prodkind : '',
+        prodkind: this.preview.locked_prodkind ? this.active.prodkind : '',
         colorways: {
           selected: []
         },
@@ -361,29 +357,15 @@ export default {
 <style lang="scss" scoped>
   $preview-height: 470px;
 
-  .md-app-drawer {
-    height: 100vh;
-    width: 250px;
-  }
-
-  .md-app /deep/ .md-app-container {
-    height: 100vh;
-  }
-
-  .md-app-content {
-    position: relative;
-    padding: 0;
-
-    > .md-content {
-      min-height: 820px;
-      position: absolute;
-      overflow-x: hidden;
-      overflow-y: hidden;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-    }
+  .qc-rejection > .md-content {
+    min-height: 820px;
+    position: absolute;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
   }
 
   input[id^="reject-"], textarea#reject-all {
