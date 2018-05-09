@@ -2,16 +2,24 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import VueFire from 'vuefire'
+import Firebase from 'firebase/app'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.css'
+import 'firebase/firestore'
 
-import Firebase from './firebase'
 import router from './router'
+import config from '../firebase-config.json'
 
 import App from './App'
 
 Vue.use(VueFire)
 Vue.use(VueMaterial)
+
+Firebase.initializeApp(config)
+
+export const __DB__ = Firebase.firestore()
+
+__DB__.settings({timestampsInSnapshots: true})
 
 Vue.config.productionTip = false
 
