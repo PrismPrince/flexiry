@@ -92,9 +92,9 @@
                   </md-menu-content>
                 </md-menu>
                 <span class="btn-options">
-                  <md-button v-if="active.id === null" class="md-dense md-raised md-primary" @click="addRejection" :disabled="!(active.rejections.selected || active.rejections.custom || active.rejections.screenshot)">Add</md-button>
+                  <md-button v-if="active.id === null" class="md-dense md-raised md-primary" @click="addRejection" :disabled="!(active.rejections.selected.length || active.rejections.custom.length || active.rejections.screenshot.length)">Add</md-button>
                   <md-button v-else class="md-dense md-raised md-primary" @click="updateRejection">Save</md-button>
-                  <md-button class="md-dense md-raised md-accent" @click="clearRejection">Clear Fields</md-button>
+                  <md-button class="md-dense md-raised md-accent" @click="clearRejection" :disabled="!((active.prodkind.length && !preview.locked_prodkind) || active.colorways.selected.length || active.accessories.selected.length || active.accessories.custom.length || active.rejections.selected.length || active.rejections.custom.length || active.rejections.screenshot.length)">Clear Fields</md-button>
                 </span>
               </div>
 
@@ -121,8 +121,9 @@
         </md-content>
       </div>
     </md-content>
-    <md-snackbar md-position="center" :md-duration="3000" :md-active.sync="preview.alert_info.visible">
-      <span>{{ preview.alert_info.msg }}</span>
+
+    <md-snackbar md-position="center" :md-duration="snackbar.duration" :md-active.sync="snackbar.visible">
+      <span>{{ snackbar.msg }}</span>
     </md-snackbar>
   </div>
 </template>
@@ -148,6 +149,9 @@ export default {
           rejections: ''
         }
       },
+      colorways: [],
+      accessories: [],
+      rejections: [],
       active: {
         id: null,
         prodkind: '',
@@ -166,24 +170,31 @@ export default {
       },
       preview: {
         filter: 'general',
+        id_counter: 1,
         locked_prodkind: false,
-        alert_info: {
-          visible: false,
-          msg: ''
-        },
         rejects: []
       },
-      colorways: [],
-      accessories: [],
-      rejections: []
+      snackbar: {
+        duration: 1500,
+        visible: false,
+        msg: ''
+      }
     }
   },
   firestore () {
     return {
       colorways: __DB__.collection('colorways').orderBy('name'),
-      accessories: __DB__.collection('accessories'),
+      accessories: __DB__.collection('accessories').orderBy('name'),
       rejections: __DB__.collection('rejections')
     }
+  },
+  beforeRouteLeave (to, from, next) {
+    if (this.preview.rejects.length) {
+      let answer = confirm('Do you really want to leave? You have still have rejections!')
+
+      if (answer) next()
+      else next(false)
+    } else next()
   },
   computed: {
     generated_preview () {
@@ -202,7 +213,7 @@ export default {
       for (let i = 0; i < this.preview.rejects.length; i++) {
         reject = this.preview.rejects[i]
 
-        prodkind = reject.prodkind.trim()
+        prodkind = reject.prodkind.trim().toUpperCase()
 
         colorways = colorwaysChoices.filter(choice =>
           choice.id === reject.colorways.selected.find(selected =>
@@ -219,7 +230,7 @@ export default {
 
         rejections = !reject.rejections.selected ? '' : rejectionsChoices.find(choice => choice.id === reject.rejections.selected).value
         rejections += reject.rejections.custom
-        rejections += !reject.rejections.screenshot ? '' : ' > ' + reject.rejections.screenshot
+        rejections += !reject.rejections.screenshot ? '' : (!rejections ? '' : ' > ') + reject.rejections.screenshot
 
         fuse += !prodkind ? '' : format.prodkind + prodkind + format.prodkind + ' '
         fuse += !colorways ? '' : format.colorways + colorways + format.colorways + ' '
@@ -227,7 +238,7 @@ export default {
         fuse += !prodkind && !colorways && !accessories ? rejections : ' - ' + rejections
 
         rejects.push({
-          id: i,
+          id: this.preview.rejects[i].id,
           raw: reject,
           plain: fuse,
           marked: marked(fuse).trim().replace(/^<p>/, '').replace(/<\/p>$/, '')
@@ -257,8 +268,8 @@ export default {
 
       this._setActiveDefault()
 
-      this.preview.alert_info.msg = 'Rejection added to list.'
-      this.preview.alert_info.visible = true
+      this.snackbar.msg = 'Rejection added to list.'
+      this.snackbar.visible = true
     },
     updateRejection () {
       let reject = this.preview.rejects[this.preview.rejects.indexOf(this.preview.rejects.find(selected => selected.id === this.active.id))]
@@ -273,8 +284,8 @@ export default {
 
       this._setActiveDefault()
 
-      this.preview.alert_info.msg = 'Rejection updated.'
-      this.preview.alert_info.visible = true
+      this.snackbar.msg = 'Rejection updated.'
+      this.snackbar.visible = true
     },
     selectRejection (item) {
       /* eslint curly: "off" */
@@ -282,7 +293,7 @@ export default {
       if (!item) this._setActiveDefault()
       else
         this.active = {
-          id: item.raw.id,
+          id: item.id,
           prodkind: item.raw.prodkind,
           colorways: {
             selected: item.raw.colorways.selected
@@ -301,36 +312,37 @@ export default {
     clearRejection () {
       this._setActiveDefault()
 
-      this.preview.alert_info.msg = 'Edit cleared.'
-      this.preview.alert_info.visible = true
+      this.snackbar.msg = 'Edit cleared.'
+      this.snackbar.visible = true
     },
     removeAllRejections () {
       if (this.active.id) this._setActiveDefault()
 
       this.preview.rejects = []
-      this.preview.alert_info.msg = 'All rejections are removed.'
-      this.preview.alert_info.visible = true
+      this.preview.id_counter = 1
+      this.snackbar.msg = 'All rejections are removed.'
+      this.snackbar.visible = true
     },
     removeRejection (reject) {
       if (this.active.id) this._setActiveDefault()
 
       this.preview.rejects.splice(this.preview.rejects.indexOf(reject), 1)
-      this.preview.alert_info.msg = 'Rejection removed.'
-      this.preview.alert_info.visible = true
+      this.snackbar.msg = 'Rejection removed.'
+      this.snackbar.visible = true
     },
     copyAllRejections () {
       document.getElementById('reject-all').select()
       document.execCommand('copy')
 
-      this.preview.alert_info.msg = 'Copied all rejections to clipboard.'
-      this.preview.alert_info.visible = true
+      this.snackbar.msg = 'Copied all rejections to clipboard.'
+      this.snackbar.visible = true
     },
     copyRejections (id) {
       document.getElementById(id).select()
       document.execCommand('copy')
 
-      this.preview.alert_info.msg = 'Copied rejection to clipboard.'
-      this.preview.alert_info.visible = true
+      this.snackbar.msg = 'Copied rejection to clipboard.'
+      this.snackbar.visible = true
     },
     _setActiveDefault () {
       this.active = {
@@ -353,6 +365,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  .md-app-content {
+    position: relative;
+  }
+</style>
 
 <style lang="scss" scoped>
   $preview-height: 470px;
