@@ -11,9 +11,9 @@
         </md-toolbar>
 
         <md-list>
-          <md-list-item>
+          <md-list-item to="/qc-rejection/admin">
             <md-icon>move_to_inbox</md-icon>
-            <span class="md-list-item-text">Inbox</span>
+            <span class="md-list-item-text">Admin</span>
           </md-list-item>
 
           <md-list-item>
@@ -48,10 +48,6 @@ export default {
 }
 </script>
 
-<style src="normalize.css/normalize.css"></style>
-<style src="vue-material/dist/vue-material.min.css"></style>
-<style src="vue-material/dist/theme/default.css"></style>
-
 <style lang="scss" scoped>
   .md-app-drawer {
     height: 100vh;
@@ -60,10 +56,5 @@ export default {
 
   .md-app /deep/ .md-app-container {
     height: 100vh;
-  }
-
-  .md-app-content {
-    position: relative;
-    padding: 0;
   }
 </style>

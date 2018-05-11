@@ -5,6 +5,7 @@ import Firebase from 'firebase'
 // components
 import NotFound from '@/components/Not-Found'
 import QCRejection from '@/components/QC-Rejection'
+import QCRejectionAdmin from '@/components/QC-Rejection-Admin'
 
 Vue.use(Router)
 
@@ -20,7 +21,17 @@ let router = new Router({
       path: '/qc-rejection',
       name: 'QCRejection',
       component: QCRejection
+    },
+    {
+      path: '/qc-rejection/admin',
+      name: 'QCRejectionAdmin',
+      component: QCRejectionAdmin
     }
+    // {
+    //   path: 'custom',
+    //   name: 'QCRejectionCustom',
+    //   component: QCRejectionCustom
+    // }
   ]
 })
 
