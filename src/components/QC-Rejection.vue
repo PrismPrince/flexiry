@@ -56,13 +56,18 @@
               <md-input v-model="active.prodkind"></md-input>
               <md-button class="md-icon-button md-dense md-input-action" :class="preview.locked_prodkind ? 'md-accent' : 'md-primary'" @click="preview.locked_prodkind = !preview.locked_prodkind">
                 <md-icon>{{ preview.locked_prodkind ? 'lock_outline' : 'lock_open' }}</md-icon>
-                <md-tooltip md-delay="300">Lock product kind for </md-tooltip>
+                <md-tooltip md-delay="300">Locking product kind prevents clearing the value</md-tooltip>
               </md-button>
             </md-field>
 
             <div class="md-subheading" style="margin-bottom: 20px;">Colorways</div>
             <md-content class="options-list md-scrollbar">
-              <md-checkbox v-for="colorway in colorways" :key="colorway.id" v-model="active.colorways.selected" :value="colorway.id" class="md-primary">{{ colorway.name }}</md-checkbox>
+              <md-list>
+                <md-list-item v-for="colorway in colorways" :key="colorway.id">
+                  <md-checkbox v-model="active.colorways.selected" :value="colorway.id" class="md-primary"></md-checkbox>
+                  <span class="md-list-item-text">{{ colorway.name }}</span>
+                </md-list-item>
+              </md-list>
             </md-content>
           </div>
 
@@ -74,7 +79,15 @@
             </md-field>
 
             <md-content class="options-list md-scrollbar">
-              <md-checkbox v-for="accessory in accessories" :key="accessory.id" v-model="active.accessories.selected" :value="accessory.id" :class="{'md-primary': accessory.defined_by === 'admin'}">{{ accessory.name }}</md-checkbox>
+              <md-list>
+                <md-list-item v-for="accessory in accessories" :key="accessory.id">
+                  <md-checkbox v-model="active.accessories.selected" :value="accessory.id" :class="{'md-primary': accessory.defined_by === 'admin'}"></md-checkbox>
+                  <span class="md-list-item-text">
+                    {{ accessory.name }}
+                    <md-tooltip md-delay="150">{{ accessory.value }}</md-tooltip>
+                  </span>
+                </md-list-item>
+              </md-list>
             </md-content>
           </div>
 
@@ -115,7 +128,15 @@
               </div>
 
               <md-content class="options-list md-scrollbar">
-                <md-radio v-for="rejection in rejections.filter(choice => choice.filters.includes(preview.filter))" :key="rejection.id" v-model="active.rejections.selected" :value="rejection.id" :class="{'md-primary': rejection.defined_by === 'admin'}">{{ rejection.name }}</md-radio>
+                <md-list>
+                  <md-list-item v-for="rejection in rejections.filter(choice => choice.filters.includes(preview.filter))" :key="rejection.id">
+                    <md-radio v-model="active.rejections.selected" :value="rejection.id" :class="{'md-primary': rejection.defined_by === 'admin'}"></md-radio>
+                    <span class="md-list-item-text">
+                      {{ rejection.name }}
+                      <md-tooltip md-delay="150">{{ rejection.value }}</md-tooltip>
+                    </span>
+                  </md-list-item>
+                </md-list>
               </md-content>
           </div>
         </md-content>
@@ -185,7 +206,7 @@ export default {
     return {
       colorways: __DB__.collection('colorways').orderBy('name'),
       accessories: __DB__.collection('accessories').orderBy('name'),
-      rejections: __DB__.collection('rejections')
+      rejections: __DB__.collection('rejections').orderBy('name')
     }
   },
   beforeRouteLeave (to, from, next) {
@@ -226,7 +247,7 @@ export default {
             selected === choice.id
           )
         ).map(accessory => accessory.value).sort().join('/')
-        accessories += !reject.accessories.custom ? '' : (!reject.accessories.selected.length ? '' : '/') + reject.accessories.custom.trim().replace(/^\//, '').replace(/\/$/, '')
+        accessories += !reject.accessories.custom ? '' : (!reject.accessories.selected.length ? '' : '/') + reject.accessories.custom.trim().replace(/\s+/g, '\\_').replace(/^\//, '').replace(/\/$/, '')
 
         rejections = !reject.rejections.selected ? '' : rejectionsChoices.find(choice => choice.id === reject.rejections.selected).value
         rejections += reject.rejections.custom
@@ -271,22 +292,6 @@ export default {
       this.snackbar.msg = 'Rejection added to list.'
       this.snackbar.visible = true
     },
-    updateRejection () {
-      let reject = this.preview.rejects[this.preview.rejects.indexOf(this.preview.rejects.find(selected => selected.id === this.active.id))]
-
-      reject.prodkind = this.active.prodkind
-      reject.colorways.selected = this.active.colorways.selected
-      reject.accessories.selected = this.active.accessories.selected
-      reject.accessories.custom = this.active.accessories.custom
-      reject.rejections.selected = this.active.rejections.selected
-      reject.rejections.custom = this.active.rejections.custom
-      reject.rejections.screenshot = this.active.rejections.screenshot
-
-      this._setActiveDefault()
-
-      this.snackbar.msg = 'Rejection updated.'
-      this.snackbar.visible = true
-    },
     selectRejection (item) {
       /* eslint curly: "off" */
 
@@ -308,6 +313,22 @@ export default {
             screenshot: item.raw.rejections.screenshot
           }
         }
+    },
+    updateRejection () {
+      let reject = this.preview.rejects[this.preview.rejects.indexOf(this.preview.rejects.find(selected => selected.id === this.active.id))]
+
+      reject.prodkind = this.active.prodkind
+      reject.colorways.selected = this.active.colorways.selected
+      reject.accessories.selected = this.active.accessories.selected
+      reject.accessories.custom = this.active.accessories.custom
+      reject.rejections.selected = this.active.rejections.selected
+      reject.rejections.custom = this.active.rejections.custom
+      reject.rejections.screenshot = this.active.rejections.screenshot
+
+      this._setActiveDefault()
+
+      this.snackbar.msg = 'Rejection updated.'
+      this.snackbar.visible = true
     },
     clearRejection () {
       this._setActiveDefault()
