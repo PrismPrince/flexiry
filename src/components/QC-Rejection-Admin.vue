@@ -25,7 +25,7 @@
       <div class="md-layout-item md-size-33 md-small-size-50 md-xsmall-size-100">
         <md-card>
           <md-card-header>
-            <div class="md-title">Add Colorway</div>
+            <div class="md-title">{{ custom.colorway.id === null ? 'Add Colorway' : 'Edit Colorway' }}</div>
           </md-card-header>
 
           <md-card-content>
@@ -36,7 +36,8 @@
           </md-card-content>
 
           <md-card-actions>
-            <md-button class="md-dense md-raised md-primary" @click="addColorway" :disabled="!custom.colorway.name">Add</md-button>
+            <md-button v-if="custom.colorway.id === null" class="md-dense md-raised md-primary" @click="addColorway" :disabled="!custom.colorway.name">Add</md-button>
+            <md-button v-else class="md-dense md-raised md-primary" @click="updateColorway" :disabled="!custom.colorway.name">Save</md-button>
           </md-card-actions>
         </md-card>
       </div>
@@ -137,6 +138,7 @@
                 <md-option value="general">General</md-option>
                 <md-option value="tqc">TQC</md-option>
                 <md-option value="cu3">CU3</md-option>
+                <md-option value="csl">CSL</md-option>
                 <md-option value="pdp">PDP</md-option>
               </md-select>
             </md-field>
@@ -167,13 +169,16 @@ export default {
       rejections: [],
       custom: {
         colorway: {
+          id: null,
           name: ''
         },
         accessory: {
+          id: null,
           name: '',
           value: ''
         },
         rejection: {
+          id: null,
           name: '',
           value: '',
           filters: ['general']
@@ -195,7 +200,6 @@ export default {
     }
   },
   methods: {
-    selectColorway () {},
     addColorway () {
       let name = this.custom.colorway.name.toUpperCase().trim()
 
@@ -210,16 +214,30 @@ export default {
       this.snackbar.msg = `Colorway "${name}" added.`
       this.snackbar.visible = true
     },
+    selectColorway (item) {
+      /* eslint curly: "off" */
+
+      if (!item)
+        this.custom.colorway = {
+          id: null,
+          name: ''
+        }
+      else
+        this.custom.colorway = {
+          id: item.id,
+          name: item.name
+        }
+    },
+    updateColorway () {},
     removeColorway (item) {
       __DB__.collection('colorways').doc(item.id).delete()
 
       this.snackbar.msg = `Colorway "${item.name}" deleted.`
       this.snackbar.visible = true
     },
-    selectAccessory () {},
     addAccessory () {
       let name = this.custom.accessory.name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ').trim()
-      let value = this.custom.accessory.value.toLowerCase().replace(/\s/g, '_').trim()
+      let value = this.custom.accessory.value.toLowerCase().replace(/\s+/g, '_').trim()
 
       __DB__.collection('accessories').add({
         name: name,
@@ -234,16 +252,32 @@ export default {
       this.snackbar.msg = `Accessory "${name}" added.`
       this.snackbar.visible = true
     },
+    selectAccessory (item) {
+      /* eslint curly: "off" */
+
+      if (!item)
+        this.custom.accessory = {
+          id: null,
+          name: '',
+          value: ''
+        }
+      else
+        this.custom.accessory = {
+          id: item.id,
+          name: item.name,
+          value: item.value
+        }
+    },
+    updateAccessory () {},
     removeAccessory (item) {
       __DB__.collection('accessories').doc(item.id).delete()
 
       this.snackbar.msg = `Accessory "${item.name}" deleted.`
       this.snackbar.visible = true
     },
-    selectRejection () {},
     addRejection () {
       let name = this.custom.rejection.name.trim()
-      let value = this.custom.rejection.value.toLowerCase().trim()
+      let value = this.custom.rejection.value.trim()
       let filters = this.custom.rejection.filters.sort()
 
       __DB__.collection('rejections').add({
@@ -260,6 +294,25 @@ export default {
 
       this.snackbar.msg = `Rejection "${name}" added.`
       this.snackbar.visible = true
+    },
+    updateRejection () {},
+    selectRejection (item) {
+      /* eslint curly: "off" */
+
+      if (!item)
+        this.custom.rejection = {
+          id: null,
+          name: '',
+          value: '',
+          filters: []
+        }
+      else
+        this.custom.rejection = {
+          id: item.id,
+          name: item.name,
+          value: item.value,
+          filters: item.filters
+        }
     },
     removeRejection (item) {
       __DB__.collection('rejections').doc(item.id).delete()
