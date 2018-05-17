@@ -27,4 +27,9 @@ export default {
     margin: 8px 0 8px 8px;
     padding: 0 0 0 8px;
   }
+
+  /deep/ .emoji {
+    height: 18px;
+    width: auto;
+  }
 </style>
