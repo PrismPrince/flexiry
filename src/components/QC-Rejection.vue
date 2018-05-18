@@ -27,7 +27,7 @@
 
               <md-table-row slot="md-table-row" slot-scope="{ item }" class="md-primary" md-selectable="single">
                 <md-table-cell md-label="Styled">
-                  <trello-marked :html="item.marked"></trello-marked>
+                  <trello-marked :plain-text="item.plain"></trello-marked>
                 </md-table-cell>
                 <md-table-cell md-label="Formated">{{ item.plain }}</md-table-cell>
                 <md-table-cell md-label="Action">
@@ -150,9 +150,7 @@
 </template>
 
 <script>
-import marked from 'marked'
 import trelloMarked from '@/components/formatters/trello-marked'
-import emoji from '@/components/mixins/emoji'
 import { __DB__ } from '../main'
 
 export default {
@@ -160,7 +158,6 @@ export default {
   components: {
     trelloMarked
   },
-  mixins: [emoji],
   data () {
     return {
       user: {
@@ -263,8 +260,7 @@ export default {
         rejects.push({
           id: this.preview.rejects[i].id,
           raw: reject,
-          plain: fuse,
-          marked: marked(fuse).trim().replace(/^<p>/, '').replace(/<\/p>$/, '').split(/(:[\w+-]+:)/).map(str => str.replace(/^:([\w+-]+):$/, (match, p1) => this._emojiNormalize(p1))).join('')
+          plain: fuse
         })
 
         reject = null

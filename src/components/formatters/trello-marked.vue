@@ -3,10 +3,25 @@
 </template>
 
 <script>
+import marked from 'marked'
+import emoji from '@/components/mixins/emoji'
+
 export default {
   name: 'Trello-Marked',
+  mixins: [emoji],
   props: {
-    html: [String]
+    plainText: [String]
+  },
+  computed: {
+    html () {
+      return marked(this.plainText)
+        // remove <p>...</p> tags at the beginning and end
+        .trim().replace(/^<p>/, '').replace(/<\/p>$/, '')
+        // add target="_black" to all links
+        .replace(/<a\s+href/g, `<a target="_black" href`)
+        // search and replace valid emoji code
+        .split(/(:[\w+-]+:)/).map(str => str.replace(/^:([\w+-]+):$/, (match, p1) => this._emojiNormalize(p1))).join('')
+    }
   }
 }
 </script>
@@ -31,5 +46,6 @@ export default {
   /deep/ .emoji {
     height: 18px;
     width: auto;
+    display: inline;
   }
 </style>
