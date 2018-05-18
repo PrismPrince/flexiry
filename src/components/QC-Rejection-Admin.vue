@@ -36,8 +36,9 @@
           </md-card-content>
 
           <md-card-actions>
-            <md-button v-if="custom.colorway.id === null" class="md-dense md-raised md-primary" @click="addColorway" :disabled="!custom.colorway.name">Add</md-button>
-            <md-button v-else class="md-dense md-raised md-primary" @click="updateColorway" :disabled="!custom.colorway.name">Save</md-button>
+            <md-button v-if="custom.colorway.id !== null" class="md-dense md-raised" @click="cancelColorwayEdit">Cancel</md-button>
+            <md-button v-if="custom.colorway.id !== null" class="md-dense md-raised md-primary" @click="updateColorway" :disabled="!custom.colorway.name">Save</md-button>
+            <md-button v-else class="md-dense md-raised md-primary" @click="addColorway" :disabled="!custom.colorway.name">Add</md-button>
           </md-card-actions>
         </md-card>
       </div>
@@ -69,7 +70,7 @@
       <div class="md-layout-item md-size-33 md-small-size-50 md-xsmall-size-100">
         <md-card>
           <md-card-header>
-            <div class="md-title">Add Accessory</div>
+            <div class="md-title">{{ custom.accessory.id === null ? 'Add Accessory' : 'Edit Accessory' }}</div>
           </md-card-header>
 
           <md-card-content>
@@ -85,7 +86,9 @@
           </md-card-content>
 
           <md-card-actions>
-            <md-button class="md-dense md-raised md-primary" @click="addAccessory" :disabled="!custom.accessory.name || !custom.accessory.value">Add</md-button>
+            <md-button v-if="custom.accessory.id !== null" class="md-dense md-raised" @click="cancelAccessoryEdit">Cancel</md-button>
+            <md-button v-if="custom.accessory.id !== null" class="md-dense md-raised md-primary" @click="updateAccessory" :disabled="!custom.accessory.name || !custom.accessory.value">Save</md-button>
+            <md-button v-else class="md-dense md-raised md-primary" @click="addAccessory" :disabled="!custom.accessory.name || !custom.accessory.value">Add</md-button>
           </md-card-actions>
         </md-card>
       </div>
@@ -118,7 +121,7 @@
       <div class="md-layout-item md-size-33 md-small-size-50 md-xsmall-size-100">
         <md-card>
           <md-card-header>
-            <div class="md-title">Add Rejection</div>
+            <div class="md-title">{{ custom.rejection.id === null ? 'Add Rejection' : 'Edit Rejection' }}</div>
           </md-card-header>
 
           <md-card-content>
@@ -145,7 +148,9 @@
           </md-card-content>
 
           <md-card-actions>
-            <md-button class="md-dense md-raised md-primary" @click="addRejection" :disabled="!custom.rejection.name || !custom.rejection.value || !custom.rejection.filters.length">Add</md-button>
+            <md-button v-if="custom.rejection.id !== null" class="md-dense md-raised" @click="cancelRejectionEdit">Cancel</md-button>
+            <md-button v-if="custom.rejection.id !== null" class="md-dense md-raised md-primary" @click="updateColorway" :disabled="!custom.rejection.name || !custom.rejection.value || !custom.rejection.filters.length">Save</md-button>
+            <md-button v-else class="md-dense md-raised md-primary" @click="addRejection" :disabled="!custom.rejection.name || !custom.rejection.value || !custom.rejection.filters.length">Add</md-button>
           </md-card-actions>
         </md-card>
       </div>
@@ -158,6 +163,7 @@
 </template>
 
 <script>
+import Firebase from 'firebase'
 import { __DB__ } from '../main'
 
 export default {
@@ -191,7 +197,6 @@ export default {
       }
     }
   },
-
   firestore () {
     return {
       colorways: __DB__.collection('colorways').orderBy('name'),
@@ -206,7 +211,7 @@ export default {
       __DB__.collection('colorways').add({
         name: name,
         defined_by: 'admin',
-        created_at: new Date()
+        created_at: Firebase.firestore.FieldValue.serverTimestamp()
       })
 
       this.custom.colorway.name = ''
@@ -228,7 +233,18 @@ export default {
           name: item.name
         }
     },
-    updateColorway () {},
+    cancelColorwayEdit () {
+      this.custom.colorway = {
+        id: null,
+        name: ''
+      }
+    },
+    updateColorway () {
+      __DB__.collection('rejections').doc(this.custom.colorway.id).update({
+        name: this.custom.colorway.name,
+        updated_at: Firebase.firestore.FieldValue.serverTimestamp()
+      })
+    },
     removeColorway (item) {
       __DB__.collection('colorways').doc(item.id).delete()
 
@@ -243,7 +259,7 @@ export default {
         name: name,
         value: value,
         defined_by: 'admin',
-        created_at: new Date()
+        created_at: Firebase.firestore.FieldValue.serverTimestamp()
       })
 
       this.custom.accessory.name = ''
@@ -268,7 +284,20 @@ export default {
           value: item.value
         }
     },
-    updateAccessory () {},
+    cancelAccessoryEdit () {
+      this.custom.accessory = {
+        id: null,
+        name: '',
+        value: ''
+      }
+    },
+    updateAccessory () {
+      __DB__.collection('rejections').doc(this.custom.accessory.id).update({
+        name: this.custom.accessory.name,
+        value: this.custom.accessory.value,
+        updated_at: Firebase.firestore.FieldValue.serverTimestamp()
+      })
+    },
     removeAccessory (item) {
       __DB__.collection('accessories').doc(item.id).delete()
 
@@ -285,7 +314,7 @@ export default {
         value: value,
         filters: filters,
         defined_by: 'admin',
-        created_at: new Date()
+        created_at: Firebase.firestore.FieldValue.serverTimestamp()
       })
 
       this.custom.rejection.name = ''
@@ -295,7 +324,6 @@ export default {
       this.snackbar.msg = `Rejection "${name}" added.`
       this.snackbar.visible = true
     },
-    updateRejection () {},
     selectRejection (item) {
       /* eslint curly: "off" */
 
@@ -313,6 +341,22 @@ export default {
           value: item.value,
           filters: item.filters
         }
+    },
+    cancelRejectionEdit () {
+      this.custom.rejection = {
+        id: null,
+        name: '',
+        value: '',
+        filters: []
+      }
+    },
+    updateRejection () {
+      __DB__.collection('rejections').doc(this.custom.rejection.id).update({
+        name: this.custom.rejection.name,
+        value: this.custom.rejection.value,
+        filters: this.custom.rejection.filters,
+        updated_at: Firebase.firestore.FieldValue.serverTimestamp()
+      })
     },
     removeRejection (item) {
       __DB__.collection('rejections').doc(item.id).delete()
