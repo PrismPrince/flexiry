@@ -58,7 +58,7 @@ let router = new Router({
 
 router.beforeEach((to, from, next) => {
   let user = Firebase.auth().currentUser || null
-  let userRole = user ? __DB__.collection('users').doc(user.id).role : null
+  let userRole = user ? __DB__.collection('users').doc(user.uid).role : null
   let guard = to.matched[0].meta.guard || null
 
   if (guard === 'auth:admin' && user && userRole === 'admin') next()

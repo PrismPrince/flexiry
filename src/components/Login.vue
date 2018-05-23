@@ -3,7 +3,7 @@
 
     <div class="md-layout md-gutter md-alignment-top-center">
       <div class="md-layout-item md-size-70">
-        <md-tabs class="md-elevation-5" md-alignment="centered" md-active-tab="tab-login">
+        <md-tabs class="md-elevation-5" md-alignment="centered" md-active-tab="tab-login" :md-dynamic-height="true">
           <md-tab id="tab-register" md-label="Register">
             <md-card class="md-accent note" v-if="register.error.status">
               <md-card-header>
@@ -35,7 +35,7 @@
               <span v-if="register.confirmPassword.error.status" class="md-error">{{ register.confirmPassword.error.message }}</span>
             </md-field>
 
-            <md-button class="md-primary md-raised" :disabled="!checkRegisterStatus">Register</md-button>
+            <md-button class="md-primary md-raised" @click="registerUser" :disabled="!checkRegisterStatus">Register</md-button>
           </md-tab>
 
           <md-tab id="tab-login" md-label="Login">
@@ -62,7 +62,7 @@
               <span v-if="login.password.error.status" class="md-error">{{ login.password.error.message }}</span>
             </md-field>
 
-            <md-button class="md-primary md-raised" :disabled="!checkLoginStatus">Log in</md-button>
+            <md-button class="md-primary md-raised" @click="loginUser" :disabled="!checkLoginStatus">Log in</md-button>
           </md-tab>
         </md-tabs>
       </div>
@@ -71,6 +71,9 @@
 </template>
 
 <script>
+import Firebase from 'firebase'
+import { __DB__ } from '../main'
+
 export default {
   data () {
     return {
@@ -206,6 +209,45 @@ export default {
       } else {
         this.register.confirmPassword.error.status = false
         this.register.confirmPassword.error.message = ''
+      }
+    }
+  },
+  methods: {
+    loginUser () {
+      if (this.checkLoginStatus) {
+        Firebase.auth().signInWithEmailAndPassword(this.login.email.value, this.login.password.value)
+          .then(user => {
+            console.log(user)
+            __DB__.collection('users').doc(user.uid).update({
+              last_signin_at: user.metadata.lastSignInTime
+            })
+            this.$router.replace('/home')
+          }, err => {
+            this.login.error.status = true
+            this.login.error.message = err.message
+          })
+      }
+    },
+    registerUser () {
+      if (this.checkRegisterStatus) {
+        Firebase.auth().createUserWithEmailAndPassword(this.register.email.value, this.register.password.value)
+          .then(user => {
+            console.log(user)
+            __DB__.collection('users').doc(user.uid).set({
+              display_name: user.displayName,
+              email: user.email,
+              verified: user.emailVerified,
+              phone_number: user.phoneNumber,
+              photo_URL: user.photoURL,
+              created_at: user.metadata.creationTime,
+              last_signin_at: user.metadata.lastSignInTime
+            })
+
+            this.$router.replace('/home')
+          }, err => {
+            this.register.error.status = true
+            this.register.error.message = err.message
+          })
       }
     }
   }
