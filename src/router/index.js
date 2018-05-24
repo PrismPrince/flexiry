@@ -58,16 +58,28 @@ let router = new Router({
 
 router.beforeEach((to, from, next) => {
   let user = Firebase.auth().currentUser || null
-  let userRole = user ? __DB__.collection('users').doc(user.uid).role : null
+  let role = null
   let guard = to.matched[0].meta.guard || null
 
-  if (guard === 'auth:admin' && user && userRole === 'admin') next()
-  else if (guard === 'auth:admin' && user && userRole !== 'admin') next('home')
-  else if (guard === 'auth' && user) next()
-  else if (guard === 'auth' && !user) next('login')
-  else if (guard === 'guest' && !user) next()
-  else if (guard === 'guest' && user) next('home')
-  else next()
+  if (user) {
+    __DB__.collection('users').doc(user.uid).get().then(snap => {
+      if (snap.exists) role = snap.data().role
+      else role = null
+    }).catch(err => {
+      console.log(err)
+    }).finally(() => {
+      if (guard === 'auth:admin' && role === 'admin') next()
+      else if (guard === 'auth:admin' && role !== 'admin') next('home')
+      else if (guard === 'auth') next()
+      else if (guard === 'guest') next('home')
+      else next()
+    })
+  } else {
+    if (guard === 'auth:admin') next('login')
+    else if (guard === 'auth') next('login')
+    else if (guard === 'guest') next()
+    else next()
+  }
 })
 
 export default router

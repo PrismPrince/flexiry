@@ -229,7 +229,8 @@ export default {
               phone_number: user.phoneNumber,
               photo_URL: user.photoURL,
               created_at: user.metadata.creationTime,
-              last_signin_at: user.metadata.lastSignInTime
+              last_signin_at: user.metadata.lastSignInTime,
+              role: 'user'
             })
 
             __bus__.$emit('authUser', user)

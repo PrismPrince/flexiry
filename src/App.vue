@@ -16,22 +16,17 @@
 
         <md-list>
           <md-list-item to="/login" v-if="!user">
-            <md-icon>move_to_inbox</md-icon>
+            <md-icon>person</md-icon>
             <span class="md-list-item-text">Login</span>
           </md-list-item>
 
           <md-list-item to="/home" v-if="user">
-            <md-icon>delete</md-icon>
+            <md-icon>home</md-icon>
             <span class="md-list-item-text">Home</span>
-          </md-list-item>
-
-          <md-list-item>
-            <md-icon>error</md-icon>
-            <span class="md-list-item-text">Spam</span>
           </md-list-item>
         </md-list>
 
-        <md-button class="md-primary md-raised" @click="logout" v-if="user">Logout</md-button>
+        <md-button class="md-primary md-raised md-dense" @click="logout" v-if="user">Logout</md-button>
       </md-app-drawer>
 
       <md-app-content>
