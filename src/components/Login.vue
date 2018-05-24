@@ -3,20 +3,20 @@
 
     <div class="md-layout md-gutter md-alignment-top-center">
       <div class="md-layout-item md-size-70">
+        <md-card class="md-accent note" v-if="error.status">
+          <md-card-header>
+            <md-card-header-text>
+              <div class="md-title"><md-icon>error</md-icon> Error!</div>
+            </md-card-header-text>
+            <md-button class="md-icon-button btn-close" @click="error.status = false">
+              <md-icon>close</md-icon>
+            </md-button>
+          </md-card-header>
+          <md-card-content>{{ error.message }}</md-card-content>
+        </md-card>
+
         <md-tabs class="md-elevation-5" md-alignment="centered" md-active-tab="tab-login" :md-dynamic-height="true">
           <md-tab id="tab-register" md-label="Register">
-            <md-card class="md-accent note" v-if="register.error.status">
-              <md-card-header>
-                <md-card-header-text>
-                  <div class="md-title"><md-icon>error</md-icon> Error!</div>
-                </md-card-header-text>
-                <md-button class="md-icon-button btn-close" @click="register.error.status = false">
-                  <md-icon>close</md-icon>
-                </md-button>
-              </md-card-header>
-              <md-card-content>{{ register.error.message }}</md-card-content>
-            </md-card>
-
             <md-field :class="{'md-invalid': register.email.error.status}" md-clearable>
               <label>E-mail Address</label>
               <md-input v-model="register.email.value"></md-input>
@@ -39,17 +39,6 @@
           </md-tab>
 
           <md-tab id="tab-login" md-label="Login">
-            <md-card class="md-accent note" v-if="login.error.status">
-              <md-card-header>
-                <md-card-header-text>
-                  <div class="md-title"><md-icon>error</md-icon> Error!</div>
-                </md-card-header-text>
-                <md-button class="md-icon-button btn-close" @click="login.error.status = false">
-                  <md-icon>close</md-icon>
-                </md-button>
-              </md-card-header>
-              <md-card-content>{{ login.error.message }}</md-card-content>
-            </md-card>
             <md-field :class="{'md-invalid': login.email.error.status}" md-clearable>
               <label>E-mail Address</label>
               <md-input v-model="login.email.value"></md-input>
@@ -72,6 +61,7 @@
 
 <script>
 import Firebase from 'firebase'
+import __bus__ from '../bus'
 import { __DB__ } from '../main'
 
 export default {
@@ -93,10 +83,6 @@ export default {
             status: false,
             message: ''
           }
-        },
-        error: {
-          status: false,
-          message: ''
         }
       },
       register: {
@@ -123,11 +109,11 @@ export default {
             status: false,
             message: ''
           }
-        },
-        error: {
-          status: false,
-          message: ''
         }
+      },
+      error: {
+        status: false,
+        message: ''
       }
     }
   },
@@ -221,10 +207,13 @@ export default {
             __DB__.collection('users').doc(user.uid).update({
               last_signin_at: user.metadata.lastSignInTime
             })
+
+            __bus__.$emit('authUser', user)
+
             this.$router.replace('/home')
           }, err => {
-            this.login.error.status = true
-            this.login.error.message = err.message
+            this.error.status = true
+            this.error.message = err.message
           })
       }
     },
@@ -243,10 +232,12 @@ export default {
               last_signin_at: user.metadata.lastSignInTime
             })
 
+            __bus__.$emit('authUser', user)
+
             this.$router.replace('/home')
           }, err => {
-            this.register.error.status = true
-            this.register.error.message = err.message
+            this.error.status = true
+            this.error.message = err.message
           })
       }
     }
@@ -255,8 +246,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .md-tab .note {
-    margin: 0;
+  .note {
+    margin: 0 0 20px 0;
 
     .md-icon {
       color: #fff;

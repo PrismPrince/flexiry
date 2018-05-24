@@ -43,6 +43,7 @@
 
 <script>
 import Firebase from 'firebase'
+import __bus__ from './bus'
 
 export default {
   name: 'App',
@@ -50,6 +51,19 @@ export default {
     return {
       sidenav: false,
       user: Firebase.auth().currentUser
+    }
+  },
+  mounted () {
+    __bus__.$on('authUser', user => {
+      this.user = user
+    })
+  },
+  methods: {
+    logout () {
+      Firebase.auth().signOut().then(() => {
+        this.user = null
+        this.$router.replace('/')
+      })
     }
   }
 }
