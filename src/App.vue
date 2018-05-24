@@ -6,33 +6,7 @@
       </md-app-toolbar>
 
       <md-app-drawer md-permanent="full" class="md-scrollbar">
-        <md-toolbar class="md-transparent" md-elevation="0">
-          Navigation
-        </md-toolbar>
-
-        <md-list>
-          <md-list-item to="/qc-rejection/admin">
-            <md-icon>move_to_inbox</md-icon>
-            <span class="md-list-item-text">Admin</span>
-          </md-list-item>
-
-          <md-list-item>
-            <md-icon>send</md-icon>
-            <span class="md-list-item-text">Sent Mail</span>
-          </md-list-item>
-
-          <md-list-item>
-            <md-icon>delete</md-icon>
-            <span class="md-list-item-text">Trash</span>
-          </md-list-item>
-
-          <md-list-item>
-            <md-icon>error</md-icon>
-            <span class="md-list-item-text">Spam</span>
-          </md-list-item>
-        </md-list>
-
-        <md-button class="md-primary md-raised">Button</md-button>
+        <sidebar></sidebar>
       </md-app-drawer>
 
       <md-app-content>
@@ -43,18 +17,23 @@
 </template>
 
 <script>
+import Sidebar from '@/components/Sidebar'
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    Sidebar
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+  .md-app /deep/ .md-app-container {
+    height: 100vh;
+  }
+
   .md-app-drawer {
     height: 100vh;
     width: 250px;
-  }
-
-  .md-app /deep/ .md-app-container {
-    height: 100vh;
   }
 </style>

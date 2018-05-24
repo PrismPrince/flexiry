@@ -150,13 +150,13 @@
 </template>
 
 <script>
-import trelloMarked from '@/components/formatters/trello-marked'
+import TrelloMarked from '@/components/formatters/trello-marked'
 import { __DB__ } from '../main'
 
 export default {
   name: 'qc-rejection',
   components: {
-    trelloMarked
+    TrelloMarked
   },
   data () {
     return {
