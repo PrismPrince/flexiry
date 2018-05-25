@@ -27,7 +27,7 @@
 
               <md-table-row slot="md-table-row" slot-scope="{ item }" class="md-primary" md-selectable="single">
                 <md-table-cell md-label="Styled">
-                  <trello-marked :plain-text="item.plain"></trello-marked>
+                  <marked :plain-text="item.plain"></marked>
                 </md-table-cell>
                 <md-table-cell md-label="Formated">{{ item.plain }}</md-table-cell>
                 <md-table-cell md-label="Action">
@@ -150,13 +150,13 @@
 </template>
 
 <script>
-import TrelloMarked from '@/components/formatters/trello-marked'
-import { __DB__ } from '../main'
+import Marked from '@/components/helpers/Marked'
+import { __DB__ } from '../../main'
 
 export default {
   name: 'qc-rejection',
   components: {
-    TrelloMarked
+    Marked
   },
   data () {
     return {

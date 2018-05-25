@@ -5,11 +5,11 @@ import Firebase from 'firebase'
 import { __DB__ } from '../main'
 
 // components
-import NotFound from '@/components/Not-Found'
-import Login from '@/components/Login'
-import Home from '@/components/Home'
-import QCRejection from '@/components/QC-Rejection'
-import QCRejectionAdmin from '@/components/QC-Rejection-Admin'
+import NotFound from '@/components/pages/Not-Found'
+import Login from '@/components/pages/Login'
+import Home from '@/components/pages/Home'
+import QCRejection from '@/components/pages/QC-Rejection'
+import QCRejectionAdmin from '@/components/pages/QC-Rejection-Admin'
 
 Vue.use(Router)
 

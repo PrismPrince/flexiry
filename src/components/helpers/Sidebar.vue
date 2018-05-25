@@ -37,7 +37,7 @@
 
 <script>
 import Firebase from 'firebase'
-import __bus__ from '../bus'
+import __bus__ from '../../bus'
 
 export default {
   name: 'sidebar',

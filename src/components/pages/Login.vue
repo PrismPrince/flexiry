@@ -61,8 +61,8 @@
 
 <script>
 import Firebase from 'firebase'
-import __bus__ from '../bus'
-import { __DB__ } from '../main'
+import __bus__ from '../../bus'
+import { __DB__ } from '../../main'
 
 export default {
   data () {

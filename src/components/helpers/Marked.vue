@@ -1,13 +1,13 @@
 <template>
-  <span class="trello-marked" v-html="html"></span>
+  <span class="marked" v-html="html"></span>
 </template>
 
 <script>
 import marked from 'marked'
-import emoji from '@/components/mixins/emoji'
+import emoji from '@/mixins/emoji'
 
 export default {
-  name: 'Trello-Marked',
+  name: 'marked',
   mixins: [emoji],
   props: {
     plainText: [String]
