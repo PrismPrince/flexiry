@@ -240,15 +240,17 @@ export default {
       }
     },
     updateColorway () {
-      __DB__.collection('rejections').doc(this.custom.colorway.id).update({
-        name: this.custom.colorway.name,
+      let {id, name} = this.custom.colorway
+
+      __DB__.collection('rejections').doc(id).update({
+        name: name,
         updated_at: Firebase.firestore.FieldValue.serverTimestamp()
       })
     },
-    removeColorway (item) {
-      __DB__.collection('colorways').doc(item.id).delete()
+    removeColorway ({id, name}) {
+      __DB__.collection('colorways').doc(id).delete()
 
-      this.snackbar.msg = `Colorway "${item.name}" deleted.`
+      this.snackbar.msg = `Colorway "${name}" deleted.`
       this.snackbar.visible = true
     },
     addAccessory () {
@@ -292,16 +294,18 @@ export default {
       }
     },
     updateAccessory () {
-      __DB__.collection('rejections').doc(this.custom.accessory.id).update({
-        name: this.custom.accessory.name,
-        value: this.custom.accessory.value,
+      let {id, name, value} = this.custom.accessory
+
+      __DB__.collection('rejections').doc(id).update({
+        name: name,
+        value: value,
         updated_at: Firebase.firestore.FieldValue.serverTimestamp()
       })
     },
-    removeAccessory (item) {
-      __DB__.collection('accessories').doc(item.id).delete()
+    removeAccessory ({id, name}) {
+      __DB__.collection('accessories').doc(id).delete()
 
-      this.snackbar.msg = `Accessory "${item.name}" deleted.`
+      this.snackbar.msg = `Accessory "${name}" deleted.`
       this.snackbar.visible = true
     },
     addRejection () {
@@ -351,17 +355,19 @@ export default {
       }
     },
     updateRejection () {
-      __DB__.collection('rejections').doc(this.custom.rejection.id).update({
-        name: this.custom.rejection.name,
-        value: this.custom.rejection.value,
-        filters: this.custom.rejection.filters,
+      let {id, name, value, filters} = this.custom.rejection
+
+      __DB__.collection('rejections').doc(id).update({
+        name: name,
+        value: value,
+        filters: filters,
         updated_at: Firebase.firestore.FieldValue.serverTimestamp()
       })
     },
-    removeRejection (item) {
-      __DB__.collection('rejections').doc(item.id).delete()
+    removeRejection ({id, name}) {
+      __DB__.collection('rejections').doc(id).delete()
 
-      this.snackbar.msg = `Rejection "${item.name}" deleted.`
+      this.snackbar.msg = `Rejection "${name}" deleted.`
       this.snackbar.visible = true
     }
   }

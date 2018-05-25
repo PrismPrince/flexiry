@@ -275,14 +275,14 @@ export default {
   },
   methods: {
     addRejection () {
-      let active = this.active
+      let {prodkind, colorways, accessories, rejections} = this.active
 
       this.preview.rejects.push({
         id: this.preview.id_counter++,
-        prodkind: active.prodkind,
-        colorways: active.colorways,
-        accessories: active.accessories,
-        rejections: active.rejections
+        prodkind,
+        colorways,
+        accessories,
+        rejections
       })
 
       this._setActiveDefault()

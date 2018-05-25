@@ -203,7 +203,6 @@ export default {
       if (this.checkLoginStatus) {
         Firebase.auth().signInWithEmailAndPassword(this.login.email.value, this.login.password.value)
           .then(user => {
-            console.log(user)
             __DB__.collection('users').doc(user.uid).update({
               last_signin_at: user.metadata.lastSignInTime
             })
@@ -221,7 +220,6 @@ export default {
       if (this.checkRegisterStatus) {
         Firebase.auth().createUserWithEmailAndPassword(this.register.email.value, this.register.password.value)
           .then(user => {
-            console.log(user)
             __DB__.collection('users').doc(user.uid).set({
               display_name: user.displayName,
               email: user.email,
