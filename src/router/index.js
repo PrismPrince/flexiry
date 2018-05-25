@@ -40,10 +40,7 @@ let router = new Router({
     {
       path: '/qc-rejection',
       name: 'QCRejection',
-      component: QCRejection,
-      meta: {
-        guard: 'auth'
-      }
+      component: QCRejection
     },
     {
       path: '/qc-rejection/admin',
