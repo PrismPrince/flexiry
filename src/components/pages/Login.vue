@@ -65,6 +65,7 @@ import __bus__ from '../../bus'
 import { __DB__ } from '../../main'
 
 export default {
+  name: 'login',
   data () {
     return {
       login: {

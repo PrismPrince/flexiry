@@ -8,6 +8,12 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'not-found'
+}
+</script>
+
 <style>
   body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
 </style>
