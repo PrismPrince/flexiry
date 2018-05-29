@@ -27,7 +27,7 @@
 
               <md-table-row slot="md-table-row" slot-scope="{ item }" class="md-primary" md-selectable="single">
                 <md-table-cell md-label="Styled">
-                  <marked :plain-text="item.plain"></marked>
+                  <marked :plain-text="item.plain" :remove-tag-ends="true" :open-link-new-tab="true"></marked>
                 </md-table-cell>
                 <md-table-cell md-label="Formated">{{ item.plain }}</md-table-cell>
                 <md-table-cell md-label="Action">

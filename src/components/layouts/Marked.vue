@@ -1,5 +1,5 @@
 <template>
-  <span class="marked" v-html="html"></span>
+  <span class="marked" v-html="marked_text"></span>
 </template>
 
 <script>
@@ -10,17 +10,38 @@ export default {
   name: 'marked',
   mixins: [emoji],
   props: {
-    plainText: [String]
+    plainText: {
+      type: String,
+      required: true,
+      default: ''
+    },
+    removeTagEnds: {
+      type: Boolean,
+      default: false
+    },
+    openLinkNewTab: {
+      type: Boolean,
+      default: false
+    },
+    emoji: {
+      type: Boolean,
+      default: true
+    }
   },
   computed: {
-    html () {
-      return marked(this.plainText)
-        // remove <p>...</p> tags at the beginning and end
-        .trim().replace(/^<p>/, '').replace(/<\/p>$/, '')
-        // add target="_black" to all links
-        .replace(/<a\s+href/g, `<a target="_black" href`)
-        // search and replace valid emoji code
-        .split(/(:[\w+-]+:)/).map(str => str.replace(/^:([\w+-]+):$/, (match, p1) => this._emojiNormalize(p1))).join('')
+    marked_text () {
+      let markedText = marked(this.plainText)
+
+      // remove <p>...</p> tags at the beginning and end
+      if (this.removeTagEnds) markedText = markedText.trim().replace(/^<p>/, '').replace(/<\/p>$/, '')
+
+      // add target="_black" to all links
+      if (this.openLinkNewTab) markedText = markedText.replace(/<a\s+href/g, `<a target="_black" href`)
+
+      // search and replace valid emoji code
+      if (this.emoji) markedText = markedText.split(/(:[\w+-]+:)/).map(str => str.replace(/^:([\w+-]+):$/, (match, emoji) => this._emojiNormalize(emoji))).join('')
+
+      return markedText
     }
   }
 }
