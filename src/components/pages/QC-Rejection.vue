@@ -150,7 +150,7 @@
 </template>
 
 <script>
-import Marked from '@/components/helpers/Marked'
+import Marked from '@/components/layouts/Marked'
 import { __DB__ } from '../../main'
 
 export default {

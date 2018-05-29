@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import Sidebar from '@/components/helpers/Sidebar'
+import Sidebar from '@/components/layouts/Sidebar'
 
 export default {
   name: 'App',
