@@ -10,6 +10,10 @@ import Login from '@/components/pages/Login'
 import Home from '@/components/pages/Home'
 import QCRejection from '@/components/pages/QC-Rejection'
 import QCRejectionAdmin from '@/components/pages/QC-Rejection-Admin'
+import Tools from '@/components/pages/Tools'
+import ToolsAdmin from '@/components/pages/Tools/Admin'
+import Scripts from '@/components/pages/Tools/Scripts'
+import WebTools from '@/components/pages/Tools/Web-Tools'
 
 Vue.use(Router)
 
@@ -49,6 +53,54 @@ let router = new Router({
       meta: {
         guard: 'auth:admin'
       }
+    },
+    {
+      path: '/tools',
+      component: Tools,
+      children: [
+        {
+          path: '',
+          redirect: 'scripts'
+        },
+        {
+          path: 'admin',
+          name: 'ToolsAdmin',
+          component: ToolsAdmin,
+          meta: {
+            guard: 'auth:admin'
+          }
+        },
+        {
+          path: 'scripts',
+          name: 'Scripts',
+          component: Scripts
+        },
+        {
+          path: 'web',
+          component: WebTools,
+          children: [
+            {
+              path: '',
+              redirect: 'csl'
+            },
+            {
+              path: 'csl'
+            },
+            {
+              path: 'cu3'
+            },
+            {
+              path: 'mpd'
+            },
+            {
+              path: 'pdp'
+            },
+            {
+              path: 'trello'
+            }
+          ]
+        }
+      ]
     }
   ]
 })
