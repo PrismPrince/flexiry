@@ -46,7 +46,7 @@
 import Firebase from 'firebase'
 import { __DB__ } from '../../../main'
 
-import ToolCard from './layouts/tool-card'
+import ToolCard from '@/components/layouts/Tool-Card'
 
 export default {
   name: 'web-tools',
@@ -77,8 +77,7 @@ export default {
       pdp: __DB__.collection('web-tools').where('type', '==', 'pdp').orderBy('updated_at'),
       trello: __DB__.collection('web-tools').where('type', '==', 'trello').orderBy('updated_at')
     }
-  },
-  created () {}
+  }
 }
 </script>
 
