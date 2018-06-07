@@ -72,23 +72,31 @@ export default {
         status: true,
         hits: 0
       },
-      webTools: [],
-      csl: [],
-      cu3: [],
-      mpd: [],
-      pdp: [],
-      trello: []
+      webTools: []
     }
   },
   firestore () {
     return {
       user: __DB__.collection('users').doc(this.auth.uid),
-      webTools: __DB__.collection('web-tools').orderBy('updated_at'),
-      csl: __DB__.collection('web-tools').where('type', '==', 'csl').orderBy('updated_at'),
-      cu3: __DB__.collection('web-tools').where('type', '==', 'cu3').orderBy('updated_at'),
-      mpd: __DB__.collection('web-tools').where('type', '==', 'mpd').orderBy('updated_at'),
-      pdp: __DB__.collection('web-tools').where('type', '==', 'pdp').orderBy('updated_at'),
-      trello: __DB__.collection('web-tools').where('type', '==', 'trello').orderBy('updated_at')
+      webTools: __DB__.collection('web-tools').orderBy('updated_at')
+    }
+  },
+
+  computed: {
+    csl () {
+      return this.webTools.filter(webTool => webTool.type.csl === true)
+    },
+    cu3 () {
+      return this.webTools.filter(webTool => webTool.type.cu3 === true)
+    },
+    mpd () {
+      return this.webTools.filter(webTool => webTool.type.mpd === true)
+    },
+    pdp () {
+      return this.webTools.filter(webTool => webTool.type.pdp === true)
+    },
+    trello () {
+      return this.webTools.filter(webTool => webTool.type.trello === true)
     }
   }
 }

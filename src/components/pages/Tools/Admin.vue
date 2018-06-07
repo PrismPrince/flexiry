@@ -4,16 +4,16 @@
       <div class="md-layout-item">
         <md-table v-model="webTools" md-card md-fixed-header>
           <md-table-toolbar>
-            <div class="md-subheading">CSL</div>
+            <div class="md-subheading">Web Tools</div>
           </md-table-toolbar>
 
-          <md-table-empty-state md-icon="playlist_add" md-label="Add CSL Tools" md-description="Your CSL tools will appear here."></md-table-empty-state>
+          <md-table-empty-state md-icon="playlist_add" md-label="Add Web Tools" md-description="Your web tools will appear here."></md-table-empty-state>
 
           <md-table-row slot="md-table-row" slot-scope="{ item }" class="md-primary">
             <md-table-cell md-label="Title">{{ item.title }}</md-table-cell>
             <md-table-cell md-label="Version">{{ item.version | versionize }}</md-table-cell>
-            <md-table-cell md-label="Description">{{ item.description | str_limit(50, '...') }}</md-table-cell>
-            <md-table-cell md-label="Type">{{ item.type.toUpperCase() }}</md-table-cell>
+            <md-table-cell md-label="Description">{{ item.description | str_limit(80, '...') }}</md-table-cell>
+            <md-table-cell md-label="Type">{{ Object.keys(item.type).filter(key => item.type[key]).join(' | ').toUpperCase() }}</md-table-cell>
             <md-table-cell md-label="Action">
               <md-button class="md-icon-button md-dense md-raised md-primary" @click.stop="">
                 <md-icon>create</md-icon>
@@ -78,7 +78,7 @@
 
             <md-field>
               <label>Type</label>
-              <md-select v-model="webTool.type">
+              <md-select v-model="webTool.type" multiple>
                 <md-option value="csl">CSL</md-option>
                 <md-option value="cu3">CU3</md-option>
                 <md-option value="mpd">MPD</md-option>
@@ -116,7 +116,7 @@ export default {
         },
         description: '',
         code: '',
-        type: '',
+        type: [],
         error: {
           status: false,
           message: ''
@@ -134,27 +134,41 @@ export default {
     addWebTool () {
       let versionObj = this.webTool.version
       let version = [0, 0, 0]
-      if (versionObj.type === 'pre') version = [0, 0, 0, versionObj.pre.trim()]
-      else if (versionObj.type === 'patch') version = [0, 0, 1]
-      else if (versionObj.type === 'minor') version = [0, 1, 0]
-      else if (versionObj.type === 'major') version = [1, 0, 0]
+
+      switch (versionObj.type) {
+        case 'pre':
+          version = [0, 0, 0, versionObj.pre.trim()]
+          break
+        case 'patch':
+          version = [0, 0, 1]
+          break
+        case 'minor':
+          version = [0, 1, 0]
+          break
+        case 'major':
+          version = [1, 0, 0]
+      }
 
       __DB__.collection('web-tools').add({
         title: this.webTool.title.trim(),
         version: version,
         description: this.webTool.description.trim(),
         code: this.webTool.code.trim(),
-        type: this.webTool.type,
+        type: {
+          csl: this.webTool.type.indexOf('csl') !== -1,
+          cu3: this.webTool.type.indexOf('cu3') !== -1,
+          mpd: this.webTool.type.indexOf('mpd') !== -1,
+          pdp: this.webTool.type.indexOf('pdp') !== -1,
+          trello: this.webTool.type.indexOf('trello') !== -1
+        },
         created_at: Firebase.firestore.FieldValue.serverTimestamp(),
         updated_at: Firebase.firestore.FieldValue.serverTimestamp()
       }).then(webTool => {
-        console.log(webTool)
         __DB__.collection('web-tools').doc(webTool.id).collection('history').add({
           version: version,
           code: this.webTool.code.trim(),
           created_at: Firebase.firestore.FieldValue.serverTimestamp()
         }).then(() => {
-          console.log('ok')
           this.webTool = {
             title: '',
             version: {
@@ -163,7 +177,7 @@ export default {
             },
             description: '',
             code: '',
-            type: '',
+            type: [],
             error: {
               status: false,
               message: ''
@@ -178,7 +192,7 @@ export default {
       return `v${major}.${minor}.${patch}${pre}`
     },
     str_limit (str, limit, tail) {
-      return str.length > limit ? str.substr(0, limit) + tail : str
+      return str.length > limit ? str.substr(0, limit - 1) + tail : str
     }
   }
 }
