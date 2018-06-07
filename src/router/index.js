@@ -80,8 +80,7 @@ let router = new Router({
           component: WebTools,
           children: [
             {
-              path: '',
-              redirect: 'csl'
+              path: ''
             },
             {
               path: 'csl'

@@ -13,29 +13,40 @@
       </div>
     </div>
     <md-tabs class="md-elevation-3 md-primary" md-sync-route md-dynamic-height>
-      <md-tab id="tab-csl" md-label="CSL" to="/tools/web/csl">
+      <template slot="md-tab" slot-scope="{ tab }">
+        <md-badge :md-content="tab.data.count" md-dense>
+          {{ tab.label }}
+        </md-badge>
+      </template>
+
+      <md-tab id="tab-all" md-label="All Web Tools" to="/tools/web" :md-template-data="{ count: webTools.length }">
         <div class="md-layout md-alignment-top-center">
-          <tool-card :title="webtool.title" :version="webtool.version" :code="webtool.code" :description="webtool.description" :key="webtool.id" v-for="webtool in csl"></tool-card>
+          <tool-card :title="webTool.title" :version="webTool.version" :code="webTool.code" :description="webTool.description" :key="webTool.id" v-for="webTool in webTools"></tool-card>
         </div>
       </md-tab>
-      <md-tab id="tab-cu3" md-label="CU3" to="/tools/web/cu3">
+      <md-tab id="tab-csl" md-label="CSL" to="/tools/web/csl" :md-template-data="{ count: csl.length }">
         <div class="md-layout md-alignment-top-center">
-          <tool-card :title="webtool.title" :version="webtool.version" :code="webtool.code" :description="webtool.description" :key="webtool.id" v-for="webtool in cu3"></tool-card>
+          <tool-card :title="webTool.title" :version="webTool.version" :code="webTool.code" :description="webTool.description" :key="webTool.id" v-for="webTool in csl"></tool-card>
         </div>
       </md-tab>
-      <md-tab id="tab-mpd" md-label="MPD" to="/tools/web/mpd">
+      <md-tab id="tab-cu3" md-label="CU3" to="/tools/web/cu3" :md-template-data="{ count: cu3.length }">
         <div class="md-layout md-alignment-top-center">
-          <tool-card :title="webtool.title" :version="webtool.version" :code="webtool.code" :description="webtool.description" :key="webtool.id" v-for="webtool in mpd"></tool-card>
+          <tool-card :title="webTool.title" :version="webTool.version" :code="webTool.code" :description="webTool.description" :key="webTool.id" v-for="webTool in cu3"></tool-card>
         </div>
       </md-tab>
-      <md-tab id="tab-pdp" md-label="PDP" to="/tools/web/pdp">
+      <md-tab id="tab-mpd" md-label="MPD" to="/tools/web/mpd" :md-template-data="{ count: mpd.length }">
         <div class="md-layout md-alignment-top-center">
-          <tool-card :title="webtool.title" :version="webtool.version" :code="webtool.code" :description="webtool.description" :key="webtool.id" v-for="webtool in pdp"></tool-card>
+          <tool-card :title="webTool.title" :version="webTool.version" :code="webTool.code" :description="webTool.description" :key="webTool.id" v-for="webTool in mpd"></tool-card>
         </div>
       </md-tab>
-      <md-tab id="tab-trello" md-label="Trello" to="/tools/web/trello">
+      <md-tab id="tab-pdp" md-label="PDP" to="/tools/web/pdp" :md-template-data="{ count: pdp.length }">
         <div class="md-layout md-alignment-top-center">
-          <tool-card :title="webtool.title" :version="webtool.version" :code="webtool.code" :description="webtool.description" :key="webtool.id" v-for="webtool in trello"></tool-card>
+          <tool-card :title="webTool.title" :version="webTool.version" :code="webTool.code" :description="webTool.description" :key="webTool.id" v-for="webTool in pdp"></tool-card>
+        </div>
+      </md-tab>
+      <md-tab id="tab-trello" md-label="Trello" to="/tools/web/trello" :md-template-data="{ count: trello.length }">
+        <div class="md-layout md-alignment-top-center">
+          <tool-card :title="webTool.title" :version="webTool.version" :code="webTool.code" :description="webTool.description" :key="webTool.id" v-for="webTool in trello"></tool-card>
         </div>
       </md-tab>
     </md-tabs>
@@ -61,6 +72,7 @@ export default {
         status: true,
         hits: 0
       },
+      webTools: [],
       csl: [],
       cu3: [],
       mpd: [],
@@ -71,6 +83,7 @@ export default {
   firestore () {
     return {
       user: __DB__.collection('users').doc(this.auth.uid),
+      webTools: __DB__.collection('web-tools').orderBy('updated_at'),
       csl: __DB__.collection('web-tools').where('type', '==', 'csl').orderBy('updated_at'),
       cu3: __DB__.collection('web-tools').where('type', '==', 'cu3').orderBy('updated_at'),
       mpd: __DB__.collection('web-tools').where('type', '==', 'mpd').orderBy('updated_at'),
@@ -82,11 +95,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  [v-cloak] {
-    display: none;
-  }
-
   .note {
     margin: 0 0 16px 0;
+  }
+
+  .md-badge-content /deep/ .md-badge {
+    position: absolute;
+    top: -10px;
+    right: -18px;
   }
 </style>
