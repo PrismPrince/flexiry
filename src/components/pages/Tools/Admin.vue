@@ -2,7 +2,7 @@
   <div class="web-tools-admin">
     <div class="md-layout">
       <div class="md-layout-item">
-        <md-table v-model="webtools" md-card md-fixed-header>
+        <md-table v-model="webTools" md-card md-fixed-header>
           <md-table-toolbar>
             <div class="md-subheading">CSL</div>
           </md-table-toolbar>
@@ -33,52 +33,52 @@
       <div class="md-layout-item">
         <md-card>
           <md-card-header>
-            <div class="md-title">Add Web Tool</div>
+            <div class="md-title">{{ 'Add Web Tool' }}</div>
           </md-card-header>
 
           <md-card-content>
             <md-field md-clearable>
               <label>Title</label>
-              <md-input v-model="webtool.title"></md-input>
+              <md-input v-model="webTool.title"></md-input>
             </md-field>
 
             <md-field md-clearable>
               <label>Description</label>
-              <md-textarea v-model="webtool.description" md-autogrow></md-textarea>
+              <md-textarea v-model="webTool.description" md-autogrow></md-textarea>
             </md-field>
 
             <md-field md-clearable>
               <label>Code</label>
-              <md-textarea v-model="webtool.code"></md-textarea>
+              <md-textarea v-model="webTool.code"></md-textarea>
             </md-field>
 
             <span class="md-subheading">Version</span>
 
             <div class="md-layout">
               <div class="md-layout-item md-small-size-33 md-xsmall-size-50">
-                <md-radio v-model="webtool.version.type" value="major">Major</md-radio>
+                <md-radio v-model="webTool.version.type" value="major">Major</md-radio>
               </div>
               <div class="md-layout-item md-small-size-33 md-xsmall-size-50">
-                <md-radio v-model="webtool.version.type" value="minor">Minor</md-radio>
+                <md-radio v-model="webTool.version.type" value="minor">Minor</md-radio>
               </div>
               <div class="md-layout-item md-small-size-33 md-xsmall-size-50">
-                <md-radio v-model="webtool.version.type" value="patch">Patch</md-radio>
+                <md-radio v-model="webTool.version.type" value="patch">Patch</md-radio>
               </div>
               <div class="md-layout-item md-small-size-50 md-xsmall-size-50">
-                <md-radio v-model="webtool.version.type" value="pre">Pre-release</md-radio>
+                <md-radio v-model="webTool.version.type" value="pre">Pre-release</md-radio>
               </div>
 
               <div class="md-layout-item md-small-size-50 md-xsmall-size-100">
-                <md-field v-if="webtool.version.type === 'pre'" md-clearable>
+                <md-field v-if="webTool.version.type === 'pre'" md-clearable>
                   <label>Enter pre-release version</label>
-                  <md-input v-model="webtool.version.pre"></md-input>
+                  <md-input v-model="webTool.version.pre"></md-input>
                 </md-field>
               </div>
             </div>
 
             <md-field>
               <label>Type</label>
-              <md-select v-model="webtool.type">
+              <md-select v-model="webTool.type">
                 <md-option value="csl">CSL</md-option>
                 <md-option value="cu3">CU3</md-option>
                 <md-option value="mpd">MPD</md-option>
@@ -86,7 +86,6 @@
                 <md-option value="trello">Trello</md-option>
               </md-select>
             </md-field>
-
           </md-card-content>
 
           <md-card-actions>
@@ -101,18 +100,15 @@
 <script>
 import Firebase from 'firebase'
 import { __DB__ } from '../../../main'
-// import Marked from '@/components/layouts/Marked'
 
 export default {
   name: 'web-tools-admin',
-  components: {
-    // Marked
-  },
   data () {
     return {
       auth: Firebase.auth().currentUser,
-      webtools: [],
-      webtool: {
+      webTools: [],
+      webTool: {
+        id: null,
         title: '',
         version: {
           type: null,
@@ -131,12 +127,12 @@ export default {
   firestore () {
     return {
       user: __DB__.collection('users').doc(this.auth.uid),
-      webtools: __DB__.collection('web-tools').orderBy('updated_at')
+      webTools: __DB__.collection('web-tools').orderBy('updated_at')
     }
   },
   methods: {
     addWebTool () {
-      let versionObj = this.webtool.version
+      let versionObj = this.webTool.version
       let version = [0, 0, 0]
       if (versionObj.type === 'pre') version = [0, 0, 0, versionObj.pre.trim()]
       else if (versionObj.type === 'patch') version = [0, 0, 1]
@@ -144,29 +140,37 @@ export default {
       else if (versionObj.type === 'major') version = [1, 0, 0]
 
       __DB__.collection('web-tools').add({
-        title: this.webtool.title,
+        title: this.webTool.title.trim(),
         version: version,
-        description: this.webtool.description,
-        code: this.webtool.code,
-        type: this.webtool.type,
+        description: this.webTool.description.trim(),
+        code: this.webTool.code.trim(),
+        type: this.webTool.type,
         created_at: Firebase.firestore.FieldValue.serverTimestamp(),
         updated_at: Firebase.firestore.FieldValue.serverTimestamp()
+      }).then(webTool => {
+        console.log(webTool)
+        __DB__.collection('web-tools').doc(webTool.id).collection('history').add({
+          version: version,
+          code: this.webTool.code.trim(),
+          created_at: Firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+          console.log('ok')
+          this.webTool = {
+            title: '',
+            version: {
+              type: null,
+              pre: ''
+            },
+            description: '',
+            code: '',
+            type: '',
+            error: {
+              status: false,
+              message: ''
+            }
+          }
+        }).catch(e => { console.log(e) })
       })
-
-      this.webtool = {
-        title: '',
-        version: {
-          type: null,
-          pre: ''
-        },
-        description: '',
-        code: '',
-        type: '',
-        error: {
-          status: false,
-          message: ''
-        }
-      }
     }
   },
   filters: {
