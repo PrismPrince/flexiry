@@ -21,32 +21,38 @@
 
       <md-tab id="tab-all" md-label="All Web Tools" to="/tools/web" :md-template-data="{ count: webTools.length }">
         <div class="md-layout md-alignment-top-center">
-          <tool-card :title="webTool.title" :version="webTool.version" :code="webTool.code" :description="webTool.description" :key="webTool.id" v-for="webTool in webTools"></tool-card>
+          <md-empty-state v-if="!webTools.length" md-icon="whatshot" md-label="Nothing in Web Tools" md-description="No Web Tools are available for all categories."></md-empty-state>
+          <tool-card v-else v-for="webTool in webTools" :key="webTool.id" :title="webTool.title" :version="webTool.version" :code="webTool.code" :description="webTool.description"></tool-card>
         </div>
       </md-tab>
       <md-tab id="tab-csl" md-label="CSL" to="/tools/web/csl" :md-template-data="{ count: csl.length }">
         <div class="md-layout md-alignment-top-center">
-          <tool-card :title="webTool.title" :version="webTool.version" :code="webTool.code" :description="webTool.description" :key="webTool.id" v-for="webTool in csl"></tool-card>
+          <md-empty-state v-if="!csl.length" md-icon="whatshot" md-label="Nothing in CSL Web Tools" md-description="No Web Tools are available for CSL."></md-empty-state>
+          <tool-card v-else v-for="webTool in csl" :key="webTool.id" :title="webTool.title" :version="webTool.version" :code="webTool.code" :description="webTool.description"></tool-card>
         </div>
       </md-tab>
       <md-tab id="tab-cu3" md-label="CU3" to="/tools/web/cu3" :md-template-data="{ count: cu3.length }">
         <div class="md-layout md-alignment-top-center">
-          <tool-card :title="webTool.title" :version="webTool.version" :code="webTool.code" :description="webTool.description" :key="webTool.id" v-for="webTool in cu3"></tool-card>
+          <md-empty-state v-if="!cu3.length" md-icon="whatshot" md-label="Nothing in CU3 Web Tools" md-description="No Web Tools are available for CU3."></md-empty-state>
+          <tool-card v-else v-for="webTool in cu3" :key="webTool.id" :title="webTool.title" :version="webTool.version" :code="webTool.code" :description="webTool.description"></tool-card>
         </div>
       </md-tab>
       <md-tab id="tab-mpd" md-label="MPD" to="/tools/web/mpd" :md-template-data="{ count: mpd.length }">
         <div class="md-layout md-alignment-top-center">
-          <tool-card :title="webTool.title" :version="webTool.version" :code="webTool.code" :description="webTool.description" :key="webTool.id" v-for="webTool in mpd"></tool-card>
+          <md-empty-state v-if="!mpd.length" md-icon="whatshot" md-label="Nothing in MPD Web Tools" md-description="No Web Tools are available for MPD."></md-empty-state>
+          <tool-card v-else v-for="webTool in mpd" :key="webTool.id" :title="webTool.title" :version="webTool.version" :code="webTool.code" :description="webTool.description"></tool-card>
         </div>
       </md-tab>
       <md-tab id="tab-pdp" md-label="PDP" to="/tools/web/pdp" :md-template-data="{ count: pdp.length }">
         <div class="md-layout md-alignment-top-center">
-          <tool-card :title="webTool.title" :version="webTool.version" :code="webTool.code" :description="webTool.description" :key="webTool.id" v-for="webTool in pdp"></tool-card>
+          <md-empty-state v-if="!pdp.length" md-icon="whatshot" md-label="Nothing in PDP Web Tools" md-description="No Web Tools are available for PDP."></md-empty-state>
+          <tool-card v-else v-for="webTool in pdp" :key="webTool.id" :title="webTool.title" :version="webTool.version" :code="webTool.code" :description="webTool.description"></tool-card>
         </div>
       </md-tab>
       <md-tab id="tab-trello" md-label="Trello" to="/tools/web/trello" :md-template-data="{ count: trello.length }">
         <div class="md-layout md-alignment-top-center">
-          <tool-card :title="webTool.title" :version="webTool.version" :code="webTool.code" :description="webTool.description" :key="webTool.id" v-for="webTool in trello"></tool-card>
+          <md-empty-state v-if="!trello.length" md-icon="whatshot" md-label="Nothing in Trello Web Tools" md-description="No Web Tools are available for Trello."></md-empty-state>
+          <tool-card v-else v-for="webTool in trello" :key="webTool.id" :title="webTool.title" :version="webTool.version" :code="webTool.code" :description="webTool.description"></tool-card>
         </div>
       </md-tab>
     </md-tabs>
