@@ -61,6 +61,10 @@ export default {
   mounted () {
     __bus__.$on('authUser', user => {
       this.auth = user
+
+      __DB__.collection('users').doc(this.auth.uid).get().then(user => {
+        this.user = user.data()
+      }).catch(e => { console.log(e) })
     })
   },
   methods: {
