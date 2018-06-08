@@ -60,7 +60,6 @@
 </template>
 
 <script>
-import Firebase from 'firebase'
 import { __DB__ } from '../../../main'
 
 import ToolCard from '@/components/layouts/Tool-Card'
@@ -72,8 +71,6 @@ export default {
   },
   data () {
     return {
-      auth: Firebase.auth().currentUser,
-      user: {},
       hint: {
         status: true,
         hits: 0
@@ -83,7 +80,6 @@ export default {
   },
   firestore () {
     return {
-      user: __DB__.collection('users').doc(this.auth.uid),
       webTools: __DB__.collection('web-tools').orderBy('updated_at')
     }
   },

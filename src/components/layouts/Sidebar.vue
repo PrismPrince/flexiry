@@ -45,7 +45,9 @@ export default {
   name: 'sidebar',
   data () {
     return {
-      auth: Firebase.auth().currentUser,
+      auth: Firebase.auth().currentUser || {
+        uid: 'xxx'
+      },
       user: {
         role: 'user'
       }
