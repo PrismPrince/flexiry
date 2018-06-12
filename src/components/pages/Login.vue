@@ -3,17 +3,7 @@
 
     <div class="md-layout md-gutter md-alignment-top-center">
       <div class="md-layout-item md-size-70">
-        <md-card class="md-accent note" v-if="error.status">
-          <md-card-header>
-            <md-card-header-text>
-              <div class="md-title"><md-icon>error</md-icon> Error!</div>
-            </md-card-header-text>
-            <md-button class="md-icon-button btn-close" @click="error.status = false">
-              <md-icon>close</md-icon>
-            </md-button>
-          </md-card-header>
-          <md-card-content>{{ error.message }}</md-card-content>
-        </md-card>
+        <note-card v-if="error.status" :message="error.message" @close="error.status = false"></note-card>
 
         <md-tabs class="md-elevation-5" md-alignment="centered" md-active-tab="tab-login" :md-dynamic-height="true">
           <md-tab id="tab-register" md-label="Register">
@@ -63,9 +53,13 @@
 import Firebase from 'firebase'
 import __bus__ from '../../bus'
 import { __DB__ } from '../../main'
+import NoteCard from '@/components/layouts/Note-Card'
 
 export default {
   name: 'login',
+  components: {
+    NoteCard
+  },
   data () {
     return {
       login: {
@@ -244,13 +238,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  .note {
-    margin: 0 0 20px 0;
-
-    .md-icon {
-      color: #fff;
-    }
-  }
-</style>
