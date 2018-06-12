@@ -15,11 +15,11 @@
             <md-table-cell md-label="Description">{{ item.description | str_limit(80, '...') }}</md-table-cell>
             <md-table-cell md-label="Type">{{ Object.keys(item.type).filter(key => item.type[key]).join(' | ').toUpperCase() }}</md-table-cell>
             <md-table-cell md-label="Action">
-              <md-button class="md-icon-button md-dense md-raised md-primary" @click.stop="">
+              <md-button class="md-icon-button md-dense md-raised md-primary" @click="editWebTool(item)">
                 <md-icon>create</md-icon>
                 <md-tooltip md-delay="300">Edit</md-tooltip>
               </md-button>
-              <md-button class="md-icon-button md-dense md-raised md-accent" @click.stop="">
+              <md-button class="md-icon-button md-dense md-raised md-accent" @click="removeWebTool(item)">
                 <md-icon>close</md-icon>
                 <md-tooltip md-delay="300">Remove</md-tooltip>
               </md-button>
@@ -33,7 +33,7 @@
       <div class="md-layout-item">
         <md-card>
           <md-card-header>
-            <div class="md-title">{{ 'Add Web Tool' }}</div>
+            <div class="md-title">{{ webTool.id === null ? 'Add Web Tool' : 'Edit Web Tool' }}</div>
           </md-card-header>
 
           <md-card-content>
@@ -52,27 +52,37 @@
               <md-textarea v-model="webTool.code"></md-textarea>
             </md-field>
 
-            <span class="md-subheading">Version</span>
+            <div v-if="checkEditCode">
+              <span class="md-subheading">
+                Version
+                <md-badge class="md-square" :md-content="$options.filters.versionize(webTool.version.current)"></md-badge>
+                <span v-if="newVersion !== null">
+                  <span style="display: inline-block; padding-left: 4px;"></span>
+                  <md-icon>arrow_forward</md-icon>
+                  <md-badge class="md-square md-primary" :md-content="$options.filters.versionize(newVersion)"></md-badge>
+                </span>
+              </span>
 
-            <div class="md-layout">
-              <div class="md-layout-item md-small-size-33 md-xsmall-size-50">
-                <md-radio v-model="webTool.version.type" value="major">Major</md-radio>
-              </div>
-              <div class="md-layout-item md-small-size-33 md-xsmall-size-50">
-                <md-radio v-model="webTool.version.type" value="minor">Minor</md-radio>
-              </div>
-              <div class="md-layout-item md-small-size-33 md-xsmall-size-50">
-                <md-radio v-model="webTool.version.type" value="patch">Patch</md-radio>
-              </div>
-              <div class="md-layout-item md-small-size-50 md-xsmall-size-50">
-                <md-radio v-model="webTool.version.type" value="pre">Pre-release</md-radio>
-              </div>
+              <div class="md-layout">
+                <div class="md-layout-item md-small-size-33 md-xsmall-size-50">
+                  <md-radio v-model="webTool.version.type" value="major">Major</md-radio>
+                </div>
+                <div class="md-layout-item md-small-size-33 md-xsmall-size-50">
+                  <md-radio v-model="webTool.version.type" value="minor">Minor</md-radio>
+                </div>
+                <div class="md-layout-item md-small-size-33 md-xsmall-size-50">
+                  <md-radio v-model="webTool.version.type" value="patch">Patch</md-radio>
+                </div>
+                <div class="md-layout-item md-small-size-50 md-xsmall-size-50">
+                  <md-radio v-model="webTool.version.type" value="pre">Pre-release</md-radio>
+                </div>
 
-              <div class="md-layout-item md-small-size-50 md-xsmall-size-100">
-                <md-field v-if="webTool.version.type === 'pre'" md-clearable>
-                  <label>Enter pre-release version</label>
-                  <md-input v-model="webTool.version.pre"></md-input>
-                </md-field>
+                <div class="md-layout-item md-small-size-50 md-xsmall-size-100">
+                  <md-field v-if="webTool.version.type === 'pre'" md-clearable>
+                    <label>Enter pre-release version</label>
+                    <md-input v-model="webTool.version.pre"></md-input>
+                  </md-field>
+                </div>
               </div>
             </div>
 
@@ -89,11 +99,17 @@
           </md-card-content>
 
           <md-card-actions>
-            <md-button  class="md-dense md-raised md-primary" @click="addWebTool" :disabled="false">Add</md-button>
+            <md-button class="md-dense md-raised" @click="_clearWebTool" :disabled="false">Clear</md-button>
+            <md-button v-if="webTool.id === null" class="md-dense md-raised md-primary" @click="addWebTool" :disabled="false">Add</md-button>
+            <md-button v-else class="md-dense md-raised md-primary" @click="updateWebTool" :disabled="false">Update</md-button>
           </md-card-actions>
         </md-card>
       </div>
     </div>
+
+    <md-snackbar md-position="center" :md-duration="snackbar.duration" :md-active.sync="snackbar.visible">
+      <span>{{ snackbar.msg }}</span>
+    </md-snackbar>
   </div>
 </template>
 
@@ -106,12 +122,143 @@ export default {
   data () {
     return {
       auth: Firebase.auth().currentUser,
+      editCodeRef: '',
       webTools: [],
       webTool: {
         id: null,
         title: '',
         version: {
-          type: null,
+          current: [0, 0, 0],
+          type: '',
+          pre: ''
+        },
+        description: '',
+        code: '',
+        type: [],
+        error: {
+          status: false,
+          message: ''
+        }
+      },
+      snackbar: {
+        duration: 1500,
+        visible: false,
+        msg: ''
+      }
+    }
+  },
+  firestore () {
+    return {
+      user: __DB__.collection('users').doc(this.auth.uid),
+      webTools: __DB__.collection('web-tools').orderBy('updated_at')
+    }
+  },
+  computed: {
+    newVersion () {
+      let [major, minor, patch] = this.webTool.version.current
+
+      switch (this.webTool.version.type) {
+        case 'pre': return [major, minor, patch, this.webTool.version.pre.trim()]
+        case 'patch': return [major, minor, patch + 1]
+        case 'minor': return [major, minor + 1, 0]
+        case 'major': return [major + 1, 0, 0]
+        default: return null
+      }
+    },
+    checkEditCode () {
+      return this._trimEOL(this.editCodeRef) !== this._trimEOL(this.webTool.code)
+    }
+  },
+  methods: {
+    addWebTool () {
+      let type = {
+        csl: this.webTool.type.indexOf('csl') !== -1,
+        cu3: this.webTool.type.indexOf('cu3') !== -1,
+        mpd: this.webTool.type.indexOf('mpd') !== -1,
+        pdp: this.webTool.type.indexOf('pdp') !== -1,
+        trello: this.webTool.type.indexOf('trello') !== -1
+      }
+
+      __DB__.collection('web-tools').add({
+        title: this.webTool.title.trim(),
+        version: this.newVersion,
+        description: this.webTool.description.trim(),
+        code: this._trimEOL(this.webTool.code),
+        type: type,
+        created_at: Firebase.firestore.FieldValue.serverTimestamp(),
+        updated_at: Firebase.firestore.FieldValue.serverTimestamp()
+      }).then(webTool => {
+        __DB__.collection('web-tools').doc(webTool.id).collection('history').add({
+          version: this.newVersion,
+          code: this._trimEOL(this.webTool.code),
+          created_at: Firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+          this.snackbar.msg = `Web tool "${this.webTool.title.trim()}" added.`
+          this.snackbar.visible = true
+
+          this._clearWebTool()
+        }).catch(e => { console.log(e) })
+      }).catch(e => { console.log(e) })
+    },
+    editWebTool (webTool) {
+      let {id, title, version, description, code, type} = webTool
+
+      this.webTool.id = id
+      this.webTool.title = title
+      this.webTool.version.current = version
+      this.webTool.description = description
+      this.webTool.code = this.editCodeRef = code
+      this.webTool.type = Object.keys(type).filter(key => type[key])
+    },
+    updateWebTool () {
+      let {id, title, description, code} = this.webTool
+      let type = {
+        csl: this.webTool.type.indexOf('csl') !== -1,
+        cu3: this.webTool.type.indexOf('cu3') !== -1,
+        mpd: this.webTool.type.indexOf('mpd') !== -1,
+        pdp: this.webTool.type.indexOf('pdp') !== -1,
+        trello: this.webTool.type.indexOf('trello') !== -1
+      }
+
+      if (this.checkEditCode) {
+        __DB__.collection('web-tools').doc(id).update({
+          title: title.trim(),
+          version: this.newVersion,
+          description: description.trim(),
+          code: this._trimEOL(code),
+          type: type,
+          updated_at: Firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+          __DB__.collection('web-tools').doc(id).collection('history').add({
+            version: this.newVersion,
+            code: this._trimEOL(code),
+            created_at: Firebase.firestore.FieldValue.serverTimestamp()
+          }).then(() => { this._clearWebTool() }).catch(e => { console.log(e) })
+        }).catch(e => { console.log(e) })
+      } else {
+        __DB__.collection('web-tools').doc(id).update({
+          title: title.trim(),
+          description: description.trim(),
+          type: type,
+          updated_at: Firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => { this._clearWebTool() }).catch(e => { console.log(e) })
+      }
+    },
+    removeWebTool ({id, title}) {
+      __DB__.collection('web-tools').doc(id).delete().then(() => {
+        this._deleteHistory(id)
+        this.snackbar.msg = `Web tool "${title}" deleted.`
+        this.snackbar.visible = true
+      })
+    },
+    _clearWebTool () {
+      this.editCodeRef = ''
+      this.webTool = {
+        id: null,
+        title: '',
+        version: {
+          current: [0, 0, 0],
+          type: '',
           pre: ''
         },
         description: '',
@@ -122,68 +269,32 @@ export default {
           message: ''
         }
       }
-    }
-  },
-  firestore () {
-    return {
-      user: __DB__.collection('users').doc(this.auth.uid),
-      webTools: __DB__.collection('web-tools').orderBy('updated_at')
-    }
-  },
-  methods: {
-    addWebTool () {
-      let versionObj = this.webTool.version
-      let version = [0, 0, 0]
+    },
+    _trimEOL (str) {
+      return str.trim().replace(/[ \t]+$/gm, '')
+    },
+    _deleteHistory (id) {
+      /* global resolve */
 
-      switch (versionObj.type) {
-        case 'pre':
-          version = [0, 0, 0, versionObj.pre.trim()]
-          break
-        case 'patch':
-          version = [0, 0, 1]
-          break
-        case 'minor':
-          version = [0, 1, 0]
-          break
-        case 'major':
-          version = [1, 0, 0]
-      }
+      let batch = __DB__.batch()
 
-      __DB__.collection('web-tools').add({
-        title: this.webTool.title.trim(),
-        version: version,
-        description: this.webTool.description.trim(),
-        code: this.webTool.code.trim(),
-        type: {
-          csl: this.webTool.type.indexOf('csl') !== -1,
-          cu3: this.webTool.type.indexOf('cu3') !== -1,
-          mpd: this.webTool.type.indexOf('mpd') !== -1,
-          pdp: this.webTool.type.indexOf('pdp') !== -1,
-          trello: this.webTool.type.indexOf('trello') !== -1
-        },
-        created_at: Firebase.firestore.FieldValue.serverTimestamp(),
-        updated_at: Firebase.firestore.FieldValue.serverTimestamp()
-      }).then(webTool => {
-        __DB__.collection('web-tools').doc(webTool.id).collection('history').add({
-          version: version,
-          code: this.webTool.code.trim(),
-          created_at: Firebase.firestore.FieldValue.serverTimestamp()
-        }).then(() => {
-          this.webTool = {
-            title: '',
-            version: {
-              type: null,
-              pre: ''
-            },
-            description: '',
-            code: '',
-            type: [],
-            error: {
-              status: false,
-              message: ''
-            }
-          }
-        }).catch(e => { console.log(e) })
+      __DB__.collection('web-tools').doc(id).collection('history').limit(15).get().then(versions => {
+        if (versions.size === 0) return
+
+        versions.docs.forEach(version => {
+          batch.delete(version.ref)
+        })
+
+        return batch.commit().then(() => versions.size)
+      }).then(size => {
+        if (size === 0) {
+          resolve()
+          return
+        }
+
+        process.nextTick(() => {
+          this._deleteHistory(id)
+        })
       })
     }
   },
@@ -201,5 +312,10 @@ export default {
 <style lang="scss" scoped>
   .md-table {
     margin-bottom: 16px;
+  }
+
+  .md-badge {
+    position: relative;
+    display: inline-flex;
   }
 </style>
