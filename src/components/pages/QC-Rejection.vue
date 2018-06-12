@@ -11,7 +11,7 @@
                 </div>
 
                 <div class="md-toolbar-section-end">
-                  <textarea id="reject-all" :value="parse_generated_preview"></textarea>
+                  <textarea id="reject-all" :value="parse_generated_preview" readonly></textarea>
                   <md-button v-if="preview.rejects.length" class="md-icon-button md-dense md-raised" @click="copyAllRejections">
                     <md-icon>content_copy</md-icon>
                     <md-tooltip md-delay="300">Copy All Rejections</md-tooltip>
@@ -31,7 +31,7 @@
                 </md-table-cell>
                 <md-table-cell md-label="Formated">{{ item.plain }}</md-table-cell>
                 <md-table-cell md-label="Action">
-                  <input :id="'reject-' + item.raw.id" type="text" :value="item.plain">
+                  <input :id="'reject-' + item.raw.id" type="text" :value="item.plain" readonly>
                   <md-button class="md-icon-button md-dense md-raised" @click.stop="copyRejections('reject-' + item.raw.id)">
                     <md-icon>content_copy</md-icon>
                     <md-tooltip md-delay="300">Copy</md-tooltip>
