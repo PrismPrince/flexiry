@@ -15,10 +15,17 @@
         <span class="md-list-item-text">Home</span>
       </md-list-item>
 
-      <md-list-item to="/qc-rejection">
-        <md-icon>list</md-icon>
-        <span class="md-list-item-text">QC Rejection</span>
+      <md-list-item v-if="auth && user.role === 'admin'" md-expand>
+        <md-icon>supervisor_account</md-icon>
+        <span class="md-list-item-text">Administrator</span>
+
+        <md-list slot="md-expand">
+          <md-list-item class="md-inset" to="/admin/tools">Web Tools</md-list-item>
+          <md-list-item class="md-inset" to="/admin/qc-rejection">QC Rejection</md-list-item>
+        </md-list>
       </md-list-item>
+
+      <md-divider></md-divider>
 
       <md-list-item md-expand>
         <md-icon>code</md-icon>
@@ -27,8 +34,12 @@
         <md-list slot="md-expand">
           <md-list-item class="md-inset" to="/tools/scripts">Scripts</md-list-item>
           <md-list-item class="md-inset" to="/tools/web">Web Tools</md-list-item>
-          <md-list-item class="md-inset" to="/tools/admin" v-if="auth && user.role === 'admin'">Admin</md-list-item>
         </md-list>
+      </md-list-item>
+
+      <md-list-item to="/qc-rejection">
+        <md-icon>list</md-icon>
+        <span class="md-list-item-text">QC Rejection</span>
       </md-list-item>
     </md-list>
 

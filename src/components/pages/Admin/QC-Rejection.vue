@@ -164,7 +164,7 @@
 
 <script>
 import Firebase from 'firebase'
-import { __DB__ } from '../../main'
+import { __DB__ } from '../../../main'
 
 export default {
   name: 'qc-rejection-admin',

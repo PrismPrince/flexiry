@@ -8,10 +8,11 @@ import { __DB__ } from '../main'
 import NotFound from '@/components/pages/Not-Found'
 import Login from '@/components/pages/Login'
 import Home from '@/components/pages/Home'
-import QCRejection from '@/components/pages/QC-Rejection'
-import QCRejectionAdmin from '@/components/pages/QC-Rejection-Admin'
+import Admin from '@/components/pages/Admin'
+import AdminTools from '@/components/pages/Admin/Tools'
+import AdminQCRejection from '@/components/pages/Admin/QC-Rejection'
 import Tools from '@/components/pages/Tools'
-import ToolsAdmin from '@/components/pages/Tools/Admin'
+import QCRejection from '@/components/pages/QC-Rejection'
 import Scripts from '@/components/pages/Tools/Scripts'
 import WebTools from '@/components/pages/Tools/Web-Tools'
 
@@ -42,17 +43,27 @@ let router = new Router({
       }
     },
     {
-      path: '/qc-rejection',
-      name: 'QCRejection',
-      component: QCRejection
-    },
-    {
-      path: '/qc-rejection/admin',
-      name: 'QCRejectionAdmin',
-      component: QCRejectionAdmin,
+      path: '/admin',
+      component: Admin,
       meta: {
         guard: 'auth:admin'
-      }
+      },
+      children: [
+        {
+          path: '',
+          redirect: 'tools'
+        },
+        {
+          path: 'tools',
+          name: 'AdminTools',
+          component: AdminTools
+        },
+        {
+          path: 'qc-rejection',
+          name: 'AdminQCRejection',
+          component: AdminQCRejection
+        }
+      ]
     },
     {
       path: '/tools',
@@ -61,14 +72,6 @@ let router = new Router({
         {
           path: '',
           redirect: 'scripts'
-        },
-        {
-          path: 'admin',
-          name: 'ToolsAdmin',
-          component: ToolsAdmin,
-          meta: {
-            guard: 'auth:admin'
-          }
         },
         {
           path: 'scripts',
@@ -100,6 +103,11 @@ let router = new Router({
           ]
         }
       ]
+    },
+    {
+      path: '/qc-rejection',
+      name: 'QCRejection',
+      component: QCRejection
     }
   ]
 })
