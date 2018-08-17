@@ -11,6 +11,8 @@
             </small>
           </footer>
         </blockquote>
+
+        <p>More features available soon!</p>
       </v-layout>
     </v-slide-y-transition>
   </v-container>
@@ -31,5 +33,9 @@ li {
 }
 a {
   color: #42b983;
+}
+p {
+  margin-top: 50px;
+  font-size: 2em;
 }
 </style>

@@ -64,7 +64,7 @@
                 <v-tab-item>
                   <v-card flat dark>
                     <v-card-text>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem laudantium ab sint et voluptatibus excepturi est, ipsum amet molestiae officiis fuga ut exercitationem quidem harum, ratione tempore maxime tempora aperiam.
+                      This feature is available soon.
                     </v-card-text>
                   </v-card>
                 </v-tab-item>
@@ -78,7 +78,7 @@
                 <v-avatar color="grey">
                   <v-icon dark>whatshot</v-icon>
                 </v-avatar>
-                <p class="title">Nothing in Web Tools {{ type }}</p>
+                <p class="title">Nothing in Web Tools</p>
                 <p class="body-1">Please add some tools!</p>
               </v-flex>
             </v-layout>
@@ -181,7 +181,7 @@ export default {
       deep: true,
       handler () {
         let { descending, page, rowsPerPage, sortBy, totalItems } = this.pagination
-        let query = database.collection('web-tools').orderBy(sortBy || 'title', descending ? 'desc' : 'asc')
+        let query = database.collection('tools/web/manipulators').orderBy(sortBy || 'title', descending ? 'desc' : 'asc')
 
         this.loader = true
 
@@ -191,25 +191,32 @@ export default {
 
         if (rowsPerPage > 0) query = query.limit(rowsPerPage)
 
-        if (!this.type) {
-          database.collection('web-tools').get().then(snap => {
-            this.itemSize = snap.size
+        database.doc('tools/web').get().then(doc => {
+          switch (this.type) {
+            case 'csl':
+              this.itemSize = doc.data().csl_count
+              break
+            case 'cu3':
+              this.itemSize = doc.data().cu3_count
+              break
+            case 'mpd':
+              this.itemSize = doc.data().mpd_count
+              break
+            case 'pdp':
+              this.itemSize = doc.data().pdp_count
+              break
+            case 'trello':
+              this.itemSize = doc.data().trello_count
+              break
+            default:
+              this.itemSize = doc.data().all_count
+          }
 
-            this.$bind('items', query).then(doc => {
-              this.lastItem = this.items.length > 0 ? this.items[this.items.length - 1].title : ''
-              this.loader = false
-            })
+          this.$bind('items', query).then(doc => {
+            this.lastItem = this.items.length > 0 ? this.items[this.items.length - 1].title : ''
+            this.loader = false
           })
-        } else {
-          database.collection('web-tools').where(`type.${this.type}`, '==', true).get().then(snap => {
-            this.itemSize = snap.size
-
-            this.$bind('items', query).then(doc => {
-              this.lastItem = this.items.length > 0 ? this.items[this.items.length - 1].title : ''
-              this.loader = false
-            })
-          })
-        }
+        })
       }
     }
   },

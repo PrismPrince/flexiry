@@ -92,7 +92,8 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
-                <v-btn color="blue darken-1" flat @click.native="addWebTool">Save</v-btn>
+                <v-btn v-if="webTool.id === null" color="blue darken-1" flat @click.native="addWebTool">Save</v-btn>
+                <v-btn v-else color="blue darken-1" flat @click.native="updateWebTool">Update</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -120,6 +121,10 @@
               <td>{{ props.item.version | versionize }}</td>
               <td>{{ props.item.type | optimize_type }}</td>
               <td>{{ props.item.description | str_limit(40, '...') }}</td>
+              <td>
+                <v-icon class="mr-2" @click.stop="editWebTool(props.item)" small>edit</v-icon>
+                <v-icon @click.stop="removeWebTool(props.item)" small>delete</v-icon>
+              </td>
             </tr>
           </template>
 
@@ -149,7 +154,7 @@
                 <v-tab-item>
                   <v-card flat dark>
                     <v-card-text>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem laudantium ab sint et voluptatibus excepturi est, ipsum amet molestiae officiis fuga ut exercitationem quidem harum, ratione tempore maxime tempora aperiam.
+                      This feature is available soon.
                     </v-card-text>
                   </v-card>
                 </v-tab-item>
@@ -249,8 +254,12 @@ export default {
           value: 'description',
           sortable: false
         },
+        {
+          text: 'Actions',
+          value: 'title',
+          sortable: false
+        }
       ],
-      // ===============================================
       editCodeRef: '',
       webTool: {
         id: null,
@@ -268,7 +277,6 @@ export default {
           message: ''
         }
       },
-      ////////////////////////////////
       dialog: false
     }
   },
@@ -296,7 +304,7 @@ export default {
       deep: true,
       handler () {
         let { descending, page, rowsPerPage, sortBy, totalItems } = this.pagination
-        let query = database.collection('web-tools').orderBy(sortBy || 'title', descending ? 'desc' : 'asc')
+        let query = database.collection('tools/web/manipulators').orderBy(sortBy || 'title', descending ? 'desc' : 'asc')
 
         this.loader = true
 
@@ -306,25 +314,32 @@ export default {
 
         if (rowsPerPage > 0) query = query.limit(rowsPerPage)
 
-        if (!this.type) {
-          database.collection('web-tools').get().then(snap => {
-            this.itemSize = snap.size
+        database.doc('tools/web').get().then(doc => {
+          switch (this.type) {
+            case 'csl':
+              this.itemSize = doc.data().csl_count
+              break
+            case 'cu3':
+              this.itemSize = doc.data().cu3_count
+              break
+            case 'mpd':
+              this.itemSize = doc.data().mpd_count
+              break
+            case 'pdp':
+              this.itemSize = doc.data().pdp_count
+              break
+            case 'trello':
+              this.itemSize = doc.data().trello_count
+              break
+            default:
+              this.itemSize = doc.data().all_count
+          }
 
-            this.$bind('items', query).then(doc => {
-              this.lastItem = this.items.length > 0 ? this.items[this.items.length - 1].title : ''
-              this.loader = false
-            })
+          this.$bind('items', query).then(doc => {
+            this.lastItem = this.items.length > 0 ? this.items[this.items.length - 1].title : ''
+            this.loader = false
           })
-        } else {
-          database.collection('web-tools').where(`type.${this.type}`, '==', true).get().then(snap => {
-            this.itemSize = snap.size
-
-            this.$bind('items', query).then(doc => {
-              this.lastItem = this.items.length > 0 ? this.items[this.items.length - 1].title : ''
-              this.loader = false
-            })
-          })
-        }
+        })
       }
     }
   },
@@ -340,7 +355,7 @@ export default {
 
       this.loader = true
 
-      database.collection('web-tools').add({
+      database.collection('tools/web/manipulators').add({
         title: this.webTool.title.trim(),
         version: this.newVersion,
         description: this.webTool.description.trim(),
@@ -349,7 +364,7 @@ export default {
         created_at: Firebase.firestore.FieldValue.serverTimestamp(),
         updated_at: Firebase.firestore.FieldValue.serverTimestamp()
       }).then(webTool => {
-        database.collection('web-tools').doc(webTool.id).collection('history').add({
+        database.collection('tools/web/manipulators').doc(webTool.id).collection('history').add({
           version: this.newVersion,
           code: this._trimEOL(this.webTool.code),
           created_at: Firebase.firestore.FieldValue.serverTimestamp()
@@ -358,13 +373,14 @@ export default {
           // this.snackbar.visible = true
           this.dialog = false
           this.loader = false
+          this.itemSize++
 
           this._clearWebTool()
         }).catch(e => { console.log(e) })
       }).catch(e => { console.log(e) })
     },
     editWebTool (webTool) {
-      let {id, title, version, description, code, type} = webTool
+      let { id, title, version, description, code, type } = webTool
 
       this.webTool.id = id
       this.webTool.title = title
@@ -372,9 +388,10 @@ export default {
       this.webTool.description = description
       this.webTool.code = this.editCodeRef = code
       this.webTool.type = Object.keys(type).filter(key => type[key])
+      this.dialog = true
     },
     updateWebTool () {
-      let {id, title, description, code} = this.webTool
+      let { id, title, description, code } = this.webTool
       let type = {
         csl: this.webTool.type.indexOf('csl') !== -1,
         cu3: this.webTool.type.indexOf('cu3') !== -1,
@@ -386,7 +403,7 @@ export default {
       this.loader = true
 
       if (this.checkEditCode) {
-        database.collection('web-tools').doc(id).update({
+        database.collection('tools/web/manipulators').doc(id).update({
           title: title.trim(),
           version: this.newVersion,
           description: description.trim(),
@@ -394,7 +411,7 @@ export default {
           type: type,
           updated_at: Firebase.firestore.FieldValue.serverTimestamp()
         }).then(() => {
-          database.collection('web-tools').doc(id).collection('history').add({
+          database.collection('tools/web/manipulators').doc(id).collection('history').add({
             version: this.newVersion,
             code: this._trimEOL(code),
             created_at: Firebase.firestore.FieldValue.serverTimestamp()
@@ -406,7 +423,7 @@ export default {
           }).catch(e => { console.log(e) })
         }).catch(e => { console.log(e) })
       } else {
-        database.collection('web-tools').doc(id).update({
+        database.collection('tools/web/manipulators').doc(id).update({
           title: title.trim(),
           description: description.trim(),
           type: type,
@@ -422,8 +439,10 @@ export default {
     removeWebTool ({id, title}) {
       this.loader = true
 
-      database.collection('web-tools').doc(id).delete().then(() => {
+      database.collection('tools/web/manipulators').doc(id).delete().then(() => {
         this._deleteHistory(id)
+        this.itemSize--
+        this.loader = false
         // this.snackbar.msg = `Web tool "${title}" deleted.`
         // this.snackbar.visible = true
       })
@@ -457,7 +476,7 @@ export default {
     _deleteHistory (id) {
       let batch = database.batch()
 
-      database.collection('web-tools').doc(id).collection('history').limit(15).get().then(versions => {
+      database.collection('tools/web/manipulators').doc(id).collection('history').limit(15).get().then(versions => {
         if (versions.size === 0) return
 
         versions.docs.forEach(version => {
@@ -467,8 +486,6 @@ export default {
         return batch.commit().then(() => versions.size)
       }).then(size => {
         if (size === 0) {
-          this.loader = false
-
           resolve()
           return
         }

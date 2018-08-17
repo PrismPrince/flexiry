@@ -1,14 +1,74 @@
 {
-  // Example:
-  //
-  // "indexes": [
-  //   {
-  //     "collectionId": "widgets",
-  //     "fields": [
-  //       { "fieldPath": "foo", "mode": "ASCENDING" },
-  //       { "fieldPath": "bar", "mode": "DESCENDING" }
-  //     ]
-  //   }
-  // ]
-  "indexes": []
+  "indexes": [
+    {
+      "collectionId": "manipulators",
+      "fields": [
+        { "fieldPath": "type.csl", "mode": "ASCENDING" },
+        { "fieldPath": "title", "mode": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionId": "manipulators",
+      "fields": [
+        { "fieldPath": "type.csl", "mode": "ASCENDING" },
+        { "fieldPath": "title", "mode": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionId": "manipulators",
+      "fields": [
+        { "fieldPath": "type.cu3", "mode": "ASCENDING" },
+        { "fieldPath": "title", "mode": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionId": "manipulators",
+      "fields": [
+        { "fieldPath": "type.cu3", "mode": "ASCENDING" },
+        { "fieldPath": "title", "mode": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionId": "manipulators",
+      "fields": [
+        { "fieldPath": "type.mpd", "mode": "ASCENDING" },
+        { "fieldPath": "title", "mode": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionId": "manipulators",
+      "fields": [
+        { "fieldPath": "type.mpd", "mode": "ASCENDING" },
+        { "fieldPath": "title", "mode": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionId": "manipulators",
+      "fields": [
+        { "fieldPath": "type.pdp", "mode": "ASCENDING" },
+        { "fieldPath": "title", "mode": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionId": "manipulators",
+      "fields": [
+        { "fieldPath": "type.pdp", "mode": "ASCENDING" },
+        { "fieldPath": "title", "mode": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionId": "manipulators",
+      "fields": [
+        { "fieldPath": "type.trello", "mode": "ASCENDING" },
+        { "fieldPath": "title", "mode": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionId": "manipulators",
+      "fields": [
+        { "fieldPath": "type.trello", "mode": "ASCENDING" },
+        { "fieldPath": "title", "mode": "DESCENDING" }
+      ]
+    }
+  ]
 }
