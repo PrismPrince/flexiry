@@ -1,5 +1,4 @@
 <template>
-<!-- <<<<<<< HEAD -->
   <v-app>
     <v-navigation-drawer v-model="drawer" persistent enable-resize-watcher fixed app>
       <v-list>
@@ -23,13 +22,13 @@
 
         <!-- <v-list-group v-if="auth && user.role === 'admin'" prepend-icon="supervisor_account" no-action> -->
         <v-list-group prepend-icon="supervisor_account" no-action>
-          <v-list-tile slot="activator">
+          <v-list-tile slot="activator" disabled>
             <v-list-tile-content>
               <v-list-tile-title>Administrator</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
 
-          <v-list-tile to="/admin/tools/web">
+          <v-list-tile to="/admin/tools/web" disabled>
             <v-list-tile-content>
               <v-list-tile-title>Web Tools</v-list-tile-title>
             </v-list-tile-content>
@@ -70,20 +69,30 @@
             <v-list-tile-title>QC Rejection</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+
+        <v-list-tile to="/file-audit" disabled>
+          <v-list-tile-action>
+            <v-icon>done_all</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>File Audit</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
 
       <v-footer height="auto" fixed>
         <v-card class="flex grey lighten-3" flat tile>
-          <v-card-text class="justify-center">Get connected with us on social networks!</v-card-text>
+          <v-card-text class="justify-center">Get connected for updates!v</v-card-text>
 
           <v-card-actions class="justify-center">
-            <v-btn class="mx-3" icon>
+            <v-switch label="Subscribe" v-model="subscription.status"></v-switch>
+            <!-- <v-btn class="mx-3" icon>
               <v-icon size="24px">home</v-icon>
             </v-btn>
 
             <v-btn class="mx-3" icon>
               <v-icon size="24px">home</v-icon>
-            </v-btn>
+            </v-btn> -->
           </v-card-actions>
 
           <v-card-actions class="justify-center">
@@ -119,7 +128,10 @@
 import Firebase from './services/firebase'
 import evetBus from './services/event-bus'
 
+const messaging = Firebase.messaging()
 const database = Firebase.firestore()
+
+messaging.usePublicVapidKey(process.env.VUE_APP_FIREBASE_PUBLIC_VAPID_KEY)
 
 export default {
   name: 'App',
@@ -131,7 +143,11 @@ export default {
       user: {
         role: 'user'
       },
-      drawer: true
+      drawer: true,
+      subscription: {
+        status: false,
+        token: window.localStorage.getItem('pushToken') || null
+      }
     }
   },
   firestore () {
@@ -147,6 +163,35 @@ export default {
         this.user = user.data()
       }).catch(error => { console.error(error) })
     })
+  },
+  watch: {
+    'subscription.status': function () {
+      if (this.subscription.status) {
+        messaging.requestPermission().then(() => messaging.getToken()).then(token => {
+          window.localStorage.setItem('pushToken', token)
+
+          database.collection('subscribers').add({ token }).then(subscriber => { console.log('Subscribed', subscriber) })
+
+          this.subscription.token = token
+        }).catch(err => {
+          this.subscription.status = false
+          console.error('Denied', err)
+        })
+      } else {
+        messaging.getToken().then(userToken => {
+          messaging.deleteToken(userToken).then(() => {
+            window.localStorage.removeItem('pushToken')
+
+            database.collection('subscribers').doc(this.subscribers.find(subscriber => subscriber.token === userToken).id).delete().then(() => { console.log('Unubscribed', userToken) })
+
+            this.subscription.token = null
+          }).catch(err => {
+          this.subscription.status = true
+            console.error('Error unsubscribing', err)
+          })
+        })
+      }
+    }
   },
   methods: {
     logout () {
