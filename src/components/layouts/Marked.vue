@@ -69,4 +69,10 @@ export default {
     width: auto;
     display: inline;
   }
+
+  /deep/ img {
+    width: auto;
+    max-width: 100%;
+    max-height: 450px;
+  }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-tools-web">
+  <v-container fluid class="admin-tools-web">
     <v-layout row>
       <v-flex>
         <v-toolbar color="primary" tabs dark flat>
@@ -146,7 +146,7 @@
                 <v-tab-item>
                   <v-card flat dark>
                     <v-card-text>
-                      {{ props.item.code }}
+                      <pre>{{ props.item.code }}</pre>
                     </v-card-text>
                   </v-card>
                 </v-tab-item>
@@ -177,7 +177,7 @@
         <!-- --------------------------------- -->
       </v-flex>
     </v-layout>
-  </div>
+  </v-container>
 </template>
 
 <script>

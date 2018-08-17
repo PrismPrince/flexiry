@@ -1,8 +1,8 @@
 <template>
-  <div class="tools-web">
+  <v-container fluid class="tools-web">
     <v-layout align-center justify-center row wrap>
-      <v-flex md6>
-        <v-alert v-model="alert.time" type="info" dismissible>
+      <v-flex>
+        <v-alert class="mb-3" v-model="alert.time" type="info" dismissible>
           <p class="subheading">Tip! <span class="caption">(close in {{ alert.time }})</span></p>
           <p class="body-1">Drag links to your bookmarks.</p>
         </v-alert>
@@ -56,7 +56,7 @@
                 <v-tab-item>
                   <v-card flat dark>
                     <v-card-text>
-                      {{ props.item.code }}
+                      <pre>{{ props.item.code }}</pre>
                     </v-card-text>
                   </v-card>
                 </v-tab-item>
@@ -88,7 +88,7 @@
 
       </v-flex>
     </v-layout>
-  </div>
+  </v-container>
 </template>
 
 <script>
