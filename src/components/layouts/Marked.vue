@@ -3,7 +3,7 @@
 </template>
 
 <script>
-// import marked from 'marked'
+import marked from 'marked'
 import emoji from '@/mixins/emoji'
 
 export default {
@@ -30,8 +30,7 @@ export default {
   },
   computed: {
     marked_text () {
-      let markedText = this.plainText
-      // let markedText = marked(this.plainText)
+      let markedText = marked(this.plainText)
 
       // remove <p>...</p> tags at the beginning and end
       if (this.removeTagEnds) markedText = markedText.trim().replace(/^<p>/, '').replace(/<\/p>$/, '')
@@ -48,7 +47,7 @@ export default {
 }
 </script>
 
-<!-- <style lang="scss" scoped>
+<style lang="scss" scoped>
   /deep/ code {
     background-color: #e2e4e6;
     border: 1px solid #d6dadc;
@@ -70,4 +69,4 @@ export default {
     width: auto;
     display: inline;
   }
-</style> -->
+</style>
