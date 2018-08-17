@@ -82,7 +82,7 @@
 
       <v-footer height="auto" fixed>
         <v-card class="flex grey lighten-3" flat tile>
-          <v-card-text class="justify-center">Get connected for updates!v</v-card-text>
+          <v-card-text class="justify-center">Get connected for updates!</v-card-text>
 
           <v-card-actions class="justify-center">
             <v-switch label="Subscribe" v-model="subscription.status"></v-switch>
@@ -163,6 +163,9 @@ export default {
         this.user = user.data()
       }).catch(error => { console.error(error) })
     })
+  },
+  created () {
+    this.subscription.status = this.subscription.token !== null
   },
   watch: {
     'subscription.status': function () {
