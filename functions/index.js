@@ -103,7 +103,7 @@ exports.sendCreateWebTool = functions.firestore.document('tools/web/manipulators
 
         // Prepare unused tokens for removal
         if (result.error.code === 'messaging/invalid-registration-token' || result.error.code === 'messaging/registration-token-not-registered') {
-          doc.delete()
+          doc.ref.delete()
           console.info('Was removed:', token)
         }
       } else console.info('Notification sent to', token)
