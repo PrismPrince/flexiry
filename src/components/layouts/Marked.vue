@@ -48,15 +48,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  /deep/ code {
-    background-color: #e2e4e6;
-    border: 1px solid #d6dadc;
-    border-radius: 2px;
-    color: #eb5a46;
-    padding: 1px 3px;
-    margin: -1px 2px;
-  }
-
   /deep/ blockquote {
     border-left: 1px solid #c4c9cc;
     color: #666;
@@ -68,6 +59,7 @@ export default {
     height: 18px;
     width: auto;
     display: inline;
+    margin-bottom: -4px;
   }
 
   /deep/ img {
