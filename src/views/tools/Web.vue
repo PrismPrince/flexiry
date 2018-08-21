@@ -23,7 +23,7 @@
         </v-toolbar>
 
         <!-- --------------------------------- -->
-        <v-data-table :headers="headers" :items="items" class="elevation-1" :loading="loader" :total-items="itemSize" :pagination.sync="pagination">
+        <v-data-table :headers="headers" :items="items" class="elevation-1" :loading="loader" :total-items="itemSize" :rows-per-page-items="[5, 10, 25, 50, 100]" :pagination.sync="pagination">
           <template slot="items" slot-scope="props">
             <tr @click="props.expanded = !props.expanded">
               <td>
