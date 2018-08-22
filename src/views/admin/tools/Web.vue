@@ -146,7 +146,7 @@
                 <v-tab-item>
                   <v-card flat dark>
                     <v-card-text>
-                      <pre>{{ props.item.code }}</pre>
+                      <marked :plain-text="'```javascript\n// javascript\n\n' + props.item.code + '\n```'" ></marked>
                     </v-card-text>
                   </v-card>
                 </v-tab-item>

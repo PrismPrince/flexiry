@@ -4,7 +4,18 @@
 
 <script>
 import marked from 'marked'
+import hljs from 'highlight.js/lib/highlight'
+import javascript from 'highlight.js/lib/languages/javascript'
 import emoji from '@/mixins/emoji'
+
+hljs.registerLanguage('javascript', javascript)
+
+marked.setOptions({
+  breaks: true,
+  highlight (code) {
+    return hljs.highlightAuto(code).value
+  }
+})
 
 export default {
   name: 'marked',
@@ -14,10 +25,6 @@ export default {
       type: String,
       required: true,
       default: ''
-    },
-    removeTagEnds: {
-      type: Boolean,
-      default: false
     },
     openLinkNewTab: {
       type: Boolean,
@@ -32,9 +39,6 @@ export default {
     marked_text () {
       let markedText = marked(this.plainText)
 
-      // remove <p>...</p> tags at the beginning and end
-      if (this.removeTagEnds) markedText = markedText.trim().replace(/^<p>/, '').replace(/<\/p>$/, '')
-
       // add target="_black" to all links
       if (this.openLinkNewTab) markedText = markedText.replace(/<a\s+href/g, `<a target="_black" href`)
 
@@ -48,23 +52,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  /deep/ blockquote {
-    border-left: 1px solid #c4c9cc;
-    color: #666;
-    margin: 8px 0 8px 8px;
-    padding: 0 0 0 8px;
-  }
+@import '~highlight.js/styles/monokai-sublime.css';
 
-  /deep/ .emoji {
-    height: 18px;
-    width: auto;
-    display: inline;
-    margin-bottom: -4px;
-  }
+/deep/ pre code.language-javascript {
+  background: none;
+  color: inherit;
+  box-shadow: none;
+}
 
-  /deep/ img {
-    width: auto;
-    max-width: 100%;
-    max-height: 450px;
-  }
+/deep/ blockquote {
+  border-left: 1px solid #c4c9cc;
+  color: #666;
+  margin: 8px 0 8px 8px;
+  padding: 0 0 0 8px;
+}
+
+/deep/ .emoji {
+  height: 18px;
+  width: auto;
+  display: inline;
+  margin-bottom: -4px;
+}
+
+/deep/ img {
+  width: auto;
+  max-width: 100%;
+  max-height: 450px;
+}
 </style>
