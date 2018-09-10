@@ -70,7 +70,7 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile to="/file-audit" disabled>
+        <v-list-tile to="/file-audit">
           <v-list-tile-action>
             <v-icon>done_all</v-icon>
           </v-list-tile-action>

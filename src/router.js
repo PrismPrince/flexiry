@@ -7,6 +7,7 @@ import Admin from './views/admin'
 import AdminToolsWeb from './views/admin/tools/Web'
 import Tools from './views/tools'
 import ToolsWeb from './views/tools/Web'
+import FileAudit from './views/FileAudit'
 // import ToolsWebAll from './views/tools/web/All'
 // import ToolsWebCSL from './views/tools/web/CSL'
 
@@ -72,6 +73,11 @@ let router = new Router({
     //       component: AdminQCRejection
     //     }
       ]
+    },
+    {
+      path: '/file-audit',
+      name: 'FileAudit',
+      component: FileAudit
     },
     {
       path: '/tools',

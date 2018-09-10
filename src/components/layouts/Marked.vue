@@ -60,6 +60,16 @@ export default {
   box-shadow: none;
 }
 
+/deep/ hr {
+    background: #d6dadc;
+    border: 0;
+    color: #d6dadc;
+    height: 1px;
+    margin: 16px 0;
+    padding: 0;
+    width: 100%;
+}
+
 /deep/ blockquote {
   border-left: 1px solid #c4c9cc;
   color: #666;
