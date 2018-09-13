@@ -6,6 +6,7 @@ import Welcome from './views/Welcome'
 import Admin from './views/admin'
 import AdminBookmarks from './views/admin/Bookmarks'
 import Bookmarks from './views/Bookmarks'
+import FileAudit from './views/FileAudit'
 
 const database = Firebase.firestore()
 
@@ -50,15 +51,11 @@ let router = new Router({
       //   guard: 'auth:admin'
       // },
       children: [
-    //     {
-    //       path: '',
-    //       redirect: 'tools'
-    //     },
         {
           path: 'bookmarks/:type?',
           name: 'AdminBookmarks',
           component: AdminBookmarks
-        },
+        }
     //     {
     //       path: 'qc-rejection',
     //       name: 'AdminQCRejection',
@@ -70,6 +67,11 @@ let router = new Router({
       path: '/bookmarks/:type?',
       name: 'Bookmarks',
       component: Bookmarks
+    },
+    {
+      path: '/file-audit',
+      name: 'FileAudit',
+      component: FileAudit
     }
     // {
     //   path: '/qc-rejection',
