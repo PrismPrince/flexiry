@@ -99,12 +99,12 @@
           </v-dialog>
 
           <v-tabs slot="extension" color="transparent" slider-color="accent" align-with-title dark>
-            <v-tab to="/admin/tools/web" ripple>All</v-tab>
-            <v-tab to="/admin/tools/web/csl" ripple>CSL</v-tab>
-            <v-tab to="/admin/tools/web/cu3" ripple>CU3</v-tab>
-            <v-tab to="/admin/tools/web/mpd" ripple>MPD</v-tab>
-            <v-tab to="/admin/tools/web/pdp" ripple>PDP</v-tab>
-            <v-tab to="/admin/tools/web/trello" ripple>TRELLO</v-tab>
+            <v-tab to="/admin/bookmarks" ripple>All</v-tab>
+            <v-tab to="/admin/bookmarks/csl" ripple>CSL</v-tab>
+            <v-tab to="/admin/bookmarks/cu3" ripple>CU3</v-tab>
+            <v-tab to="/admin/bookmarks/mpd" ripple>MPD</v-tab>
+            <v-tab to="/admin/bookmarks/pdp" ripple>PDP</v-tab>
+            <v-tab to="/admin/bookmarks/trello" ripple>TRELLO</v-tab>
           </v-tabs>
         </v-toolbar>
 

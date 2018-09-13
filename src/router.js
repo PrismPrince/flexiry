@@ -4,11 +4,8 @@ import Firebase from './services/firebase'
 
 import Welcome from './views/Welcome'
 import Admin from './views/admin'
-import AdminToolsWeb from './views/admin/tools/Web'
-import Tools from './views/tools'
-import ToolsWeb from './views/tools/Web'
-// import ToolsWebAll from './views/tools/web/All'
-// import ToolsWebCSL from './views/tools/web/CSL'
+import AdminBookmarks from './views/admin/Bookmarks'
+import Bookmarks from './views/Bookmarks'
 
 const database = Firebase.firestore()
 
@@ -58,13 +55,9 @@ let router = new Router({
     //       redirect: 'tools'
     //     },
         {
-          path: 'tools',
-          redirect: 'tools/web'
-        },
-        {
-          path: 'tools/web/:type?',
-          name: 'AdminToolsWeb',
-          component: AdminToolsWeb
+          path: 'bookmarks/:type?',
+          name: 'AdminBookmarks',
+          component: AdminBookmarks
         },
     //     {
     //       path: 'qc-rejection',
@@ -74,25 +67,10 @@ let router = new Router({
       ]
     },
     {
-      path: '/tools',
-      component: Tools,
-      children: [
-        {
-          path: '',
-          redirect: 'web'
-        },
-    //     {
-    //       path: 'scripts',
-    //       name: 'Scripts',
-    //       component: Scripts
-    //     },
-        {
-          path: 'web/:type?',
-          name: 'ToolsWeb',
-          component: ToolsWeb
-        }
-      ]
-    },
+      path: '/bookmarks/:type?',
+      name: 'Bookmarks',
+      component: Bookmarks
+    }
     // {
     //   path: '/qc-rejection',
     //   name: 'QCRejection',

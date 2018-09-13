@@ -28,9 +28,9 @@
             </v-list-tile-content>
           </v-list-tile>
 
-          <v-list-tile to="/admin/tools/web" disabled>
+          <v-list-tile to="/admin/bookmarks" disabled>
             <v-list-tile-content>
-              <v-list-tile-title>Web Tools</v-list-tile-title>
+              <v-list-tile-title>Bookmark Tools</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
 
@@ -41,25 +41,14 @@
           </v-list-tile>
         </v-list-group>
 
-        <v-list-group prepend-icon="code" no-action>
-          <v-list-tile slot="activator">
-            <v-list-tile-content>
-              <v-list-tile-title>Tools and Scripts</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-
-          <v-list-tile to="/tools/web">
-            <v-list-tile-content>
-              <v-list-tile-title>Web Tools</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-
-          <v-list-tile to="/tools/scripts" disabled>
-            <v-list-tile-content>
-              <v-list-tile-title>Scripts</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list-group>
+        <v-list-tile v-if="auth" to="/bookmarks">
+          <v-list-tile-action>
+            <v-icon>bookmarks</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Bookmarks</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
 
         <v-list-tile to="/qc-rejection" disabled>
           <v-list-tile-action>

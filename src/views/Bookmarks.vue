@@ -13,12 +13,12 @@
         <v-toolbar color="primary" tabs dark flat>
           <v-toolbar-title>Web Tools</v-toolbar-title>
           <v-tabs slot="extension" color="transparent" slider-color="accent" align-with-title dark>
-            <v-tab to="/tools/web" ripple>All</v-tab>
-            <v-tab to="/tools/web/csl" ripple>CSL</v-tab>
-            <v-tab to="/tools/web/cu3" ripple>CU3</v-tab>
-            <v-tab to="/tools/web/mpd" ripple>MPD</v-tab>
-            <v-tab to="/tools/web/pdp" ripple>PDP</v-tab>
-            <v-tab to="/tools/web/trello" ripple>TRELLO</v-tab>
+            <v-tab to="/bookmarks" ripple>All</v-tab>
+            <v-tab to="/bookmarks/csl" ripple>CSL</v-tab>
+            <v-tab to="/bookmarks/cu3" ripple>CU3</v-tab>
+            <v-tab to="/bookmarks/mpd" ripple>MPD</v-tab>
+            <v-tab to="/bookmarks/pdp" ripple>PDP</v-tab>
+            <v-tab to="/bookmarks/trello" ripple>TRELLO</v-tab>
           </v-tabs>
         </v-toolbar>
 
