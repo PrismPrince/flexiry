@@ -174,8 +174,8 @@
     </v-layout>
 
     <v-speed-dial v-model="hotFab" direction="left" transition="slide-x-reverse-transition" fixed bottom right open-on-hover>
-      <v-btn slot="activator" color="pink" v-model="hotFab" fab dark>
-        <v-icon>star</v-icon>
+      <v-btn slot="activator" color="teal" v-model="hotFab" fab dark>
+        <v-icon>settings</v-icon>
         <v-icon>close</v-icon>
       </v-btn>
       <v-tooltip top>
@@ -190,41 +190,13 @@
         </v-btn>
         <span>Clear All</span>
       </v-tooltip>
-      <!--
-        <v-tooltip top>
-          <v-btn slot="activator" color="success" @click="font.dialog = true" fab small>
-            <v-icon>add</v-icon>
-          </v-btn>
-          <span>Add Font</span>
-        </v-tooltip>
-      -->
+      <v-tooltip top>
+        <v-btn slot="activator" color="pink" to="/font-swaps" target="_blank" fab small dark>
+          <v-icon>font_download</v-icon>
+        </v-btn>
+        <span>View Fonts <v-icon small dark>launch</v-icon></span>
+      </v-tooltip>
     </v-speed-dial>
-
-    <v-dialog v-model="font.dialog" max-width="900px" persistent>
-      <v-card>
-        <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12 md4>
-                <v-text-field v-model.trim="font.minted" label="Minted Font"></v-text-field>
-              </v-flex>
-              <v-flex xs12 md4>
-                <v-text-field v-model.trim="font.nonMinted" label="Non-Minted Font"></v-text-field>
-              </v-flex>
-              <v-flex xs12 md4>
-                <v-text-field v-model.trim="font.note" label="Note"></v-text-field>
-              </v-flex>
-            </v-layout>
-            <!-- <v-btn @click="__seedFonts" color="primary" flat>Seed fonts</v-btn> -->
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn @click="font.dialog = false" color="primary" flat>Close</v-btn>
-          <v-btn @click="saveFont" color="primary" flat>Save</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
 
     <div id="raw-text-container"></div>
     <!-- <textarea id="raw-text" v-model="rawText"></textarea> -->
@@ -244,12 +216,6 @@ export default {
   data () {
     return {
       fonts: [],
-      font: {
-        dialog: false,
-        minted: null,
-        nonMinted: null,
-        note: null
-      },
       hotFab: false,
       expansion: [false, false, false, false, false, false],
       updateFonts: {
@@ -293,7 +259,7 @@ export default {
   },
   firestore () {
     return {
-      fonts: database.collection('file-audit/fonts/font-swaps')
+      fonts: database.collection('tools/font-swaps/fonts')
     }
   },
   computed: {
@@ -302,7 +268,7 @@ export default {
     },
     mintedFonts () {
       return this.fonts.map(font => font.mintedFont).sort()
-    }, //  experimental
+    },
     rawText () {
       return [
         this.updateFontsText,
@@ -466,37 +432,7 @@ export default {
       this.extraNotes = {
         note: null
       }
-    },
-    saveFont () {
-      let { minted, nonMinted, note } = this.font
-
-      if (minted && nonMinted) {
-        database.collection('file-audit/fonts/font-swaps').add({
-          mintedFont: minted,
-          nonMintedFont: nonMinted,
-          note: note ? note.trim() : null
-        }).then(fontSwap => {
-          this.font.dialog = false
-          this.font.minted = null
-          this.font.nonMinted = null
-          this.font.note = null
-        }).catch(e => { console.log(e) })
-      } else {
-        alert('Wrong input!')
-      }
     }
-    /*
-      __seedFonts () {
-        let batch = database.batch()
-        let fontSwap = database.collection('file-audit/fonts/font-swaps').doc()
-
-        for (let i = 0; i < fontsSeeder.length; i++) {
-
-          database.collection('file-audit/fonts/font-swaps').add(fontsSeeder[i])
-
-        }
-      }
-    */
   }
 }
 </script>
