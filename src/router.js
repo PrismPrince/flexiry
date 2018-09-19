@@ -3,10 +3,9 @@ import Router from 'vue-router'
 import Firebase from './services/firebase'
 
 import Welcome from './views/Welcome'
-import Admin from './views/admin'
-import AdminBookmarks from './views/admin/Bookmarks'
 import Bookmarks from './views/Bookmarks'
-import FileAudit from './views/FileAudit'
+import FileAudit from './views/File-Audit'
+import FontSwaps from './views/Font-Swaps'
 
 const database = Firebase.firestore()
 
@@ -43,30 +42,35 @@ let router = new Router({
     //     guard: 'auth'
     //   }
     // },
-    {
-      path: '/admin',
-      name: 'Admin',
-      component: Admin,
-      // meta: {
-      //   guard: 'auth:admin'
-      // },
-      children: [
-        {
-          path: 'bookmarks/:type?',
-          name: 'AdminBookmarks',
-          component: AdminBookmarks
-        }
+    // {
+    //   path: '/admin',
+    //   name: 'Admin',
+    //   component: Admin,
+    //   // meta: {
+    //   //   guard: 'auth:admin'
+    //   // },
+    //   children: [
     //     {
-    //       path: 'qc-rejection',
-    //       name: 'AdminQCRejection',
-    //       component: AdminQCRejection
+    //       path: 'bookmarks/:type?',
+    //       name: 'AdminBookmarks',
+    //       component: AdminBookmarks
     //     }
-      ]
-    },
+    // //     {
+    // //       path: 'qc-rejection',
+    // //       name: 'AdminQCRejection',
+    // //       component: AdminQCRejection
+    // //     }
+    //   ]
+    // },
     {
       path: '/bookmarks/:type?',
       name: 'Bookmarks',
       component: Bookmarks
+    },
+    {
+      path: '/font-swaps',
+      name: 'FontSwaps',
+      component: FontSwaps
     },
     {
       path: '/file-audit',

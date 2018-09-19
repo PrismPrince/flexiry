@@ -20,27 +20,6 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <!-- <v-list-group v-if="auth && user.role === 'admin'" prepend-icon="supervisor_account" no-action> -->
-        <v-list-group prepend-icon="supervisor_account" no-action>
-          <v-list-tile slot="activator" disabled>
-            <v-list-tile-content>
-              <v-list-tile-title>Administrator</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-
-          <v-list-tile to="/admin/bookmarks" disabled>
-            <v-list-tile-content>
-              <v-list-tile-title>Bookmark Tools</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-
-          <v-list-tile to="/admin/qc-rejection" disabled>
-            <v-list-tile-content>
-              <v-list-tile-title>QC Rejection</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list-group>
-
         <v-list-tile v-if="auth" to="/bookmarks">
           <v-list-tile-action>
             <v-icon>bookmarks</v-icon>
@@ -50,12 +29,12 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile to="/qc-rejection" disabled>
+        <v-list-tile to="/font-swaps">
           <v-list-tile-action>
-            <v-icon>list</v-icon>
+            <v-icon>font_download</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>QC Rejection</v-list-tile-title>
+            <v-list-tile-title>Font Swaps</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
 
