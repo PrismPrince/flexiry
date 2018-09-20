@@ -76,6 +76,21 @@ exports.countBookmarks = functions.firestore.document('tools/bookmarks/manipulat
   }
 })
 
+exports.countFontSwaps = functions.firestore.document('tools/font-swaps/fonts/{id}').onWrite((change, context) => {
+  var docRef = database.doc('tools/font-swaps')
+
+  if (!change.before.exists)
+    return database.runTransaction(transaction => transaction.get(docRef).then(doc => {
+      return transaction.update(docRef, { fontCount: doc.data().fontCount + 1 })
+    })).catch(error => { console.error('Transaction fail:', error) })
+  else if (change.before.exists && !change.after.exists)
+    return database.runTransaction(transaction => transaction.get(docRef).then(doc => {
+      return transaction.update(docRef, { fontCount: doc.data().fontCount - 1 })
+    })).catch(error => { console.error('Transaction fail:', error) })
+  else
+    return null
+})
+
 exports.sendCreateBookmark = functions.firestore.document('tools/bookmarks/manipulators/{id}').onCreate((snap, context) => {
   var { title, description, version } = snap.data()
   var [major = 0, minor = 0, patch = 0, pre = ''] = version
