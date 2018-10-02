@@ -91,10 +91,39 @@ exports.countFontSwaps = functions.firestore.document('tools/font-swaps/fonts/{i
     return null
 })
 
+
+exports.sendUpdateBookmark = functions.firestore.document('tools/bookmarks/manipulators/{id}').onUpdate((change, context) => {
+  var { title } = change.after.data()
+  var [old_major = 0, old_minor = 0, old_patch = 0, old_pre = ''] = change.before.data().version
+  var [new_major = 0, new_minor = 0, new_patch = 0, new_pre = ''] = change.after.data().version
+  var old_version = `${old_major}.${old_minor}.${old_patch}${old_pre}`
+  var new_version = `${new_major}.${new_minor}.${new_patch}${new_pre}`
+  var notif_title = 'A bookmark is updated'
+  var notif_body = `${title} has new version update from v${old_version} to v${new_version}.\nCheck it out!`
+
+  return database.collection('subscribers').get().then(snapshot => snapshot.forEach(doc => {
+    var { token } = doc.data()
+    var payload = {
+      notification: {
+        title: notif_title,
+        body: notif_body,
+        icon: '/img/icons/android-chrome-192x192.png',
+        click_action: '/bookmarks'
+      },
+      data: {
+        badge: '/img/icons/android-chrome-192x192.png'
+      }
+    }
+
+    _sendToDevice(token, payload, doc)
+
+  })).catch(error => { console.error('Error getting subscribers', error) })
+})
+
 exports.sendCreateBookmark = functions.firestore.document('tools/bookmarks/manipulators/{id}').onCreate((snap, context) => {
   var { title, description, version } = snap.data()
   var [major = 0, minor = 0, patch = 0, pre = ''] = version
-  var notif_title = 'New bookmark added'
+  var notif_title = 'A bookmark is added'
   var notif_body = `${title} (v${major}.${minor}.${patch}${pre})\n${description}`
 
   return database.collection('subscribers').get().then(snapshot => snapshot.forEach(doc => {
