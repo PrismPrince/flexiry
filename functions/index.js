@@ -30,10 +30,11 @@ exports.countBookmarks = functions.firestore.document('tools/bookmarks/manipulat
       transaction.update(docRef, { pdpCount })
       transaction.update(docRef, { trelloCount })
 
-      return console.log('Transaction success')
+      console.log('Transaction success')
+
+      return null
     })).catch(error => { console.error('Transaction fail:', error) })
   } else if (change.after.exists) {
-    // update
     var oldType = change.before.data().type
     var newType = change.after.data().type
 
@@ -50,10 +51,11 @@ exports.countBookmarks = functions.firestore.document('tools/bookmarks/manipulat
       transaction.update(docRef, { pdpCount })
       transaction.update(docRef, { trelloCount })
 
-      return console.log('Transaction success')
+      console.log('Transaction success')
+
+      return null
     })).catch(error => { console.error('Transaction fail:', error) })
   } else {
-    // delete
     type = change.before.data().type
 
     return database.runTransaction(transaction => transaction.get(docRef).then(doc => {
@@ -71,7 +73,9 @@ exports.countBookmarks = functions.firestore.document('tools/bookmarks/manipulat
       transaction.update(docRef, { pdpCount })
       transaction.update(docRef, { trelloCount })
 
-      return console.log('Transaction success')
+      console.log('Transaction success')
+
+      return null
     })).catch(error => { console.error('Transaction fail:', error) })
   }
 })
@@ -91,15 +95,11 @@ exports.countFontSwaps = functions.firestore.document('tools/font-swaps/fonts/{i
     return null
 })
 
-
-exports.sendUpdateBookmark = functions.firestore.document('tools/bookmarks/manipulators/{id}').onUpdate((change, context) => {
-  var { title } = change.after.data()
-  var [old_major = 0, old_minor = 0, old_patch = 0, old_pre = ''] = change.before.data().version
-  var [new_major = 0, new_minor = 0, new_patch = 0, new_pre = ''] = change.after.data().version
-  var old_version = `${old_major}.${old_minor}.${old_patch}${old_pre}`
-  var new_version = `${new_major}.${new_minor}.${new_patch}${new_pre}`
-  var notif_title = 'A bookmark is updated'
-  var notif_body = `${title} has new version update from v${old_version} to v${new_version}.\nCheck it out!`
+exports.notifyCreateBookmark = functions.firestore.document('tools/bookmarks/manipulators/{id}').onCreate((snap, context) => {
+  var { title, description, version } = snap.data()
+  var [major = 0, minor = 0, patch = 0, pre = ''] = version
+  var notif_title = 'A bookmark is added'
+  var notif_body = `${title} (v${major}.${minor}.${patch}${pre})\n${description}`
 
   return database.collection('subscribers').get().then(snapshot => snapshot.forEach(doc => {
     var { token } = doc.data()
@@ -120,13 +120,20 @@ exports.sendUpdateBookmark = functions.firestore.document('tools/bookmarks/manip
   })).catch(error => { console.error('Error getting subscribers', error) })
 })
 
-exports.sendCreateBookmark = functions.firestore.document('tools/bookmarks/manipulators/{id}').onCreate((snap, context) => {
-  var { title, description, version } = snap.data()
-  var [major = 0, minor = 0, patch = 0, pre = ''] = version
-  var notif_title = 'A bookmark is added'
-  var notif_body = `${title} (v${major}.${minor}.${patch}${pre})\n${description}`
+exports.notifyUpdateBookmark = functions.firestore.document('tools/bookmarks/manipulators/{id}').onUpdate((change, context) => {
+  var { title } = change.after.data()
+  var [old_major = 0, old_minor = 0, old_patch = 0, old_pre = ''] = change.before.data().version
+  var [new_major = 0, new_minor = 0, new_patch = 0, new_pre = ''] = change.after.data().version
+  var old_version = `${old_major}.${old_minor}.${old_patch}${old_pre}`
+  var new_version = `${new_major}.${new_minor}.${new_patch}${new_pre}`
+  var notif_title = 'A bookmark is updated'
+  var notif_body = `${title} has new version update from v${old_version} to v${new_version}.\nCheck it out!`
 
-  return database.collection('subscribers').get().then(snapshot => snapshot.forEach(doc => {
+  if (old_version === new_version) {
+    console.log('Update version is the same. No notification sent.')
+
+    return null
+  } else return database.collection('subscribers').get().then(snapshot => snapshot.forEach(doc => {
     var { token } = doc.data()
     var payload = {
       notification: {
