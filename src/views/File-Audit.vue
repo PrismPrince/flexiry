@@ -219,7 +219,7 @@ export default {
       hotFab: false,
       expansion: [false, false, false, false, false, false],
       updateFonts: {
-        header: 'ATTN MD',
+        header: '**ATTN MD**',
         updates: [{
           nonMinted: null,
           minted: null,
@@ -305,9 +305,9 @@ export default {
         return `- Outlined text${fonts.length > 1 ? 's are ' : ' is '}${fontsText}`
       }).filter(outline => outline !== null)
 
-      if (updateFontsTexts.length > 0 && outlinedFontsTexts.length > 0) return `**ATTN MD**\n\n${updateFontsTexts.join('\n')}\n${outlinedFontsTexts.join('\n')}`
-      else if (updateFontsTexts.length > 0) return `**ATTN MD**\n\n${updateFontsTexts.join('\n')}`
-      else if (outlinedFontsTexts.length > 0) return `**ATTN MD**\n\n${outlinedFontsTexts.join('\n')}`
+      if (updateFontsTexts.length > 0 && outlinedFontsTexts.length > 0) return `${this.updateFonts.header}\n\n${updateFontsTexts.join('\n')}\n${outlinedFontsTexts.join('\n')}`
+      else if (updateFontsTexts.length > 0) return `${this.updateFonts.header}\n\n${updateFontsTexts.join('\n')}`
+      else if (outlinedFontsTexts.length > 0) return `${this.updateFonts.header}\n\n${outlinedFontsTexts.join('\n')}`
       else return null
     },
     missingFontsText () {
