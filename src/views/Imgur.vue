@@ -1,0 +1,919 @@
+<template>
+  <v-container class="imgur" grid-list-lg fluid>
+    <v-layout row>
+      <v-toolbar color="teal" dark>
+        <v-tooltip bottom>
+          <span>Crop</span>
+          <v-btn slot="activator" fab flat small :outline="draw.tool === 'crop'" @click="draw.tool = draw.tool !== 'crop' ? 'crop' : null" :disabled="!draw.active">
+            <v-icon>crop</v-icon>
+          </v-btn>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <span>Freehand</span>
+          <v-btn slot="activator" fab flat small :outline="draw.tool === 'free'" @click="draw.tool = draw.tool !== 'free' ? 'free' : null" :disabled="!draw.active">
+            <v-icon>brush</v-icon>
+          </v-btn>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <span>Line</span>
+          <v-btn slot="activator" fab flat small :outline="draw.tool === 'line'" @click="draw.tool = draw.tool !== 'line' ? 'line' : null" :disabled="!draw.active">
+            <v-icon>show_chart</v-icon>
+          </v-btn>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <span>Rectangle</span>
+          <v-btn slot="activator" fab flat small :outline="draw.tool === 'rect'" @click="draw.tool = draw.tool !== 'rect' ? 'rect' : null" :disabled="!draw.active">
+            <v-icon>crop_square</v-icon>
+          </v-btn>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <span>Ellipse</span>
+          <v-btn slot="activator" fab flat small :outline="draw.tool === 'circ'" @click="draw.tool = draw.tool !== 'circ' ? 'circ' : null" :disabled="!draw.active">
+            <v-icon>panorama_fish_eye</v-icon>
+          </v-btn>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <span>Undo</span>
+          <v-btn slot="activator" fab flat small @click="undo" :disabled="!draw.active || history.undo.length <= 1">
+            <v-icon>undo</v-icon>
+          </v-btn>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <span>Redo</span>
+          <v-btn slot="activator" fab flat small @click="redo" :disabled="!draw.active || history.redo.length === 0">
+            <v-icon>redo</v-icon>
+          </v-btn>
+        </v-tooltip>
+
+        <v-spacer></v-spacer>
+
+        <v-tooltip bottom>
+          <span>Stroke</span>
+          <v-menu slot="activator" :close-on-content-click="false" :nudge-width="300" :nudge-bottom="45" :nudge-left="150" light>
+            <v-btn slot="activator" :color="strokeColor" :disabled="!draw.active" fab small offset-y
+              :outline="!draw.stroke.has"
+              :dark="draw.stroke.color.r + draw.stroke.color.g + draw.stroke.color.b < 383"
+              :light="draw.stroke.color.r + draw.stroke.color.g + draw.stroke.color.b >= 383">
+              <v-icon>border_style</v-icon>
+            </v-btn>
+
+            <v-card>
+              <v-card-text>
+                <v-layout align-center justify-space-between row>
+                  <v-responsive :style="{ background: `rgb(${draw.stroke.color.r}, ${draw.stroke.color.g}, ${draw.stroke.color.b})` }" :height="`${draw.stroke.size}px`"></v-responsive>
+                  <v-btn v-if="draw.stroke.has" color="teal" icon flat small dark @click="draw.stroke.has = !draw.stroke.has">
+                    <v-icon>invert_colors_off</v-icon>
+                  </v-btn>
+                  <v-btn v-else color="teal" icon flat small dark @click="draw.stroke.has = !draw.stroke.has">
+                    <v-icon>invert_colors</v-icon>
+                  </v-btn>
+                </v-layout>
+              </v-card-text>
+
+              <v-divider></v-divider>
+
+              <v-card-text>
+                <v-layout align-center justify-space-between row>
+                  <v-flex shrink>
+                    <v-slider v-model="draw.stroke.color.r" label="R" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="red"></v-slider>
+                  </v-flex>
+                  <v-flex shrink>
+                    <v-text-field class="mt-0" v-model="draw.stroke.color.r" type="number" min="0" max="255"></v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-layout align-center justify-space-between row>
+                  <v-flex shrink>
+                    <v-slider v-model="draw.stroke.color.g" label="G" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="green"></v-slider>
+                  </v-flex>
+                  <v-flex shrink>
+                    <v-text-field class="mt-0" v-model="draw.stroke.color.g" type="number" min="0" max="255"></v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-layout align-center justify-space-between row>
+                  <v-flex shrink>
+                    <v-slider v-model="draw.stroke.color.b" label="B" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="blue"></v-slider>
+                  </v-flex>
+                  <v-flex shrink>
+                    <v-text-field class="mt-0" v-model="draw.stroke.color.b" type="number" min="0" max="255"></v-text-field>
+                  </v-flex>
+                </v-layout>
+              </v-card-text>
+
+              <v-divider></v-divider>
+
+              <v-card-text>
+                <v-layout align-center justify-space-between row>
+                  <v-flex shrink>
+                <v-slider class="stroke-size" v-model="draw.stroke.size" label="Size" :thumb-size="24" always-dirty thumb-label="" :min="1" :max="30" color="teal"></v-slider>
+                  </v-flex>
+                  <v-flex shrink>
+                    <v-text-field class="mt-0" v-model="draw.stroke.size" type="number" min="1" max="30"></v-text-field>
+                  </v-flex>
+                </v-layout>
+              </v-card-text>
+            </v-card>
+          </v-menu>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <span>Fill</span>
+          <v-menu slot="activator" :close-on-content-click="false" :nudge-width="300" :nudge-bottom="45" :nudge-left="150" light>
+            <v-btn slot="activator" :color="fillColor" :disabled="!draw.active" fab small offset-y
+              :outline="!draw.fill.has"
+              :dark="draw.fill.color.r + draw.fill.color.g + draw.fill.color.b < 383"
+              :light="draw.fill.color.r + draw.fill.color.g + draw.fill.color.b >= 383">
+              <v-icon>format_color_fill</v-icon>
+            </v-btn>
+
+            <v-card>
+              <v-card-text>
+                <v-layout align-center justify-space-between row>
+                  <v-responsive :style="{ background: `rgb(${draw.fill.color.r}, ${draw.fill.color.g}, ${draw.fill.color.b})` }" height="20px"></v-responsive>
+                  <v-btn v-if="draw.fill.has" color="teal" icon flat small dark @click="draw.fill.has = !draw.fill.has">
+                    <v-icon>invert_colors_off</v-icon>
+                  </v-btn>
+                  <v-btn v-else color="teal" icon flat small dark @click="draw.fill.has = !draw.fill.has">
+                    <v-icon>invert_colors</v-icon>
+                  </v-btn>
+                </v-layout>
+              </v-card-text>
+
+              <v-divider></v-divider>
+
+              <v-card-text>
+                <v-layout align-center justify-space-between row>
+                  <v-flex shrink>
+                    <v-slider v-model="draw.fill.color.r" label="R" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="red"></v-slider>
+                  </v-flex>
+                  <v-flex shrink>
+                    <v-text-field class="mt-0" v-model="draw.fill.color.r" type="number" min="0" max="255"></v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-layout align-center justify-space-between row>
+                  <v-flex shrink>
+                    <v-slider v-model="draw.fill.color.g" label="G" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="green"></v-slider>
+                  </v-flex>
+                  <v-flex shrink>
+                    <v-text-field class="mt-0" v-model="draw.fill.color.g" type="number" min="0" max="255"></v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-layout align-center justify-space-between row>
+                  <v-flex shrink>
+                    <v-slider v-model="draw.fill.color.b" label="B" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="blue"></v-slider>
+                  </v-flex>
+                  <v-flex shrink>
+                    <v-text-field class="mt-0" v-model="draw.fill.color.b" type="number" min="0" max="255"></v-text-field>
+                  </v-flex>
+                </v-layout>
+              </v-card-text>
+            </v-card>
+          </v-menu>
+        </v-tooltip>
+
+        <v-spacer></v-spacer>
+
+        <v-tooltip bottom>
+          <span>100%</span>
+          <v-btn slot="activator" @click="draw.zoom = 100" fab flat small :style="{ visibility: draw.zoom !== 100 ? 'visible' : 'hidden' }" :disabled="!draw.active">
+            <v-icon>crop_free</v-icon>
+          </v-btn>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <span>Zoom In</span>
+          <v-btn slot="activator" @click="draw.zoom += 10" fab flat small :disabled="!draw.active">
+            <v-icon>zoom_in</v-icon>
+          </v-btn>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <span>Zoom Out</span>
+          <v-btn slot="activator" @click="draw.zoom -= 10" fab flat small :disabled="!draw.active || draw.zoom <= 10">
+            <v-icon>zoom_out</v-icon>
+          </v-btn>
+        </v-tooltip>
+
+        <v-spacer></v-spacer>
+
+        <v-tooltip bottom>
+          <span>Restart</span>
+          <v-btn slot="activator" @click="reset" fab flat small :disabled="!draw.active">
+            <v-icon>replay</v-icon>
+          </v-btn>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <span>Upload</span>
+          <v-btn slot="activator" @click="save" fab flat small :disabled="!draw.active">
+            <v-icon>save</v-icon>
+          </v-btn>
+        </v-tooltip>
+      </v-toolbar>
+    </v-layout>
+
+    <v-layout row>
+      <v-flex id="container">
+        <canvas id="draw" class="elevation-3" @mousedown.left.prevent="startPlot($event)" @mouseup.left.prevent="endPlot($event)" @mousemove="move($event)" @mouseout="endPlot($event)" :style="{zoom: `${draw.zoom}%`}" height="0" width="0"></canvas>
+      </v-flex>
+    </v-layout>
+
+    <v-dialog v-model="draw.loading.active" width="400" hide-overlay persistent>
+      <v-card color="teal" dark>
+        <v-card-text class="text-xs-center">
+          {{ draw.loading.note }}
+          <v-progress-linear class="mb-0" color="white" indeterminate></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="draw.error.active" width="400" hide-overlay persistent>
+      <v-card color="error darken-1" dark>
+        <v-card-text class="text-xs-center">
+          {{ draw.error.note }}
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="draw.uploaded.active" width="1000">
+      <v-card>
+        <v-card-title class="headline teal white--text" primary-title>Uploaded to Imgur</v-card-title>
+        <v-card-text>
+          <v-layout justify-space-between row fill-height>
+            <v-flex sm8>
+              <v-img v-if="draw.uploaded.link !== null" :src="draw.uploaded.link" :lazy-src="draw.uploaded.img" class="grey lighten-2" :height="'auto'" :width="'100%'" max-height="500" contain>
+                <v-layout slot="placeholder" fill-height align-center justify-center ma-0>
+                  <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                </v-layout>
+              </v-img>
+            </v-flex>
+            <v-flex class="ml-3" sm4>
+              <v-text-field id="img-view-link" v-model="draw.uploaded.link" color="teal" label="Image view link" readonly>
+                <v-tooltip slot="append" top>
+                  <v-btn slot="activator" @click="copyImageViewLink" color="teal" flat small icon>
+                    <v-icon>file_copy</v-icon>
+                  </v-btn>
+                  <span>Copy</span>
+                </v-tooltip>
+                <v-tooltip slot="append-outer" top>
+                  <v-btn slot="activator" @click="openImageViewLink" color="teal" flat small icon>
+                    <v-icon>launch</v-icon>
+                  </v-btn>
+                  <span>Open New Tab</span>
+                </v-tooltip>
+              </v-text-field>
+              <v-text-field id="img-delete-link" v-model="draw.uploaded.deleteLink" color="teal" label="Image delete link" readonly>
+                <v-tooltip slot="append" top>
+                  <v-btn slot="activator" @click="copyImageDeleteLink" color="teal" flat small icon>
+                    <v-icon>file_copy</v-icon>
+                  </v-btn>
+                  <span>Copy</span>
+                </v-tooltip>
+                <v-tooltip slot="append-outer" top>
+                  <v-btn slot="activator" @click="openImageDeleteLink" color="teal" flat small icon>
+                    <v-icon>launch</v-icon>
+                  </v-btn>
+                  <span>Open New Tab</span>
+                </v-tooltip>
+              </v-text-field>
+            </v-flex>
+          </v-layout>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+  </v-container>
+</template>
+
+<script>
+import Firebase from '@/services/firebase'
+import imgur from '@/services/imgur'
+
+const database = Firebase.firestore()
+
+export default {
+  name: 'imgur',
+  data () {
+    return {
+      canvas: null,
+      ctx: null,
+      history: {
+        undo: [],
+        redo: []
+      },
+      draw: {
+        active: false,
+        tool: null,
+        zoom: 100,
+        loading: {
+          active: false,
+          note: null
+        },
+        uploaded: {
+          active: false,
+          id: null,
+          img: null,
+          link: null,
+          deletehash: null,
+          deleteLink: null
+        },
+        error: {
+          active: false,
+          note: null
+        },
+        dimen: {
+          active: false,
+          startX: 0,
+          startY: 0,
+          endX: 0,
+          endY: 0
+        },
+        stroke: {
+          has: true,
+          size: 5,
+          color: {
+            r: 0,
+            g: 0,
+            b: 0
+          }
+        },
+        fill: {
+          has: true,
+          color: {
+            r: 0,
+            g: 0,
+            b: 0
+          }
+        }
+      }
+    }
+  },
+  created () {
+    if (window.localStorage.getItem('imgur-draw-stroke') !== null)
+      this.draw.stroke = JSON.parse(window.localStorage.getItem('imgur-draw-stroke'))
+
+    if (window.localStorage.getItem('imgur-draw-fill') !== null)
+      this.draw.fill = JSON.parse(window.localStorage.getItem('imgur-draw-fill'))
+  },
+  mounted () {
+    this.canvas = document.getElementById('draw')
+    this.ctx = this.canvas.getContext('2d')
+
+    document.addEventListener('paste', (e) => { this.paste(e) }, false)
+    document.addEventListener('keypress', (e) => { this.handleKeypress(e) }, false)
+  },
+  beforeDestroy () {
+    document.removeEventListener('paste', (e) => { this.paste(e) }, false)
+    document.removeEventListener('keypress', (e) => { this.handleKeypress(e) }, false)
+  },
+  watch: {
+    'draw.stroke': {
+      deep: true,
+      handler (stroke) {
+        window.localStorage.setItem('imgur-draw-stroke', JSON.stringify(stroke))
+      }
+    },
+    'draw.fill': {
+      deep: true,
+      handler (fill) {
+        window.localStorage.setItem('imgur-draw-fill', JSON.stringify(fill))
+      }
+    },
+    'draw.uploaded.active' (status) {
+      if (!status) {
+        this.draw.uploaded.id = null
+        this.draw.uploaded.img = null
+        this.draw.uploaded.link = null
+        this.draw.uploaded.deletehash = null
+        this.draw.uploaded.deleteLink = null
+      }
+    },
+    'draw.error.active' (status) {
+      if (!status) this.draw.error.note = null
+    }
+  },
+  computed: {
+    fillColor () {
+      let { r, g, b } = this.draw.fill.color
+
+      return `rgb(${r}, ${g}, ${b})`
+    },
+    strokeColor () {
+      let { r, g, b } = this.draw.stroke.color
+
+      return `rgb(${r}, ${g}, ${b})`
+    }
+  },
+  methods: {
+    paste (event) {
+      let image = new Image()
+      let items, blob, source, objURL = window.URL || window.webkitURL
+
+      image.onload = () => {
+        this.canvas.width = image.width
+        this.canvas.height = image.height
+
+        this.ctx.drawImage(image, 0, 0)
+        this.history.undo.push(this.canvas.toDataURL())
+
+        this.draw.active = true
+        this.draw.loading.active = false
+      }
+
+      this.draw.uploaded.active = false
+      this.draw.error.active = false
+      this.draw.loading.note = 'Pasting...'
+      this.draw.loading.active = true
+
+      if (event.clipboardData) {
+        items = event.clipboardData.items
+
+        if (!items) {
+          this.draw.loading.active = false
+          return
+        }
+
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].type.indexOf('image') !== -1) {
+            blob = items[i].getAsFile()
+            source = objURL.createObjectURL(blob)
+            image.src = source
+          } else this.draw.loading.active = false
+
+          event.preventDefault()
+        }
+      } else this.draw.loading.active = false
+    },
+    crop () {
+      let { startX, startY, endX, endY } = this.draw.dimen
+      let x, y, w, h, tempCanvas, tempCtx
+
+      if (startX < endX) {
+        w = Math.abs(startX - endX)
+        x = startX
+      } else {
+        w = Math.abs(startX - endX)
+        x = endX
+      }
+
+      if (startY < endY) {
+        h = Math.abs(startY - endY)
+        y = startY
+      } else {
+        h = Math.abs(startY - endY)
+        y = endY
+      }
+
+      if (w === 0 || h === 0) return
+
+      this.ctx.drawImage(this.canvas, x, y, w, h, 0, 0, w, h)
+
+      tempCanvas = document.createElement('canvas')
+      tempCanvas.width = w
+      tempCanvas.height = h
+      tempCtx = tempCanvas.getContext('2d')
+
+      tempCtx.drawImage(this.canvas, 0, 0)
+
+      this.canvas.width = w
+      this.canvas.height = h
+
+      this.ctx.drawImage(tempCanvas, 0, 0)
+
+      this.draw.tool = null
+
+      this.history.undo.push(this.canvas.toDataURL())
+
+      this.history.redo = []
+    },
+    freeHand (x, y) {
+      if (!this.draw.stroke.has) return
+
+      this.ctx.lineTo(x, y)
+
+      this.ctx.strokeStyle = this.strokeColor
+      this.ctx.lineWidth = this.draw.stroke.size
+
+      this.ctx.stroke()
+    },
+    plotLine () {
+      let { startX, startY, endX, endY } = this.draw.dimen
+
+      if (!this.draw.stroke.has) return
+
+      if (startX === endX && startY === endY) return
+
+      this.ctx.beginPath()
+      this.ctx.moveTo(startX, startY)
+      this.ctx.lineTo(endX, endY)
+      this.drawPlot()
+    },
+    plotRect () {
+      let { startX, startY, endX, endY } = this.draw.dimen
+      let x, y, w, h
+
+      if (!this.draw.stroke.has && !this.draw.fill.has) return
+
+      if (startX < endX) {
+        w = Math.abs(startX - endX)
+        x = startX
+      } else {
+        w = Math.abs(startX - endX)
+        x = endX
+      }
+
+      if (startY < endY) {
+        h = Math.abs(startY - endY)
+        y = startY
+      } else {
+        h = Math.abs(startY - endY)
+        y = endY
+      }
+
+      if (w === 0 || h === 0) return
+
+      this.ctx.beginPath()
+      this.ctx.rect(x, y, w, h)
+
+      this.drawPlot()
+    },
+    plotCirc () {
+      let { startX, startY, endX, endY } = this.draw.dimen
+      let x, y, w, h, t, r, b, l, tr, br, bl, tl
+
+      if (!this.draw.stroke.has && !this.draw.fill.has) return
+
+      if (startX < endX) {
+        w = Math.abs(startX - endX)
+        x = startX
+      } else {
+        w = Math.abs(startX - endX)
+        x = endX
+      }
+
+      if (startY < endY) {
+        h = Math.abs(startY - endY)
+        y = startY
+      } else {
+        h = Math.abs(startY - endY)
+        y = endY
+      }
+
+      if (w === 0 || h === 0) return
+
+      t = [(w / 2) + x, y]
+      r = [x + w, (h / 2) + y]
+      b = [(w / 2) + x, y + h]
+      l = [x, (h / 2) + y]
+
+      tr = [x + w, y]
+      br = [x + w, y + h]
+      bl = [x, y + h]
+      tl = [x, y]
+
+      this.ctx.beginPath()
+      this.ctx.moveTo(t[0], t[1])
+      this.ctx.quadraticCurveTo(tr[0], tr[1], r[0], r[1])
+      this.ctx.quadraticCurveTo(br[0], br[1], b[0], b[1])
+      this.ctx.quadraticCurveTo(bl[0], bl[1], l[0], l[1])
+      this.ctx.quadraticCurveTo(tl[0], tl[1], t[0], t[1])
+
+      this.drawPlot()
+    },
+    drawPlot () {
+      this.ctx.fillStyle = this.fillColor
+      this.ctx.strokeStyle = this.strokeColor
+      this.ctx.lineWidth = this.draw.stroke.size
+
+      if (this.draw.fill.has) this.ctx.fill()
+
+      if (this.draw.stroke.has) this.ctx.stroke()
+
+      this.history.undo.push(this.canvas.toDataURL())
+
+      this.history.redo = []
+    },
+    startPlot (event) {
+      if (!this.draw.tool) return
+
+      this.draw.dimen.active = true
+      this.draw.dimen.startX = this._fixZoom(event.offsetX)
+      this.draw.dimen.startY = this._fixZoom(event.offsetY)
+
+      if (this.draw.tool === 'free') {
+        this.ctx.beginPath()
+        this.ctx.moveTo(this.draw.dimen.startX, this.draw.dimen.startY)
+      }
+    },
+    endPlot (event) {
+      if (!this.draw.dimen.active) return
+
+      this.draw.dimen.endX = this._fixZoom(event.offsetX)
+      this.draw.dimen.endY = this._fixZoom(event.offsetY)
+      this.draw.dimen.active = false
+
+      switch (this.draw.tool) {
+        case 'crop':
+          this.crop()
+
+          return
+        case 'free':
+          if (this.draw.dimen.startX === this.draw.dimen.endX && this.draw.dimen.startY === this.draw.dimen.endY) return
+
+          this.history.undo.push(this.canvas.toDataURL())
+
+          this.history.redo = []
+
+          return
+        case 'line':
+          this.plotLine()
+
+          return
+        case 'rect':
+          this.plotRect()
+
+          return
+        case 'circ':
+          this.plotCirc()
+
+          return
+      }
+    },
+    undo () {
+      let image = new Image()
+
+      if (this.history.undo.length <= 1) return
+
+      image.onload = () => {
+        this.canvas.width = image.width
+        this.canvas.height = image.height
+
+        this.ctx.drawImage(image, 0, 0)
+
+        this.history.redo.push(this.history.undo[this.history.undo.length - 1])
+        this.history.undo.pop()
+      }
+
+      image.src = this.history.undo[this.history.undo.length - 2]
+    },
+    redo () {
+      let image = new Image()
+
+      if (this.history.redo.length === 0) return
+
+      image.onload = () => {
+        this.canvas.width = image.width
+        this.canvas.height = image.height
+
+        this.ctx.drawImage(image, 0, 0)
+
+        this.history.undo.push(this.history.redo[this.history.redo.length - 1])
+        this.history.redo.pop()
+      }
+
+      image.src = this.history.redo[this.history.redo.length - 1]
+    },
+    move (event) {
+      let { startX, startY } = this.draw.dimen
+      let x, y, w, h, t, r, b, l, tr, br, bl, tl, image = new Image()
+
+      if (this.draw.dimen.active) {
+        if (this.draw.tool === 'crop') {
+          image.onload = () => {
+            this.ctx.drawImage(image, 0, 0)
+
+            if (startX < this._fixZoom(event.offsetX)) {
+              w = Math.abs(startX - this._fixZoom(event.offsetX)) + 2
+              x = startX - 1
+            } else {
+              w = Math.abs(startX - this._fixZoom(event.offsetX)) + 2
+              x = this._fixZoom(event.offsetX) - 1
+            }
+
+            if (startY < this._fixZoom(event.offsetY)) {
+              h = Math.abs(startY - this._fixZoom(event.offsetY)) + 2
+              y = startY - 1
+            } else {
+              h = Math.abs(startY - this._fixZoom(event.offsetY)) + 2
+              y = this._fixZoom(event.offsetY) - 1
+            }
+
+            if (w === 0 || h === 0) return
+
+            this.ctx.beginPath()
+            this.ctx.rect(x, y, w, h)
+
+            this.ctx.strokeStyle = 'rgb(0, 0, 0)'
+            this.ctx.setLineDash([10, 5])
+            this.ctx.lineWidth = 2
+
+            this.ctx.stroke()
+          }
+
+          image.src = this.history.undo[this.history.undo.length - 1]
+        } else if (this.draw.tool === 'free')
+          this.freeHand(this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+        else if (this.draw.tool === 'line') {
+          image.onload = () => {
+            this.ctx.drawImage(image, 0, 0)
+
+            this.ctx.beginPath()
+            this.ctx.moveTo(startX, startY)
+            this.ctx.lineTo(this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+
+            this.ctx.strokeStyle = this.strokeColor
+            this.ctx.lineWidth = this.draw.stroke.size
+
+            if (startX === this._fixZoom(event.offsetX) && startY === this._fixZoom(event.offsetY)) return
+
+            if (!this.draw.stroke.has) return
+
+            if (this.draw.stroke.has) this.ctx.stroke()
+          }
+
+          image.src = this.history.undo[this.history.undo.length - 1]
+        } else if (this.draw.tool === 'rect') {
+          image.onload = () => {
+            this.ctx.drawImage(image, 0, 0)
+
+            if (!this.draw.stroke.has && !this.draw.fill.has) return
+
+            if (startX < this._fixZoom(event.offsetX)) {
+              w = Math.abs(startX - this._fixZoom(event.offsetX))
+              x = startX
+            } else {
+              w = Math.abs(startX - this._fixZoom(event.offsetX))
+              x = this._fixZoom(event.offsetX)
+            }
+
+            if (startY < this._fixZoom(event.offsetY)) {
+              h = Math.abs(startY - this._fixZoom(event.offsetY))
+              y = startY
+            } else {
+              h = Math.abs(startY - this._fixZoom(event.offsetY))
+              y = this._fixZoom(event.offsetY)
+            }
+
+            if (w === 0 || h === 0) return
+
+            this.ctx.beginPath()
+            this.ctx.rect(x, y, w, h)
+
+            this.ctx.fillStyle = this.fillColor
+            this.ctx.strokeStyle = this.strokeColor
+            this.ctx.lineWidth = this.draw.stroke.size
+
+            if (this.draw.fill.has) this.ctx.fill()
+
+            if (this.draw.stroke.has) this.ctx.stroke()
+          }
+
+          image.src = this.history.undo[this.history.undo.length - 1]
+        } else if (this.draw.tool === 'circ') {
+          image.onload = () => {
+            this.ctx.drawImage(image, 0, 0)
+
+            if (!this.draw.stroke.has && !this.draw.fill.has) return
+
+            if (startX < this._fixZoom(event.offsetX)) {
+              w = Math.abs(startX - this._fixZoom(event.offsetX))
+              x = startX
+            } else {
+              w = Math.abs(startX - this._fixZoom(event.offsetX))
+              x = this._fixZoom(event.offsetX)
+            }
+
+            if (startY < this._fixZoom(event.offsetY)) {
+              h = Math.abs(startY - this._fixZoom(event.offsetY))
+              y = startY
+            } else {
+              h = Math.abs(startY - this._fixZoom(event.offsetY))
+              y = this._fixZoom(event.offsetY)
+            }
+
+            if (w === 0 || h === 0) return
+
+            t = [(w / 2) + x, y]
+            r = [x + w, (h / 2) + y]
+            b = [(w / 2) + x, y + h]
+            l = [x, (h / 2) + y]
+
+            tr = [x + w, y]
+            br = [x + w, y + h]
+            bl = [x, y + h]
+            tl = [x, y]
+
+            this.ctx.beginPath()
+            this.ctx.moveTo(t[0], t[1])
+            this.ctx.quadraticCurveTo(tr[0], tr[1], r[0], r[1])
+            this.ctx.quadraticCurveTo(br[0], br[1], b[0], b[1])
+            this.ctx.quadraticCurveTo(bl[0], bl[1], l[0], l[1])
+            this.ctx.quadraticCurveTo(tl[0], tl[1], t[0], t[1])
+
+            this.ctx.fillStyle = this.fillColor
+            this.ctx.strokeStyle = this.strokeColor
+            this.ctx.lineWidth = this.draw.stroke.size
+
+            if (this.draw.fill.has) this.ctx.fill()
+
+            if (this.draw.stroke.has) this.ctx.stroke()
+          }
+
+          image.src = this.history.undo[this.history.undo.length - 1]
+        }
+      }
+    },
+    reset () {
+      this.canvas.width = 0
+      this.canvas.height = 0
+      this.draw.active = false
+      this.draw.tool = null
+      this.draw.zoom = 100
+      this.draw.dimen = {
+        active: false,
+        startX: 0,
+        startY: 0,
+        endX: 0,
+        endY: 0
+      }
+      this.history = {
+        undo: [],
+        redo: []
+      }
+    },
+    save () {
+      this.draw.loading.note = 'Uploading...'
+      this.draw.loading.active = true
+      this.draw.uploaded.img = this.canvas.toDataURL()
+
+      imgur({
+        url: '/image',
+        method: 'post',
+        data: {
+          image: this.canvas.toDataURL().split(',')[1],
+          type: 'base64'
+        }
+      }).then((img) => {
+        let { data: { data } } = img
+
+        this.reset()
+
+        this.draw.loading.active = false
+        this.draw.uploaded.id = data.id
+        this.draw.uploaded.link = data.link
+        this.draw.uploaded.deletehash = data.deletehash
+        this.draw.uploaded.deleteLink = 'https://imgur.com/delete/' + data.deletehash
+        this.draw.uploaded.active = true
+      }).catch((e) => {
+        let res = JSON.parse(e.request.response)
+
+        this.draw.error.note = res.data.error.message
+        this.draw.loading.active = false
+        this.draw.error.active = true
+      })
+    },
+    handleKeypress (event) {
+      if (event.ctrlKey && !event.shiftKey && event.keyCode === 25) this.redo()
+      else if (event.ctrlKey && event.shiftKey && event.keyCode === 26) this.redo()
+      else if (event.ctrlKey && !event.shiftKey && event.keyCode === 26) this.undo()
+    },
+    copyImageViewLink () {
+      document.getElementById('img-view-link').select()
+      document.execCommand('copy')
+    },
+    copyImageDeleteLink () {
+      document.getElementById('img-delete-link').select()
+      document.execCommand('copy')
+    },
+    openImageViewLink () {
+      window.open(this.draw.uploaded.link, '_blank')
+    },
+    openImageDeleteLink () {
+      window.open('https://imgur.com/delete/' + this.draw.uploaded.deletehash, '_blank')
+    },
+    _fixZoom (val) {
+      return val * 100 / this.draw.zoom
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+  #container {
+    overflow: auto;
+    max-height: calc(100vh - 200px);
+
+    canvas {
+      display: block;
+      margin: auto;
+    }
+  }
+
+  .slider-value {
+    width: 60px;
+  }
+</style>

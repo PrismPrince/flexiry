@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" persistent enable-resize-watcher fixed app>
+    <v-navigation-drawer v-model="drawer" fixed app>
       <v-list>
         <v-list-tile v-if="!auth" to="/login" disabled>
           <v-list-tile-action>
@@ -46,6 +46,15 @@
             <v-list-tile-title>File Audit</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+
+        <v-list-tile to="/imgur">
+          <v-list-tile-action>
+            <v-icon>image</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Imgur Upload</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
 
       <v-footer height="auto" fixed>
@@ -64,14 +73,14 @@
           </v-card-actions>
 
           <v-card-actions class="justify-center">
-            &copy;2018 — <strong>Flexiry</strong>
+            <v-icon>copyright</v-icon>2018 — <strong><a href="https://github.com/PrismPrince/flexiry" target="_blank">Flexiry</a></strong>
           </v-card-actions>
         </v-card>
       </v-footer>
     </v-navigation-drawer>
 
     <v-toolbar app>
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-side-icon @click.stop="toggleDrawer"></v-toolbar-side-icon>
       <v-toolbar-title>Flexiry</v-toolbar-title>
 
       <v-spacer></v-spacer>
@@ -102,7 +111,7 @@ const database = Firebase.firestore()
 messaging.usePublicVapidKey(process.env.VUE_APP_FIREBASE_PUBLIC_VAPID_KEY)
 
 export default {
-  name: 'App',
+  name: 'app',
   data () {
     return {
       auth: Firebase.auth().currentUser || {
@@ -111,7 +120,7 @@ export default {
       user: {
         role: 'user'
       },
-      drawer: true,
+      drawer: false,
       subscription: {
         status: false,
         token: window.localStorage.getItem('pushToken') || null
@@ -133,10 +142,11 @@ export default {
     })
   },
   created () {
+    this.drawer = window.localStorage.getItem('app-drawer') === 'true'
     this.subscription.status = this.subscription.token !== null
   },
   watch: {
-    'subscription.status': function () {
+    'subscription.status': () => {
       if (this.subscription.status) {
         messaging.requestPermission().then(() => messaging.getToken()).then(token => {
           window.localStorage.setItem('pushToken', token)
@@ -165,6 +175,10 @@ export default {
     }
   },
   methods: {
+    toggleDrawer () {
+      this.drawer = !this.drawer
+      window.localStorage.setItem('app-drawer', this.drawer.toString())
+    },
     logout () {
       Firebase.auth().signOut().then(() => {
         this.auth = null
