@@ -3,49 +3,49 @@
     <v-layout row>
       <v-toolbar color="teal" dark>
         <v-tooltip bottom>
-          <span>Crop</span>
+          <span>Crop <kbd>C</kbd></span>
           <v-btn slot="activator" fab flat small :outline="draw.tool === 'crop'" @click="draw.tool = draw.tool !== 'crop' ? 'crop' : null" :disabled="!draw.active">
             <v-icon>crop</v-icon>
           </v-btn>
         </v-tooltip>
 
         <v-tooltip bottom>
-          <span>Freehand</span>
+          <span>Freehand <kbd>H</kbd></span>
           <v-btn slot="activator" fab flat small :outline="draw.tool === 'free'" @click="draw.tool = draw.tool !== 'free' ? 'free' : null" :disabled="!draw.active">
             <v-icon>brush</v-icon>
           </v-btn>
         </v-tooltip>
 
         <v-tooltip bottom>
-          <span>Line</span>
+          <span>Line <kbd>L</kbd></span>
           <v-btn slot="activator" fab flat small :outline="draw.tool === 'line'" @click="draw.tool = draw.tool !== 'line' ? 'line' : null" :disabled="!draw.active">
             <v-icon>show_chart</v-icon>
           </v-btn>
         </v-tooltip>
 
         <v-tooltip bottom>
-          <span>Rectangle</span>
+          <span>Rectangle <kbd>R</kbd></span>
           <v-btn slot="activator" fab flat small :outline="draw.tool === 'rect'" @click="draw.tool = draw.tool !== 'rect' ? 'rect' : null" :disabled="!draw.active">
             <v-icon>crop_square</v-icon>
           </v-btn>
         </v-tooltip>
 
         <v-tooltip bottom>
-          <span>Ellipse</span>
+          <span>Ellipse <kbd>E</kbd></span>
           <v-btn slot="activator" fab flat small :outline="draw.tool === 'circ'" @click="draw.tool = draw.tool !== 'circ' ? 'circ' : null" :disabled="!draw.active">
             <v-icon>panorama_fish_eye</v-icon>
           </v-btn>
         </v-tooltip>
 
         <v-tooltip bottom>
-          <span>Undo</span>
+          <span>Undo <kbd>Ctrl</kbd>+<kbd>Z</kbd></span>
           <v-btn slot="activator" fab flat small @click="undo" :disabled="!draw.active || history.undo.length <= 1">
             <v-icon>undo</v-icon>
           </v-btn>
         </v-tooltip>
 
         <v-tooltip bottom>
-          <span>Redo</span>
+          <span>Redo <kbd>Ctrl</kbd>+<kbd>Y</kbd></span>
           <v-btn slot="activator" fab flat small @click="redo" :disabled="!draw.active || history.redo.length === 0">
             <v-icon>redo</v-icon>
           </v-btn>
@@ -54,8 +54,8 @@
         <v-spacer></v-spacer>
 
         <v-tooltip bottom>
-          <span>Stroke</span>
-          <v-menu slot="activator" :close-on-content-click="false" :nudge-width="300" :nudge-bottom="45" :nudge-left="150" light>
+          <span>Stroke <kbd>S</kbd></span>
+          <v-menu slot="activator" :close-on-content-click="false" :nudge-width="300" :nudge-bottom="45" :nudge-left="150" :disabled="!draw.active" light>
             <v-btn slot="activator" :color="strokeColor" :disabled="!draw.active" fab small offset-y
               :outline="!draw.stroke.has"
               :dark="draw.stroke.color.r + draw.stroke.color.g + draw.stroke.color.b < 383"
@@ -67,12 +67,12 @@
               <v-card-text>
                 <v-layout align-center justify-space-between row>
                   <v-responsive :style="{ background: `rgb(${draw.stroke.color.r}, ${draw.stroke.color.g}, ${draw.stroke.color.b})` }" :height="`${draw.stroke.size}px`"></v-responsive>
-                  <v-btn v-if="draw.stroke.has" color="teal" icon flat small dark @click="draw.stroke.has = !draw.stroke.has">
-                    <v-icon>invert_colors_off</v-icon>
-                  </v-btn>
-                  <v-btn v-else color="teal" icon flat small dark @click="draw.stroke.has = !draw.stroke.has">
-                    <v-icon>invert_colors</v-icon>
-                  </v-btn>
+                  <v-tooltip top>
+                    <span>{{ draw.stroke.has ? 'Remove stroke' : 'Add stroke' }}</span>
+                    <v-btn slot="activator" color="teal" icon flat small dark @click="draw.stroke.has = !draw.stroke.has">
+                      <v-icon>{{ draw.stroke.has ? 'invert_colors_off' : 'invert_colors' }}</v-icon>
+                    </v-btn>
+                  </v-tooltip>
                 </v-layout>
               </v-card-text>
 
@@ -122,8 +122,8 @@
         </v-tooltip>
 
         <v-tooltip bottom>
-          <span>Fill</span>
-          <v-menu slot="activator" :close-on-content-click="false" :nudge-width="300" :nudge-bottom="45" :nudge-left="150" light>
+          <span>Fill <kbd>F</kbd></span>
+          <v-menu slot="activator" :close-on-content-click="false" :nudge-width="300" :nudge-bottom="45" :nudge-left="150" :disabled="!draw.active" light>
             <v-btn slot="activator" :color="fillColor" :disabled="!draw.active" fab small offset-y
               :outline="!draw.fill.has"
               :dark="draw.fill.color.r + draw.fill.color.g + draw.fill.color.b < 383"
@@ -135,12 +135,12 @@
               <v-card-text>
                 <v-layout align-center justify-space-between row>
                   <v-responsive :style="{ background: `rgb(${draw.fill.color.r}, ${draw.fill.color.g}, ${draw.fill.color.b})` }" height="20px"></v-responsive>
-                  <v-btn v-if="draw.fill.has" color="teal" icon flat small dark @click="draw.fill.has = !draw.fill.has">
-                    <v-icon>invert_colors_off</v-icon>
-                  </v-btn>
-                  <v-btn v-else color="teal" icon flat small dark @click="draw.fill.has = !draw.fill.has">
-                    <v-icon>invert_colors</v-icon>
-                  </v-btn>
+                  <v-tooltip top>
+                    <span>{{ draw.fill.has ? 'Remove fill' : 'Add fill' }}</span>
+                    <v-btn slot="activator" color="teal" icon flat small dark @click="draw.fill.has = !draw.fill.has">
+                      <v-icon>{{ draw.fill.has ? 'invert_colors_off' : 'invert_colors' }}</v-icon>
+                    </v-btn>
+                  </v-tooltip>
                 </v-layout>
               </v-card-text>
 
@@ -179,21 +179,21 @@
         <v-spacer></v-spacer>
 
         <v-tooltip bottom>
-          <span>100%</span>
+          <span>100% <kbd>=</kbd>/<kbd>0</kbd></span>
           <v-btn slot="activator" @click="draw.zoom = 100" fab flat small :style="{ visibility: draw.zoom !== 100 ? 'visible' : 'hidden' }" :disabled="!draw.active">
             <v-icon>crop_free</v-icon>
           </v-btn>
         </v-tooltip>
 
         <v-tooltip bottom>
-          <span>Zoom In</span>
-          <v-btn slot="activator" @click="draw.zoom += 10" fab flat small :disabled="!draw.active">
+          <span>Zoom In <kbd>+</kbd>/<kbd>I</kbd></span>
+          <v-btn slot="activator" @click="draw.zoom += 10" fab flat small :disabled="!draw.active || draw.zoom >= 300">
             <v-icon>zoom_in</v-icon>
           </v-btn>
         </v-tooltip>
 
         <v-tooltip bottom>
-          <span>Zoom Out</span>
+          <span>Zoom Out <kbd>-</kbd>/<kbd>O</kbd></span>
           <v-btn slot="activator" @click="draw.zoom -= 10" fab flat small :disabled="!draw.active || draw.zoom <= 10">
             <v-icon>zoom_out</v-icon>
           </v-btn>
@@ -202,7 +202,7 @@
         <v-spacer></v-spacer>
 
         <v-tooltip bottom>
-          <span>Restart</span>
+          <span>Restart <kbd>Q</kbd></span>
           <v-btn slot="activator" @click="reset" fab flat small :disabled="!draw.active">
             <v-icon>replay</v-icon>
           </v-btn>
@@ -232,7 +232,7 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="draw.error.active" width="400" hide-overlay persistent>
+    <v-dialog v-model="draw.error.active" width="400" hide-overlay>
       <v-card color="error darken-1" dark>
         <v-card-text class="text-xs-center">
           {{ draw.error.note }}
@@ -877,9 +877,58 @@ export default {
       })
     },
     handleKeypress (event) {
+      if (!this.draw.active) return
+
       if (event.ctrlKey && !event.shiftKey && event.keyCode === 25) this.redo()
       else if (event.ctrlKey && event.shiftKey && event.keyCode === 26) this.redo()
       else if (event.ctrlKey && !event.shiftKey && event.keyCode === 26) this.undo()
+      else switch (event.keyCode) {
+        case 67:
+        case 99:
+          this.draw.tool = this.draw.tool !== 'crop' ? 'crop' : null
+          break
+        case 72:
+        case 104:
+          this.draw.tool = this.draw.tool !== 'free' ? 'free' : null
+          break
+        case 76:
+        case 108:
+          this.draw.tool = this.draw.tool !== 'line' ? 'line' : null
+          break
+        case 82:
+        case 114:
+          this.draw.tool = this.draw.tool !== 'rect' ? 'rect' : null
+          break
+        case 69:
+        case 101:
+          this.draw.tool = this.draw.tool !== 'circ' ? 'circ' : null
+          break
+        case 83:
+        case 115:
+          this.draw.stroke.has = !this.draw.stroke.has
+          break
+        case 70:
+        case 102:
+          this.draw.fill.has = !this.draw.fill.has
+          break
+        case 61:
+        case 48:
+          this.draw.zoom = 100
+          break
+        case 43:
+        case 73:
+        case 105:
+          if (this.draw.zoom < 300) this.draw.zoom += 10
+          break
+        case 45:
+        case 79:
+        case 111:
+          if (this.draw.zoom > 10) this.draw.zoom -= 10
+          break
+        case 81:
+        case 113:
+          this.reset()
+      }
     },
     copyImageViewLink () {
       document.getElementById('img-view-link').select()
