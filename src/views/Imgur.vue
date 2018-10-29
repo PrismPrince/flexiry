@@ -410,10 +410,8 @@ export default {
   },
   methods: {
     paste (event) {
-      let image = new Image()
       let items, blob, source, objURL = window.URL || window.webkitURL
-
-      image.onload = () => {
+      let image = this._initImage(() => {
         this.canvas.width = image.width
         this.canvas.height = image.height
 
@@ -422,7 +420,7 @@ export default {
 
         this.draw.active = true
         this.draw.loading.active = false
-      }
+      })
 
       this.draw.uploaded.active = false
       this.draw.error.active = false
@@ -447,434 +445,6 @@ export default {
           event.preventDefault()
         }
       } else this.draw.loading.active = false
-    },
-    crop () {
-      let { startX, startY, endX, endY } = this.draw.dimen
-      let x, y, w, h, tempCanvas, tempCtx
-
-      if (startX < endX) {
-        w = Math.abs(startX - endX)
-        x = startX
-      } else {
-        w = Math.abs(startX - endX)
-        x = endX
-      }
-
-      if (startY < endY) {
-        h = Math.abs(startY - endY)
-        y = startY
-      } else {
-        h = Math.abs(startY - endY)
-        y = endY
-      }
-
-      if (w === 0 || h === 0) return
-
-      this.ctx.drawImage(this.canvas, x, y, w, h, 0, 0, w, h)
-
-      tempCanvas = document.createElement('canvas')
-      tempCanvas.width = w
-      tempCanvas.height = h
-      tempCtx = tempCanvas.getContext('2d')
-
-      tempCtx.drawImage(this.canvas, 0, 0)
-
-      this.canvas.width = w
-      this.canvas.height = h
-
-      this.ctx.drawImage(tempCanvas, 0, 0)
-
-      this.draw.tool = null
-
-      this.history.undo.push(this.canvas.toDataURL())
-
-      this.history.redo = []
-    },
-    freeHand (x, y) {
-      if (!this.draw.stroke.has) return
-
-      this.ctx.lineTo(x, y)
-
-      this.ctx.strokeStyle = this.strokeColor
-      this.ctx.lineWidth = this.draw.stroke.size
-
-      this.ctx.stroke()
-    },
-    plotLine () {
-      let { startX, startY, endX, endY } = this.draw.dimen
-
-      if (!this.draw.stroke.has) return
-
-      if (startX === endX && startY === endY) return
-
-      this.ctx.beginPath()
-      this.ctx.moveTo(startX, startY)
-      this.ctx.lineTo(endX, endY)
-      this.drawPlot()
-    },
-    plotRect () {
-      let { startX, startY, endX, endY } = this.draw.dimen
-      let x, y, w, h
-
-      if (!this.draw.stroke.has && !this.draw.fill.has) return
-
-      if (startX < endX) {
-        w = Math.abs(startX - endX)
-        x = startX
-      } else {
-        w = Math.abs(startX - endX)
-        x = endX
-      }
-
-      if (startY < endY) {
-        h = Math.abs(startY - endY)
-        y = startY
-      } else {
-        h = Math.abs(startY - endY)
-        y = endY
-      }
-
-      if (w === 0 || h === 0) return
-
-      this.ctx.beginPath()
-      this.ctx.rect(x, y, w, h)
-
-      this.drawPlot()
-    },
-    plotCirc () {
-      let { startX, startY, endX, endY } = this.draw.dimen
-      let x, y, w, h, t, r, b, l, tr, br, bl, tl
-
-      if (!this.draw.stroke.has && !this.draw.fill.has) return
-
-      if (startX < endX) {
-        w = Math.abs(startX - endX)
-        x = startX
-      } else {
-        w = Math.abs(startX - endX)
-        x = endX
-      }
-
-      if (startY < endY) {
-        h = Math.abs(startY - endY)
-        y = startY
-      } else {
-        h = Math.abs(startY - endY)
-        y = endY
-      }
-
-      if (w === 0 || h === 0) return
-
-      t = [(w / 2) + x, y]
-      r = [x + w, (h / 2) + y]
-      b = [(w / 2) + x, y + h]
-      l = [x, (h / 2) + y]
-
-      tr = [x + w, y]
-      br = [x + w, y + h]
-      bl = [x, y + h]
-      tl = [x, y]
-
-      this.ctx.beginPath()
-      this.ctx.moveTo(t[0], t[1])
-      this.ctx.quadraticCurveTo(tr[0], tr[1], r[0], r[1])
-      this.ctx.quadraticCurveTo(br[0], br[1], b[0], b[1])
-      this.ctx.quadraticCurveTo(bl[0], bl[1], l[0], l[1])
-      this.ctx.quadraticCurveTo(tl[0], tl[1], t[0], t[1])
-
-      this.drawPlot()
-    },
-    drawPlot () {
-      this.ctx.fillStyle = this.fillColor
-      this.ctx.strokeStyle = this.strokeColor
-      this.ctx.lineWidth = this.draw.stroke.size
-
-      if (this.draw.fill.has) this.ctx.fill()
-
-      if (this.draw.stroke.has) this.ctx.stroke()
-
-      this.history.undo.push(this.canvas.toDataURL())
-
-      this.history.redo = []
-    },
-    startPlot (event) {
-      if (!this.draw.tool) return
-
-      this.draw.dimen.active = true
-      this.draw.dimen.startX = this._fixZoom(event.offsetX)
-      this.draw.dimen.startY = this._fixZoom(event.offsetY)
-
-      if (this.draw.tool === 'free') {
-        this.ctx.beginPath()
-        this.ctx.moveTo(this.draw.dimen.startX, this.draw.dimen.startY)
-      }
-    },
-    endPlot (event) {
-      if (!this.draw.dimen.active) return
-
-      this.draw.dimen.endX = this._fixZoom(event.offsetX)
-      this.draw.dimen.endY = this._fixZoom(event.offsetY)
-      this.draw.dimen.active = false
-
-      switch (this.draw.tool) {
-        case 'crop':
-          this.crop()
-
-          return
-        case 'free':
-          if (this.draw.dimen.startX === this.draw.dimen.endX && this.draw.dimen.startY === this.draw.dimen.endY) return
-
-          this.history.undo.push(this.canvas.toDataURL())
-
-          this.history.redo = []
-
-          return
-        case 'line':
-          this.plotLine()
-
-          return
-        case 'rect':
-          this.plotRect()
-
-          return
-        case 'circ':
-          this.plotCirc()
-
-          return
-      }
-    },
-    undo () {
-      let image = new Image()
-
-      if (this.history.undo.length <= 1) return
-
-      image.onload = () => {
-        this.canvas.width = image.width
-        this.canvas.height = image.height
-
-        this.ctx.drawImage(image, 0, 0)
-
-        this.history.redo.push(this.history.undo[this.history.undo.length - 1])
-        this.history.undo.pop()
-      }
-
-      image.src = this.history.undo[this.history.undo.length - 2]
-    },
-    redo () {
-      let image = new Image()
-
-      if (this.history.redo.length === 0) return
-
-      image.onload = () => {
-        this.canvas.width = image.width
-        this.canvas.height = image.height
-
-        this.ctx.drawImage(image, 0, 0)
-
-        this.history.undo.push(this.history.redo[this.history.redo.length - 1])
-        this.history.redo.pop()
-      }
-
-      image.src = this.history.redo[this.history.redo.length - 1]
-    },
-    move (event) {
-      let { startX, startY } = this.draw.dimen
-      let x, y, w, h, t, r, b, l, tr, br, bl, tl, image = new Image()
-
-      if (this.draw.dimen.active) {
-        if (this.draw.tool === 'crop') {
-          image.onload = () => {
-            this.ctx.drawImage(image, 0, 0)
-
-            if (startX < this._fixZoom(event.offsetX)) {
-              w = Math.abs(startX - this._fixZoom(event.offsetX)) + 2
-              x = startX - 1
-            } else {
-              w = Math.abs(startX - this._fixZoom(event.offsetX)) + 2
-              x = this._fixZoom(event.offsetX) - 1
-            }
-
-            if (startY < this._fixZoom(event.offsetY)) {
-              h = Math.abs(startY - this._fixZoom(event.offsetY)) + 2
-              y = startY - 1
-            } else {
-              h = Math.abs(startY - this._fixZoom(event.offsetY)) + 2
-              y = this._fixZoom(event.offsetY) - 1
-            }
-
-            if (w === 0 || h === 0) return
-
-            this.ctx.beginPath()
-            this.ctx.rect(x, y, w, h)
-
-            this.ctx.strokeStyle = 'rgb(0, 0, 0)'
-            this.ctx.setLineDash([10, 5])
-            this.ctx.lineWidth = 2
-
-            this.ctx.stroke()
-          }
-
-          image.src = this.history.undo[this.history.undo.length - 1]
-        } else if (this.draw.tool === 'free')
-          this.freeHand(this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
-        else if (this.draw.tool === 'line') {
-          image.onload = () => {
-            this.ctx.drawImage(image, 0, 0)
-
-            this.ctx.beginPath()
-            this.ctx.moveTo(startX, startY)
-            this.ctx.lineTo(this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
-
-            this.ctx.strokeStyle = this.strokeColor
-            this.ctx.lineWidth = this.draw.stroke.size
-
-            if (startX === this._fixZoom(event.offsetX) && startY === this._fixZoom(event.offsetY)) return
-
-            if (!this.draw.stroke.has) return
-
-            if (this.draw.stroke.has) this.ctx.stroke()
-          }
-
-          image.src = this.history.undo[this.history.undo.length - 1]
-        } else if (this.draw.tool === 'rect') {
-          image.onload = () => {
-            this.ctx.drawImage(image, 0, 0)
-
-            if (!this.draw.stroke.has && !this.draw.fill.has) return
-
-            if (startX < this._fixZoom(event.offsetX)) {
-              w = Math.abs(startX - this._fixZoom(event.offsetX))
-              x = startX
-            } else {
-              w = Math.abs(startX - this._fixZoom(event.offsetX))
-              x = this._fixZoom(event.offsetX)
-            }
-
-            if (startY < this._fixZoom(event.offsetY)) {
-              h = Math.abs(startY - this._fixZoom(event.offsetY))
-              y = startY
-            } else {
-              h = Math.abs(startY - this._fixZoom(event.offsetY))
-              y = this._fixZoom(event.offsetY)
-            }
-
-            if (w === 0 || h === 0) return
-
-            this.ctx.beginPath()
-            this.ctx.rect(x, y, w, h)
-
-            this.ctx.fillStyle = this.fillColor
-            this.ctx.strokeStyle = this.strokeColor
-            this.ctx.lineWidth = this.draw.stroke.size
-
-            if (this.draw.fill.has) this.ctx.fill()
-
-            if (this.draw.stroke.has) this.ctx.stroke()
-          }
-
-          image.src = this.history.undo[this.history.undo.length - 1]
-        } else if (this.draw.tool === 'circ') {
-          image.onload = () => {
-            this.ctx.drawImage(image, 0, 0)
-
-            if (!this.draw.stroke.has && !this.draw.fill.has) return
-
-            if (startX < this._fixZoom(event.offsetX)) {
-              w = Math.abs(startX - this._fixZoom(event.offsetX))
-              x = startX
-            } else {
-              w = Math.abs(startX - this._fixZoom(event.offsetX))
-              x = this._fixZoom(event.offsetX)
-            }
-
-            if (startY < this._fixZoom(event.offsetY)) {
-              h = Math.abs(startY - this._fixZoom(event.offsetY))
-              y = startY
-            } else {
-              h = Math.abs(startY - this._fixZoom(event.offsetY))
-              y = this._fixZoom(event.offsetY)
-            }
-
-            if (w === 0 || h === 0) return
-
-            t = [(w / 2) + x, y]
-            r = [x + w, (h / 2) + y]
-            b = [(w / 2) + x, y + h]
-            l = [x, (h / 2) + y]
-
-            tr = [x + w, y]
-            br = [x + w, y + h]
-            bl = [x, y + h]
-            tl = [x, y]
-
-            this.ctx.beginPath()
-            this.ctx.moveTo(t[0], t[1])
-            this.ctx.quadraticCurveTo(tr[0], tr[1], r[0], r[1])
-            this.ctx.quadraticCurveTo(br[0], br[1], b[0], b[1])
-            this.ctx.quadraticCurveTo(bl[0], bl[1], l[0], l[1])
-            this.ctx.quadraticCurveTo(tl[0], tl[1], t[0], t[1])
-
-            this.ctx.fillStyle = this.fillColor
-            this.ctx.strokeStyle = this.strokeColor
-            this.ctx.lineWidth = this.draw.stroke.size
-
-            if (this.draw.fill.has) this.ctx.fill()
-
-            if (this.draw.stroke.has) this.ctx.stroke()
-          }
-
-          image.src = this.history.undo[this.history.undo.length - 1]
-        }
-      }
-    },
-    reset () {
-      this.canvas.width = 0
-      this.canvas.height = 0
-      this.draw.active = false
-      this.draw.tool = null
-      this.draw.zoom = 100
-      this.draw.dimen = {
-        active: false,
-        startX: 0,
-        startY: 0,
-        endX: 0,
-        endY: 0
-      }
-      this.history = {
-        undo: [],
-        redo: []
-      }
-    },
-    save () {
-      this.draw.loading.note = 'Uploading...'
-      this.draw.loading.active = true
-      this.draw.uploaded.img = this.canvas.toDataURL()
-
-      imgur({
-        url: '/image',
-        method: 'post',
-        data: {
-          image: this.canvas.toDataURL().split(',')[1],
-          type: 'base64'
-        }
-      }).then((img) => {
-        let { data: { data } } = img
-
-        this.reset()
-
-        this.draw.loading.active = false
-        this.draw.uploaded.id = data.id
-        this.draw.uploaded.link = data.link
-        this.draw.uploaded.deletehash = data.deletehash
-        this.draw.uploaded.deleteLink = 'https://imgur.com/delete/' + data.deletehash
-        this.draw.uploaded.active = true
-      }).catch((e) => {
-        let res = JSON.parse(e.request.response)
-
-        this.draw.error.note = res.data.error.message
-        this.draw.loading.active = false
-        this.draw.error.active = true
-      })
     },
     handleKeypress (event) {
       if (!this.draw.active) return
@@ -930,6 +500,390 @@ export default {
           this.reset()
       }
     },
+    startPlot (event) {
+      if (!this.draw.tool) return
+
+      this.draw.dimen.active = true
+      this.draw.dimen.startX = this._fixZoom(event.offsetX)
+      this.draw.dimen.startY = this._fixZoom(event.offsetY)
+
+      this.ctx.beginPath()
+
+      if (this.draw.tool === 'free') {
+        if (!this.draw.stroke.has) return
+
+        this.ctx.moveTo(this.draw.dimen.startX, this.draw.dimen.startY)
+      }
+    },
+    move (event) {
+      let { startX, startY } = this.draw.dimen
+      let x, y, w, h, t, r, b, l, tr, br, bl, tl, image
+
+      if (this.draw.dimen.active) {
+        if (this.draw.tool === 'crop') {
+          image = this._initImage(() => {
+            this.ctx.drawImage(image, 0, 0)
+
+            ;({ x, y, w, h } = this._findXYWH(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY)))
+
+            if (w === 0 || h === 0) return
+
+            this.ctx.beginPath()
+            this.ctx.rect(x, y, w, h)
+            this.ctx.setLineDash([10, 5])
+
+            this.ctx.strokeStyle = 'rgb(34, 34, 34)'
+            this.ctx.lineWidth = 2
+
+            this.ctx.stroke()
+          })
+
+          image.src = this.history.undo[this.history.undo.length - 1]
+        } else if (this.draw.tool === 'free') {
+          if (!this.draw.stroke.has) return
+
+          this.freeHand(this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+        } else if (this.draw.tool === 'line') {
+          if (!this.draw.stroke.has) return
+
+          if (startX === this._fixZoom(event.offsetX) && startY === this._fixZoom(event.offsetY)) return
+
+          image = this._initImage(() => {
+            this.ctx.drawImage(image, 0, 0)
+            this.ctx.beginPath()
+            this.plotLine(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+
+            this.ctx.lineCap = 'round'
+            this.ctx.strokeStyle = this.strokeColor
+            this.ctx.lineWidth = this.draw.stroke.size
+
+            if (this.draw.stroke.has) this.ctx.stroke()
+          })
+
+          image.src = this.history.undo[this.history.undo.length - 1]
+        } else if (this.draw.tool === 'rect') {
+          if (!this.draw.stroke.has && !this.draw.fill.has) return
+
+          if (startX === this._fixZoom(event.offsetX) && startY === this._fixZoom(event.offsetY)) return
+
+          image = this._initImage(() => {
+            this.ctx.drawImage(image, 0, 0)
+            this.ctx.beginPath()
+            this.plotRect(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+            this.ctx.setLineDash([])
+
+            this.ctx.fillStyle = this.fillColor
+            this.ctx.strokeStyle = this.strokeColor
+            this.ctx.lineWidth = this.draw.stroke.size
+
+            if (this.draw.fill.has) this.ctx.fill()
+
+            if (this.draw.stroke.has) this.ctx.stroke()
+          })
+
+          image.src = this.history.undo[this.history.undo.length - 1]
+        } else if (this.draw.tool === 'circ') {
+          if (!this.draw.stroke.has && !this.draw.fill.has) return
+
+          if (startX === this._fixZoom(event.offsetX) && startY === this._fixZoom(event.offsetY)) return
+
+          image = this._initImage(() => {
+            this.ctx.drawImage(image, 0, 0)
+            this.ctx.beginPath()
+            this.plotCirc(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+            this.ctx.setLineDash([])
+
+            this.ctx.fillStyle = this.fillColor
+            this.ctx.strokeStyle = this.strokeColor
+            this.ctx.lineWidth = this.draw.stroke.size
+
+            if (this.draw.fill.has) this.ctx.fill()
+
+            if (this.draw.stroke.has) this.ctx.stroke()
+          })
+
+          image.src = this.history.undo[this.history.undo.length - 1]
+        }
+      }
+    },
+    endPlot (event) {
+      let startX, startY, endX, endY, image
+
+      if (!this.draw.dimen.active) return
+
+      this.draw.dimen.endX = this._fixZoom(event.offsetX)
+      this.draw.dimen.endY = this._fixZoom(event.offsetY)
+      this.draw.dimen.active = false
+
+      ;({ startX, startY, endX, endY } = this.draw.dimen)
+
+      switch (this.draw.tool) {
+        case 'crop':
+          if (startX === endX && startY === endY) return
+
+          image = this._initImage(() => {
+            this.canvas.width = image.width
+            this.canvas.height = image.height
+
+            this.ctx.drawImage(image, 0, 0)
+            this.crop(startX, startY, endX, endY)
+
+            this.history.undo.push(this.canvas.toDataURL())
+
+            this.history.redo = []
+          })
+
+          image.src = this.history.undo[this.history.undo.length - 1]
+
+          return
+        case 'free':
+          if (!this.draw.stroke.has) return
+
+          if (startX === endX && startY === endY) return
+
+          this.history.undo.push(this.canvas.toDataURL())
+
+          this.history.redo = []
+
+          return
+        case 'line':
+          if (!this.draw.stroke.has) return
+
+          if (startX === endX && startY === endY) return
+
+          image = this._initImage(() => {
+            this.canvas.width = image.width
+            this.canvas.height = image.height
+
+            this.ctx.drawImage(image, 0, 0)
+            this.plotLine(startX, startY, endX, endY)
+            this.ctx.setLineDash([])
+
+            this.ctx.lineCap = 'round'
+            this.ctx.strokeStyle = this.strokeColor
+            this.ctx.lineWidth = this.draw.stroke.size
+
+            this.ctx.stroke()
+            this.history.undo.push(this.canvas.toDataURL())
+
+            this.history.redo = []
+          })
+
+          image.src = this.history.undo[this.history.undo.length - 1]
+
+          return
+        case 'rect':
+          if (!this.draw.stroke.has && !this.draw.fill.has) return
+
+          if (startX === endX && startY === endY) return
+
+          image = this._initImage(() => {
+            this.canvas.width = image.width
+            this.canvas.height = image.height
+
+            this.ctx.drawImage(image, 0, 0)
+            this.plotRect(startX, startY, endX, endY)
+            this.ctx.setLineDash([])
+
+            this.ctx.fillStyle = this.fillColor
+            this.ctx.strokeStyle = this.strokeColor
+            this.ctx.lineWidth = this.draw.stroke.size
+
+            if (this.draw.fill.has) this.ctx.fill()
+
+            if (this.draw.stroke.has) this.ctx.stroke()
+
+            this.history.undo.push(this.canvas.toDataURL())
+
+            this.history.redo = []
+          })
+
+          image.src = this.history.undo[this.history.undo.length - 1]
+
+          return
+        case 'circ':
+          if (!this.draw.stroke.has && !this.draw.fill.has) return
+
+          if (startX === endX && startY === endY) return
+
+          image = this._initImage(() => {
+            this.canvas.width = image.width
+            this.canvas.height = image.height
+
+            this.ctx.drawImage(image, 0, 0)
+            this.plotCirc(startX, startY, endX, endY)
+            this.ctx.setLineDash([])
+
+            this.ctx.fillStyle = this.fillColor
+            this.ctx.strokeStyle = this.strokeColor
+            this.ctx.lineWidth = this.draw.stroke.size
+
+            if (this.draw.fill.has) this.ctx.fill()
+
+            if (this.draw.stroke.has) this.ctx.stroke()
+
+            this.history.undo.push(this.canvas.toDataURL())
+
+            this.history.redo = []
+          })
+
+          image.src = this.history.undo[this.history.undo.length - 1]
+
+          return
+      }
+    },
+    crop (startX, startY, endX, endY) {
+      let { x, y, w, h } = this._findXYWH(startX, startY, endX, endY)
+      let tempCanvas, tempCtx
+
+      this.ctx.drawImage(this.canvas, x, y, w, h, 0, 0, w, h)
+
+      tempCanvas = document.createElement('canvas')
+      tempCanvas.width = w
+      tempCanvas.height = h
+      tempCtx = tempCanvas.getContext('2d')
+
+      tempCtx.drawImage(this.canvas, 0, 0)
+
+      this.canvas.width = w
+      this.canvas.height = h
+
+      this.ctx.drawImage(tempCanvas, 0, 0)
+
+      this.draw.tool = null
+    },
+    freeHand (x, y) {
+      this.ctx.lineTo(x, y)
+
+      this.ctx.lineCap = 'round'
+      this.ctx.lineJoin = 'round'
+      this.ctx.strokeStyle = this.strokeColor
+      this.ctx.lineWidth = this.draw.stroke.size
+
+      this.ctx.stroke()
+    },
+    plotLine (startX, startY, endX, endY) {
+      this.ctx.moveTo(startX, startY)
+      this.ctx.lineTo(endX, endY)
+    },
+    plotRect (startX, startY, endX, endY) {
+      let { x, y, w, h } = this._findXYWH(startX, startY, endX, endY)
+
+      this.ctx.rect(x, y, w, h)
+    },
+    plotCirc (startX, startY, endX, endY) {
+      let { x, y, w, h } = this._findXYWH(startX, startY, endX, endY)
+      let t, r, b, l, tr, br, bl, tl
+
+      t = [(w / 2) + x, y]
+      r = [x + w, (h / 2) + y]
+      b = [(w / 2) + x, y + h]
+      l = [x, (h / 2) + y]
+
+      tr = [x + w, y]
+      br = [x + w, y + h]
+      bl = [x, y + h]
+      tl = [x, y]
+
+      this.ctx.beginPath()
+      this.ctx.moveTo(t[0], t[1])
+      this.ctx.quadraticCurveTo(tr[0], tr[1], r[0], r[1])
+      this.ctx.quadraticCurveTo(br[0], br[1], b[0], b[1])
+      this.ctx.quadraticCurveTo(bl[0], bl[1], l[0], l[1])
+      this.ctx.quadraticCurveTo(tl[0], tl[1], t[0], t[1])
+    },
+    drawPlot () {
+      this.ctx.fillStyle = this.fillColor
+      this.ctx.strokeStyle = this.strokeColor
+      this.ctx.lineWidth = this.draw.stroke.size
+
+      if (this.draw.fill.has) this.ctx.fill()
+
+      if (this.draw.stroke.has) this.ctx.stroke()
+    },
+    undo () {
+      let image = new Image()
+
+      if (this.history.undo.length <= 1) return
+
+      image.onload = () => {
+        this.canvas.width = image.width
+        this.canvas.height = image.height
+
+        this.ctx.drawImage(image, 0, 0)
+
+        this.history.redo.push(this.history.undo[this.history.undo.length - 1])
+        this.history.undo.pop()
+      }
+
+      image.src = this.history.undo[this.history.undo.length - 2]
+    },
+    redo () {
+      let image = new Image()
+
+      if (this.history.redo.length === 0) return
+
+      image.onload = () => {
+        this.canvas.width = image.width
+        this.canvas.height = image.height
+
+        this.ctx.drawImage(image, 0, 0)
+
+        this.history.undo.push(this.history.redo[this.history.redo.length - 1])
+        this.history.redo.pop()
+      }
+
+      image.src = this.history.redo[this.history.redo.length - 1]
+    },
+    reset () {
+      this.canvas.width = 0
+      this.canvas.height = 0
+      this.draw.active = false
+      this.draw.tool = null
+      this.draw.zoom = 100
+      this.draw.dimen = {
+        active: false,
+        startX: 0,
+        startY: 0,
+        endX: 0,
+        endY: 0
+      }
+      this.history = {
+        undo: [],
+        redo: []
+      }
+    },
+    save () {
+      this.draw.loading.note = 'Uploading...'
+      this.draw.loading.active = true
+      this.draw.uploaded.img = this.canvas.toDataURL()
+
+      imgur({
+        url: '/image',
+        method: 'post',
+        data: {
+          image: this.canvas.toDataURL().split(',')[1],
+          type: 'base64'
+        }
+      }).then((img) => {
+        let { data: { data } } = img
+
+        this.reset()
+
+        this.draw.loading.active = false
+        this.draw.uploaded.id = data.id
+        this.draw.uploaded.link = data.link
+        this.draw.uploaded.deletehash = data.deletehash
+        this.draw.uploaded.deleteLink = 'https://imgur.com/delete/' + data.deletehash
+        this.draw.uploaded.active = true
+      }).catch((e) => {
+        let res = JSON.parse(e.request.response)
+
+        this.draw.error.note = res.data.error.message
+        this.draw.loading.active = false
+        this.draw.error.active = true
+      })
+    },
     copyImageViewLink () {
       document.getElementById('img-view-link').select()
       document.execCommand('copy')
@@ -943,6 +897,23 @@ export default {
     },
     openImageDeleteLink () {
       window.open('https://imgur.com/delete/' + this.draw.uploaded.deletehash, '_blank')
+    },
+    _initImage (onload = () => {}) {
+      let image = new Image()
+
+      image.onload = onload
+
+      return image
+    },
+    _findXYWH (startX, startY, endX, endY) {
+      let x, y, w, h
+
+      x = startX < endX ? startX : endX
+      y = startY < endY ? startY : endY
+      w = Math.abs(startX - endX)
+      h = Math.abs(startY - endY)
+
+      return { x, y, w, h }
     },
     _fixZoom (val) {
       return val * 100 / this.draw.zoom
