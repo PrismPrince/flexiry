@@ -209,8 +209,16 @@
         </v-tooltip>
 
         <v-tooltip bottom>
-          <span>Upload</span>
-          <v-btn slot="activator" @click="save" fab flat small :disabled="!draw.active">
+          <span>Upload to Imgur</span>
+          <v-btn slot="activator" @click="uploadToImgur" fab flat small :disabled="!draw.active">
+            <v-icon>cloud_upload</v-icon>
+          </v-btn>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <span>Save As</span>
+          <v-btn slot="activator" @click="saveAs" fab flat small :disabled="!draw.active">
+          <!-- <v-btn slot="activator" fab flat small :disabled="!draw.active"> -->
             <v-icon>save</v-icon>
           </v-btn>
         </v-tooltip>
@@ -223,19 +231,11 @@
       </v-flex>
     </v-layout>
 
-    <v-dialog v-model="draw.loading.active" width="400" hide-overlay persistent>
-      <v-card color="teal" dark>
+    <v-dialog v-model="popup.active" width="400" hide-overlay :persistent="popup.persistent">
+      <v-card :color="popup.color" dark>
         <v-card-text class="text-xs-center">
-          {{ draw.loading.note }}
-          <v-progress-linear class="mb-0" color="white" indeterminate></v-progress-linear>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-
-    <v-dialog v-model="draw.error.active" width="400" hide-overlay>
-      <v-card color="error darken-1" dark>
-        <v-card-text class="text-xs-center">
-          {{ draw.error.note }}
+          {{ popup.note }}
+          <v-progress-linear v-if="popup.progress" class="mb-0" color="white" indeterminate></v-progress-linear>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -248,7 +248,7 @@
             <v-flex sm8>
               <v-img v-if="draw.uploaded.link !== null" :src="draw.uploaded.link" :lazy-src="draw.uploaded.img" class="grey lighten-2" :height="'auto'" :width="'100%'" max-height="500" contain>
                 <v-layout slot="placeholder" fill-height align-center justify-center ma-0>
-                  <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                  <v-progress-circular indeterminate color="grey lighten-4"></v-progress-circular>
                 </v-layout>
               </v-img>
             </v-flex>
@@ -305,14 +305,17 @@ export default {
         undo: [],
         redo: []
       },
+      popup: {
+        active: false,
+        persistent: false,
+        color: 'teal',
+        note: null,
+        progress: false
+      },
       draw: {
         active: false,
         tool: null,
         zoom: 100,
-        loading: {
-          active: false,
-          note: null
-        },
         uploaded: {
           active: false,
           id: null,
@@ -320,10 +323,6 @@ export default {
           link: null,
           deletehash: null,
           deleteLink: null
-        },
-        error: {
-          active: false,
-          note: null
         },
         dimen: {
           active: false,
@@ -383,6 +382,14 @@ export default {
         window.localStorage.setItem('imgur-draw-fill', JSON.stringify(fill))
       }
     },
+    'popup.active' (status) {
+      if (!status) {
+        this.popup.persistent = false
+        this.popup.color = 'teal'
+        this.popup.note = null
+        this.popup.progress = false
+      }
+    },
     'draw.uploaded.active' (status) {
       if (!status) {
         this.draw.uploaded.id = null
@@ -391,9 +398,6 @@ export default {
         this.draw.uploaded.deletehash = null
         this.draw.uploaded.deleteLink = null
       }
-    },
-    'draw.error.active' (status) {
-      if (!status) this.draw.error.note = null
     }
   },
   computed: {
@@ -419,19 +423,21 @@ export default {
         this.history.undo.push(this.canvas.toDataURL())
 
         this.draw.active = true
-        this.draw.loading.active = false
+        this.popup.active = false
       })
 
       this.draw.uploaded.active = false
-      this.draw.error.active = false
-      this.draw.loading.note = 'Pasting...'
-      this.draw.loading.active = true
+      this.popup.active = false
+      this.popup.persistent = true
+      this.popup.progress = true
+      this.popup.note = 'Pasting...'
+      this.popup.active = true
 
       if (event.clipboardData) {
         items = event.clipboardData.items
 
         if (!items) {
-          this.draw.loading.active = false
+          this.popup.active = false
           return
         }
 
@@ -440,11 +446,11 @@ export default {
             blob = items[i].getAsFile()
             source = objURL.createObjectURL(blob)
             image.src = source
-          } else this.draw.loading.active = false
+          } else this.popup.active = false
 
           event.preventDefault()
         }
-      } else this.draw.loading.active = false
+      } else this.popup.active = false
     },
     handleKeypress (event) {
       if (!this.draw.active) return
@@ -853,9 +859,11 @@ export default {
         redo: []
       }
     },
-    save () {
-      this.draw.loading.note = 'Uploading...'
-      this.draw.loading.active = true
+    uploadToImgur () {
+      this.popup.persistent = true
+      this.popup.progress = true
+      this.popup.note = 'Uploading...'
+      this.popup.active = true
       this.draw.uploaded.img = this.canvas.toDataURL()
 
       imgur({
@@ -870,7 +878,7 @@ export default {
 
         this.reset()
 
-        this.draw.loading.active = false
+        this.popup.active = false
         this.draw.uploaded.id = data.id
         this.draw.uploaded.link = data.link
         this.draw.uploaded.deletehash = data.deletehash
@@ -879,10 +887,36 @@ export default {
       }).catch((e) => {
         let res = JSON.parse(e.request.response)
 
-        this.draw.error.note = res.data.error.message
-        this.draw.loading.active = false
-        this.draw.error.active = true
+        this.popup.active = false
+        this.popup.color = 'error darken-1'
+        this.popup.note = res.data.error.message
+        this.popup.active = true
       })
+    },
+    saveAs () {
+      let dateStr, date = new Date()
+      let link = document.createElement('a')
+
+      dateStr = [
+        date.getFullYear(),
+        `0${date.getMonth() + 1}`.slice(-2),
+        `0${date.getDate()}`.slice(-2),
+        '-',
+        `0${date.getHours()}`.slice(-2),
+        `0${date.getMinutes()}`.slice(-2),
+        `0${date.getSeconds()}`.slice(-2)
+      ].join('')
+
+      link.href = this.canvas.toDataURL()
+      link.download = `flexiry_${dateStr}.png`
+      link.click()
+
+      this.popup.note = 'Image downloaded!'
+      this.popup.active = true
+
+      setTimeout(() => {
+        this.popup.active = false
+      }, 3000)
     },
     copyImageViewLink () {
       document.getElementById('img-view-link').select()
