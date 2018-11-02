@@ -887,10 +887,10 @@ export default {
       }).catch((e) => {
         let res = JSON.parse(e.request.response)
 
-        this.popup.active = false
+        this.popup.progress = false
+        this.popup.persistent = false
         this.popup.color = 'error darken-1'
         this.popup.note = res.data.error.message
-        this.popup.active = true
       })
     },
     saveAs () {
