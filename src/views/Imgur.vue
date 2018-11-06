@@ -218,12 +218,97 @@
         <v-tooltip bottom>
           <span>Save As</span>
           <v-btn slot="activator" @click="saveAs" fab flat small :disabled="!draw.active">
-          <!-- <v-btn slot="activator" fab flat small :disabled="!draw.active"> -->
             <v-icon>save</v-icon>
           </v-btn>
         </v-tooltip>
       </v-toolbar>
     </v-layout>
+
+    <v-slide-y-transition>
+      <v-layout v-if="!draw.active" class="text-xs-center draw-inactive" align-center row>
+        <v-flex xs4 d-flex child-flex fill-height>
+          <v-card color="deep-orange" dark>
+            <v-card-text class="display-3 font-weight-thin text-xs-center">Paste an Image</v-card-text>
+            <v-card-text class="title font-weight-light">Paste image data from clipboard to start</v-card-text>
+            <v-card-text class="font-weight-light">
+              <v-divider></v-divider>
+              <v-layout row>
+                <v-flex class="text-xs-left">
+                  <span>Copy Full Screenshot</span>
+                </v-flex>
+                <v-spacer></v-spacer>
+                <v-flex class="text-xs-right">
+                  <span><kbd>PrtScn</kbd></span>
+                </v-flex>
+              </v-layout>
+              <v-divider></v-divider>
+              <v-layout row>
+                <v-flex class="text-xs-left">
+                  <span>Copy Window Screenshot</span>
+                </v-flex>
+                <v-spacer></v-spacer>
+                <v-flex class="text-xs-right">
+                  <span><kbd>Alt</kbd> + <kbd>PrtScn</kbd></span>
+                </v-flex>
+              </v-layout>
+              <v-divider></v-divider>
+              <v-layout row>
+                <v-flex class="text-xs-left">
+                  <span>Paste</span>
+                </v-flex>
+                <v-spacer></v-spacer>
+                <v-flex class="text-xs-right">
+                  <span><kbd>Ctrl</kbd> + <kbd>V</kbd></span>
+                </v-flex>
+              </v-layout>
+              <v-divider></v-divider>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs4 d-flex child-flex fill-height>
+          <v-card color="pink" dark>
+            <v-card-text class="display-3 font-weight-thin text-xs-center">Start From Scratch</v-card-text>
+            <v-card-text class="title font-weight-light">Create a blank canvas to draw on</v-card-text>
+            <v-card-text>
+              <v-layout row>
+                <v-flex>
+                  <v-select v-model="draw.custom.size" label="Canvas Size" color="pink" :items="['720 x 480', '1024 x 768', '1024 x 1024', '1920 x 1080', '2048 x 2048', 'Custom...']" hide-details solo-inverted></v-select>
+                </v-flex>
+              </v-layout>
+
+              <v-layout v-if="draw.custom.size === 'Custom...'" row>
+                <v-flex>
+                  <v-text-field v-model="draw.custom.width" type="number" color="white" label="Width" suffix="px" hide-details></v-text-field>
+                </v-flex>
+                <v-flex>
+                  <v-text-field v-model="draw.custom.height" type="number" color="white" label="Height" suffix="px" hide-details></v-text-field>
+                </v-flex>
+              </v-layout>
+
+              <v-layout justify-center row>
+                <v-flex md8>
+                  <v-btn color="pink lighten-1" block @click="createCanvas" :disabled="draw.custom.size === 'Custom...' ? draw.custom.height <= 0 || draw.custom.width <= 0 : draw.custom.size === null">Create Canvas</v-btn>
+                </v-flex>
+              </v-layout>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs4 d-flex child-flex fill-height>
+          <v-card color="purple" dark>
+            <v-card-text class="display-3 font-weight-thin text-xs-center">History</v-card-text>
+            <v-card-text class="title font-weight-light">You can see your past uploads here
+              <v-tooltip max-width="300" :nudge-left="125" bottom>
+                <v-icon slot="activator" size="20px">help</v-icon>
+                <p>Flexiry stores your uploads to your local computer and you can manage it here!<br><br>Flexiry only keep 100 uploads for smooth experience.</p>
+              </v-tooltip>
+            </v-card-text>
+            <v-card-text class="font-weight-light">(This feature is available soon!)</v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-slide-y-transition>
 
     <v-layout row>
       <v-flex id="container">
@@ -313,6 +398,11 @@ export default {
         progress: false
       },
       draw: {
+        custom: {
+          size: null,
+          width: 0,
+          height: 0
+        },
         active: false,
         tool: null,
         zoom: 100,
@@ -413,6 +503,77 @@ export default {
     }
   },
   methods: {
+    createCanvas () {
+
+      switch (this.draw.custom.size) {
+        case '720 x 480':
+          this.canvas.width = 720
+          this.canvas.height = 480
+
+          this.ctx.rect(0, 0, 720, 480)
+
+          this.ctx.fillStyle = 'rgb(255, 255, 255)'
+
+          this.ctx.fill()
+          break
+        case '1024 x 768':
+          this.canvas.width = 1024
+          this.canvas.height = 768
+
+          this.ctx.rect(0, 0, 1024, 768)
+
+          this.ctx.fillStyle = 'rgb(255, 255, 255)'
+
+          this.ctx.fill()
+          break
+        case '1024 x 1024':
+          this.canvas.width = 1024
+          this.canvas.height = 1024
+
+          this.ctx.rect(0, 0, 1024, 1024)
+
+          this.ctx.fillStyle = 'rgb(255, 255, 255)'
+
+          this.ctx.fill()
+          break
+        case '1920 x 1080':
+          this.canvas.width = 1920
+          this.canvas.height = 1080
+
+          this.ctx.rect(0, 0, 1920, 1080)
+
+          this.ctx.fillStyle = 'rgb(255, 255, 255)'
+
+          this.ctx.fill()
+          break
+        case '2048 x 2048':
+          this.canvas.width = 2048
+          this.canvas.height = 2048
+
+          this.ctx.rect(0, 0, 2048, 2048)
+
+          this.ctx.fillStyle = 'rgb(255, 255, 255)'
+
+          this.ctx.fill()
+          break
+        case 'Custom...':
+          if (this.draw.custom.width <= 0 || this.draw.custom.height <= 0) return
+
+          this.canvas.width = this.draw.custom.width
+          this.canvas.height = this.draw.custom.height
+
+          this.ctx.rect(0, 0, this.draw.custom.width, this.draw.custom.height)
+
+          this.ctx.fillStyle = 'rgb(255, 255, 255)'
+
+          this.ctx.fill()
+          break
+      }
+
+      this.history.undo.push(this.canvas.toDataURL())
+
+      this.draw.active = true
+    },
     paste (event) {
       let items, blob, source, objURL = window.URL || window.webkitURL
       let image = this._initImage(() => {
@@ -962,9 +1123,17 @@ export default {
     max-height: calc(100vh - 200px);
 
     canvas {
+      background-image: linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+      background-repeat: repeat;
       display: block;
       margin: auto;
     }
+  }
+
+  .draw-inactive {
+    height: calc(100vh - 200px);
   }
 
   .slider-value {
