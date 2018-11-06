@@ -38,14 +38,14 @@
         </v-tooltip>
 
         <v-tooltip bottom>
-          <span>Undo <kbd>Ctrl</kbd>+<kbd>Z</kbd></span>
+          <span>Undo <kbd>Ctrl</kbd> + <kbd>Z</kbd></span>
           <v-btn slot="activator" fab flat small @click="undo" :disabled="!draw.active || history.undo.length <= 1">
             <v-icon>undo</v-icon>
           </v-btn>
         </v-tooltip>
 
         <v-tooltip bottom>
-          <span>Redo <kbd>Ctrl</kbd>+<kbd>Y</kbd></span>
+          <span>Redo <kbd>Ctrl</kbd> + <kbd>Y</kbd></span>
           <v-btn slot="activator" fab flat small @click="redo" :disabled="!draw.active || history.redo.length === 0">
             <v-icon>redo</v-icon>
           </v-btn>
@@ -179,21 +179,21 @@
         <v-spacer></v-spacer>
 
         <v-tooltip bottom>
-          <span>100% <kbd>=</kbd>/<kbd>0</kbd></span>
+          <span>100% <kbd>=</kbd> / <kbd>0</kbd></span>
           <v-btn slot="activator" @click="draw.zoom = 100" fab flat small :style="{ visibility: draw.zoom !== 100 ? 'visible' : 'hidden' }" :disabled="!draw.active">
             <v-icon>crop_free</v-icon>
           </v-btn>
         </v-tooltip>
 
         <v-tooltip bottom>
-          <span>Zoom In <kbd>+</kbd>/<kbd>I</kbd></span>
+          <span>Zoom In <kbd>+</kbd> / <kbd>I</kbd></span>
           <v-btn slot="activator" @click="draw.zoom += 10" fab flat small :disabled="!draw.active || draw.zoom >= 300">
             <v-icon>zoom_in</v-icon>
           </v-btn>
         </v-tooltip>
 
         <v-tooltip bottom>
-          <span>Zoom Out <kbd>-</kbd>/<kbd>O</kbd></span>
+          <span>Zoom Out <kbd>-</kbd> / <kbd>O</kbd></span>
           <v-btn slot="activator" @click="draw.zoom -= 10" fab flat small :disabled="!draw.active || draw.zoom <= 10">
             <v-icon>zoom_out</v-icon>
           </v-btn>
