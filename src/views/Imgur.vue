@@ -39,14 +39,14 @@
 
         <v-tooltip bottom>
           <span>Undo <kbd>Ctrl</kbd> + <kbd>Z</kbd></span>
-          <v-btn slot="activator" fab flat small @click="undo" :disabled="!draw.active || history.undo.length <= 1">
+          <v-btn slot="activator" fab flat small @click="undo" :disabled="!draw.active || draw.history.undo.length <= 1">
             <v-icon>undo</v-icon>
           </v-btn>
         </v-tooltip>
 
         <v-tooltip bottom>
           <span>Redo <kbd>Ctrl</kbd> + <kbd>Y</kbd></span>
-          <v-btn slot="activator" fab flat small @click="redo" :disabled="!draw.active || history.redo.length === 0">
+          <v-btn slot="activator" fab flat small @click="redo" :disabled="!draw.active || draw.history.redo.length === 0">
             <v-icon>redo</v-icon>
           </v-btn>
         </v-tooltip>
@@ -300,7 +300,7 @@
             <v-card-text class="display-3 font-weight-thin text-xs-center">History</v-card-text>
             <v-card-text class="title font-weight-light">You can see your past uploads here
               <v-tooltip max-width="300" :nudge-left="125" bottom>
-                <v-icon slot="activator" size="20px">help</v-icon>
+                <v-icon slot="activator" size="21px">help</v-icon>
                 <p>Flexiry stores your uploads to your local computer and you can manage it here!<br><br>Flexiry only keep 100 uploads for smooth experience.</p>
               </v-tooltip>
             </v-card-text>
@@ -386,10 +386,6 @@ export default {
     return {
       canvas: null,
       ctx: null,
-      history: {
-        undo: [],
-        redo: []
-      },
       popup: {
         active: false,
         persistent: false,
@@ -398,14 +394,18 @@ export default {
         progress: false
       },
       draw: {
+        active: false,
+        tool: null,
+        zoom: 100,
+        history: {
+          undo: [],
+          redo: []
+        },
         custom: {
           size: null,
           width: 0,
           height: 0
         },
-        active: false,
-        tool: null,
-        zoom: 100,
         uploaded: {
           active: false,
           id: null,
@@ -570,7 +570,7 @@ export default {
           break
       }
 
-      this.history.undo.push(this.canvas.toDataURL())
+      this.draw.history.undo.push(this.canvas.toDataURL())
 
       this.draw.active = true
     },
@@ -581,7 +581,7 @@ export default {
         this.canvas.height = image.height
 
         this.ctx.drawImage(image, 0, 0)
-        this.history.undo.push(this.canvas.toDataURL())
+        this.draw.history.undo.push(this.canvas.toDataURL())
 
         this.draw.active = true
         this.popup.active = false
@@ -687,69 +687,74 @@ export default {
       let x, y, w, h, t, r, b, l, tr, br, bl, tl, image
 
       if (this.draw.dimen.active) {
-        if (this.draw.tool === 'crop') {
-          image = this._initImage(() => {
-            this.ctx.drawImage(image, 0, 0)
+        switch (this.draw.tool) {
+          case 'crop':
+            image = this._initImage(() => {
+              this.ctx.drawImage(image, 0, 0)
 
-            ;({ x, y, w, h } = this._findXYWH(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY)))
+              ;({ x, y, w, h } = this._findXYWH(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY)))
 
-            if (w === 0 || h === 0) return
+              if (w === 0 || h === 0) return
 
-            this.ctx.beginPath()
-            this.ctx.rect(x, y, w, h)
-            this.ctx.setLineDash([10, 5])
+              this.ctx.beginPath()
+              this.ctx.rect(x, y, w, h)
+              this.ctx.setLineDash([10, 5])
 
-            this.ctx.strokeStyle = 'rgb(34, 34, 34)'
-            this.ctx.lineWidth = 2
+              this.ctx.strokeStyle = 'rgb(34, 34, 34)'
+              this.ctx.lineWidth = 2
 
-            this.ctx.stroke()
-          })
+              this.ctx.stroke()
+            })
 
-          image.src = this.history.undo[this.history.undo.length - 1]
-        } else if (this.draw.tool === 'free') {
-          if (!this.draw.stroke.has) return
+            image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+            break
+          case 'free':
+            if (!this.draw.stroke.has) return
 
-          this.freeHand(this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
-        } else if (this.draw.tool === 'line') {
-          if (!this.draw.stroke.has) return
+            this.freeHand(this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+            break
+          case 'line':
+            if (!this.draw.stroke.has) return
 
-          if (startX === this._fixZoom(event.offsetX) && startY === this._fixZoom(event.offsetY)) return
+            if (startX === this._fixZoom(event.offsetX) && startY === this._fixZoom(event.offsetY)) return
 
-          image = this._initImage(() => {
-            this.ctx.drawImage(image, 0, 0)
-            this.ctx.beginPath()
-            this.plotLine(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+            image = this._initImage(() => {
+              this.ctx.drawImage(image, 0, 0)
+              this.ctx.beginPath()
+              this.plotLine(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
 
-            this.ctx.lineCap = 'round'
-            this.ctx.strokeStyle = this.strokeColor
-            this.ctx.lineWidth = this.draw.stroke.size
+              this.ctx.lineCap = 'round'
+              this.ctx.strokeStyle = this.strokeColor
+              this.ctx.lineWidth = this.draw.stroke.size
 
-            if (this.draw.stroke.has) this.ctx.stroke()
-          })
+              if (this.draw.stroke.has) this.ctx.stroke()
+            })
 
-          image.src = this.history.undo[this.history.undo.length - 1]
-        } else if (this.draw.tool === 'rect') {
-          if (!this.draw.stroke.has && !this.draw.fill.has) return
+            image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+            break
+          case 'rect':
+            if (!this.draw.stroke.has && !this.draw.fill.has) return
 
-          if (startX === this._fixZoom(event.offsetX) && startY === this._fixZoom(event.offsetY)) return
+            if (startX === this._fixZoom(event.offsetX) && startY === this._fixZoom(event.offsetY)) return
 
-          image = this._initImage(() => {
-            this.ctx.drawImage(image, 0, 0)
-            this.ctx.beginPath()
-            this.plotRect(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
-            this.ctx.setLineDash([])
+            image = this._initImage(() => {
+              this.ctx.drawImage(image, 0, 0)
+              this.ctx.beginPath()
+              this.plotRect(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+              this.ctx.setLineDash([])
 
-            this.ctx.fillStyle = this.fillColor
-            this.ctx.strokeStyle = this.strokeColor
-            this.ctx.lineWidth = this.draw.stroke.size
+              this.ctx.fillStyle = this.fillColor
+              this.ctx.strokeStyle = this.strokeColor
+              this.ctx.lineWidth = this.draw.stroke.size
 
-            if (this.draw.fill.has) this.ctx.fill()
+              if (this.draw.fill.has) this.ctx.fill()
 
-            if (this.draw.stroke.has) this.ctx.stroke()
-          })
+              if (this.draw.stroke.has) this.ctx.stroke()
+            })
 
-          image.src = this.history.undo[this.history.undo.length - 1]
-        } else if (this.draw.tool === 'circ') {
+            image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+            break
+          case 'circ':
           if (!this.draw.stroke.has && !this.draw.fill.has) return
 
           if (startX === this._fixZoom(event.offsetX) && startY === this._fixZoom(event.offsetY)) return
@@ -769,7 +774,7 @@ export default {
             if (this.draw.stroke.has) this.ctx.stroke()
           })
 
-          image.src = this.history.undo[this.history.undo.length - 1]
+          image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
         }
       }
     },
@@ -795,12 +800,12 @@ export default {
             this.ctx.drawImage(image, 0, 0)
             this.crop(startX, startY, endX, endY)
 
-            this.history.undo.push(this.canvas.toDataURL())
+            this.draw.history.undo.push(this.canvas.toDataURL())
 
-            this.history.redo = []
+            this.draw.history.redo = []
           })
 
-          image.src = this.history.undo[this.history.undo.length - 1]
+          image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
 
           return
         case 'free':
@@ -808,9 +813,9 @@ export default {
 
           if (startX === endX && startY === endY) return
 
-          this.history.undo.push(this.canvas.toDataURL())
+          this.draw.history.undo.push(this.canvas.toDataURL())
 
-          this.history.redo = []
+          this.draw.history.redo = []
 
           return
         case 'line':
@@ -831,12 +836,12 @@ export default {
             this.ctx.lineWidth = this.draw.stroke.size
 
             this.ctx.stroke()
-            this.history.undo.push(this.canvas.toDataURL())
+            this.draw.history.undo.push(this.canvas.toDataURL())
 
-            this.history.redo = []
+            this.draw.history.redo = []
           })
 
-          image.src = this.history.undo[this.history.undo.length - 1]
+          image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
 
           return
         case 'rect':
@@ -860,12 +865,12 @@ export default {
 
             if (this.draw.stroke.has) this.ctx.stroke()
 
-            this.history.undo.push(this.canvas.toDataURL())
+            this.draw.history.undo.push(this.canvas.toDataURL())
 
-            this.history.redo = []
+            this.draw.history.redo = []
           })
 
-          image.src = this.history.undo[this.history.undo.length - 1]
+          image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
 
           return
         case 'circ':
@@ -889,12 +894,12 @@ export default {
 
             if (this.draw.stroke.has) this.ctx.stroke()
 
-            this.history.undo.push(this.canvas.toDataURL())
+            this.draw.history.undo.push(this.canvas.toDataURL())
 
-            this.history.redo = []
+            this.draw.history.redo = []
           })
 
-          image.src = this.history.undo[this.history.undo.length - 1]
+          image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
 
           return
       }
@@ -971,7 +976,7 @@ export default {
     undo () {
       let image = new Image()
 
-      if (this.history.undo.length <= 1) return
+      if (this.draw.history.undo.length <= 1) return
 
       image.onload = () => {
         this.canvas.width = image.width
@@ -979,16 +984,16 @@ export default {
 
         this.ctx.drawImage(image, 0, 0)
 
-        this.history.redo.push(this.history.undo[this.history.undo.length - 1])
-        this.history.undo.pop()
+        this.draw.history.redo.push(this.draw.history.undo[this.draw.history.undo.length - 1])
+        this.draw.history.undo.pop()
       }
 
-      image.src = this.history.undo[this.history.undo.length - 2]
+      image.src = this.draw.history.undo[this.draw.history.undo.length - 2]
     },
     redo () {
       let image = new Image()
 
-      if (this.history.redo.length === 0) return
+      if (this.draw.history.redo.length === 0) return
 
       image.onload = () => {
         this.canvas.width = image.width
@@ -996,11 +1001,11 @@ export default {
 
         this.ctx.drawImage(image, 0, 0)
 
-        this.history.undo.push(this.history.redo[this.history.redo.length - 1])
-        this.history.redo.pop()
+        this.draw.history.undo.push(this.draw.history.redo[this.draw.history.redo.length - 1])
+        this.draw.history.redo.pop()
       }
 
-      image.src = this.history.redo[this.history.redo.length - 1]
+      image.src = this.draw.history.redo[this.draw.history.redo.length - 1]
     },
     reset () {
       this.canvas.width = 0
@@ -1015,7 +1020,7 @@ export default {
         endX: 0,
         endY: 0
       }
-      this.history = {
+      this.draw.history = {
         undo: [],
         redo: []
       }
