@@ -2,49 +2,49 @@
   <v-container class="imgur" grid-list-lg fluid>
     <v-layout row>
       <v-toolbar color="teal" dark>
-        <v-tooltip bottom>
+        <v-tooltip bottom :disabled="!draw.active">
           <span>Crop <kbd>C</kbd></span>
           <v-btn slot="activator" fab flat small :outline="draw.tool === 'crop'" @click="draw.tool = draw.tool !== 'crop' ? 'crop' : null" :disabled="!draw.active">
             <v-icon>crop</v-icon>
           </v-btn>
         </v-tooltip>
 
-        <v-tooltip bottom>
+        <v-tooltip bottom :disabled="!draw.active">
           <span>Freehand <kbd>H</kbd></span>
           <v-btn slot="activator" fab flat small :outline="draw.tool === 'free'" @click="draw.tool = draw.tool !== 'free' ? 'free' : null" :disabled="!draw.active">
             <v-icon>brush</v-icon>
           </v-btn>
         </v-tooltip>
 
-        <v-tooltip bottom>
+        <v-tooltip bottom :disabled="!draw.active">
           <span>Line <kbd>L</kbd></span>
           <v-btn slot="activator" fab flat small :outline="draw.tool === 'line'" @click="draw.tool = draw.tool !== 'line' ? 'line' : null" :disabled="!draw.active">
             <v-icon>show_chart</v-icon>
           </v-btn>
         </v-tooltip>
 
-        <v-tooltip bottom>
+        <v-tooltip bottom :disabled="!draw.active">
           <span>Rectangle <kbd>R</kbd></span>
           <v-btn slot="activator" fab flat small :outline="draw.tool === 'rect'" @click="draw.tool = draw.tool !== 'rect' ? 'rect' : null" :disabled="!draw.active">
             <v-icon>crop_square</v-icon>
           </v-btn>
         </v-tooltip>
 
-        <v-tooltip bottom>
+        <v-tooltip bottom :disabled="!draw.active">
           <span>Ellipse <kbd>E</kbd></span>
           <v-btn slot="activator" fab flat small :outline="draw.tool === 'circ'" @click="draw.tool = draw.tool !== 'circ' ? 'circ' : null" :disabled="!draw.active">
             <v-icon>panorama_fish_eye</v-icon>
           </v-btn>
         </v-tooltip>
 
-        <v-tooltip bottom>
+        <v-tooltip bottom :disabled="!draw.active || draw.history.undo.length <= 1">
           <span>Undo <kbd>Ctrl</kbd> + <kbd>Z</kbd></span>
           <v-btn slot="activator" fab flat small @click="undo" :disabled="!draw.active || draw.history.undo.length <= 1">
             <v-icon>undo</v-icon>
           </v-btn>
         </v-tooltip>
 
-        <v-tooltip bottom>
+        <v-tooltip bottom :disabled="!draw.active || draw.history.redo.length === 0">
           <span>Redo <kbd>Ctrl</kbd> + <kbd>Y</kbd></span>
           <v-btn slot="activator" fab flat small @click="redo" :disabled="!draw.active || draw.history.redo.length === 0">
             <v-icon>redo</v-icon>
@@ -53,7 +53,7 @@
 
         <v-spacer></v-spacer>
 
-        <v-tooltip bottom>
+        <v-tooltip bottom :disabled="!draw.active">
           <span>Stroke <kbd>S</kbd></span>
           <v-menu slot="activator" :close-on-content-click="false" :nudge-width="300" :nudge-bottom="45" :nudge-left="150" :disabled="!draw.active" light>
             <v-btn slot="activator" :color="strokeColor" :disabled="!draw.active" fab small offset-y
@@ -121,7 +121,7 @@
           </v-menu>
         </v-tooltip>
 
-        <v-tooltip bottom>
+        <v-tooltip bottom :disabled="!draw.active">
           <span>Fill <kbd>F</kbd></span>
           <v-menu slot="activator" :close-on-content-click="false" :nudge-width="300" :nudge-bottom="45" :nudge-left="150" :disabled="!draw.active" light>
             <v-btn slot="activator" :color="fillColor" :disabled="!draw.active" fab small offset-y
@@ -178,21 +178,21 @@
 
         <v-spacer></v-spacer>
 
-        <v-tooltip bottom>
+        <v-tooltip bottom :disabled="!draw.active || draw.zoom === 100">
           <span>100% <kbd>=</kbd> / <kbd>0</kbd></span>
           <v-btn slot="activator" @click="draw.zoom = 100" fab flat small :style="{ visibility: draw.zoom !== 100 ? 'visible' : 'hidden' }" :disabled="!draw.active">
             <v-icon>crop_free</v-icon>
           </v-btn>
         </v-tooltip>
 
-        <v-tooltip bottom>
+        <v-tooltip bottom :disabled="!draw.active || draw.zoom >= 300">
           <span>Zoom In <kbd>+</kbd> / <kbd>I</kbd></span>
           <v-btn slot="activator" @click="draw.zoom += 10" fab flat small :disabled="!draw.active || draw.zoom >= 300">
             <v-icon>zoom_in</v-icon>
           </v-btn>
         </v-tooltip>
 
-        <v-tooltip bottom>
+        <v-tooltip bottom :disabled="!draw.active || draw.zoom <= 10">
           <span>Zoom Out <kbd>-</kbd> / <kbd>O</kbd></span>
           <v-btn slot="activator" @click="draw.zoom -= 10" fab flat small :disabled="!draw.active || draw.zoom <= 10">
             <v-icon>zoom_out</v-icon>
@@ -201,21 +201,21 @@
 
         <v-spacer></v-spacer>
 
-        <v-tooltip bottom>
+        <v-tooltip bottom :disabled="!draw.active">
           <span>Restart <kbd>Q</kbd></span>
           <v-btn slot="activator" @click="reset" fab flat small :disabled="!draw.active">
             <v-icon>replay</v-icon>
           </v-btn>
         </v-tooltip>
 
-        <v-tooltip bottom>
+        <v-tooltip bottom :disabled="!draw.active">
           <span>Upload to Imgur</span>
           <v-btn slot="activator" @click="uploadToImgur" fab flat small :disabled="!draw.active">
             <v-icon>cloud_upload</v-icon>
           </v-btn>
         </v-tooltip>
 
-        <v-tooltip bottom>
+        <v-tooltip bottom :disabled="!draw.active">
           <span>Save As</span>
           <v-btn slot="activator" @click="saveAs" fab flat small :disabled="!draw.active">
             <v-icon>save</v-icon>
@@ -300,7 +300,7 @@
             <v-card-text class="display-3 font-weight-thin text-xs-center">History</v-card-text>
             <v-card-text class="title font-weight-light">You can see your past uploads here
               <v-tooltip max-width="300" :nudge-left="125" bottom>
-                <v-icon slot="activator" size="21px">help</v-icon>
+                <v-icon slot="activator" size="21px">help_outline</v-icon>
                 <p>Flexiry stores your uploads to your local computer and you can manage it here!<br><br>Flexiry only keep 100 uploads for smooth experience.</p>
               </v-tooltip>
             </v-card-text>
@@ -312,7 +312,7 @@
 
     <v-layout row>
       <v-flex id="container">
-        <canvas id="draw" class="elevation-3" @mousedown.left.prevent="startPlot($event)" @mouseup.left.prevent="endPlot($event)" @mousemove="move($event)" @mouseout="endPlot($event)" :style="{zoom: `${draw.zoom}%`}" height="0" width="0"></canvas>
+        <canvas id="draw" class="elevation-3" @mousedown.left.prevent="startPlot($event)" @mouseup.left.prevent="endPlot($event)" @mousemove="move($event)" @mouseout="endPlot($event)" :style="{zoom: `${draw.zoom}%`, cursor: draw.tool === 'crop' ? 'crosshair' : ''}" height="0" width="0"></canvas>
       </v-flex>
     </v-layout>
 
@@ -1128,6 +1128,7 @@ export default {
     max-height: calc(100vh - 200px);
 
     canvas {
+      background-color: #eee;
       background-image: linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%);
       background-size: 20px 20px;
       background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
