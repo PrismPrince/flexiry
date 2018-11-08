@@ -296,7 +296,7 @@
         </v-flex>
 
         <v-flex xs4 d-flex child-flex fill-height>
-          <v-card color="purple" dark>
+          <v-card color="purple history-column" dark>
             <v-card-text class="display-3 font-weight-thin text-xs-center">History</v-card-text>
             <v-card-text class="title font-weight-light">You can see your past uploads here
               <v-tooltip max-width="300" :nudge-left="125" bottom>
@@ -304,7 +304,42 @@
                 <p>Flexiry stores your uploads to your local computer and you can manage it here!<br><br>Flexiry only keep 100 uploads for smooth experience.</p>
               </v-tooltip>
             </v-card-text>
-            <v-card-text class="font-weight-light">(This feature is available soon!)</v-card-text>
+            <v-card-text class="font-weight-light">
+              <v-list class="purple lighten-1 elevation-1 history-list" three-lines dark>
+                <v-scale-transition group mode="out-in">
+                  <v-list-tile v-for="(item, key) in history" :key="item.id" :href="item.link" target="_blank" avatar>
+                    <v-list-tile-avatar>
+                      <v-img :src="item.link" class="grey lighten-2" aspect-ratio="1">
+                        <v-layout slot="placeholder" fill-height align-center justify-center ma-0>
+                          <v-progress-circular indeterminate color="purple lighten-2" size="16"></v-progress-circular>
+                        </v-layout>
+                      </v-img>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                      <v-list-tile-title>{{ item.link }}</v-list-tile-title>
+                      <v-list-tile-sub-title>
+                        <span>
+                          <v-tooltip max-width="300" bottom>
+                            <span>Delete image permanently on Imgur server. You cannot undo this action.<br>If you wish to remove this on your history, feel free to click the trash icon to the right.</span>
+                            <v-icon slot="activator" class="mr-1" color="purple darken-2" size="15px">warning</v-icon>
+                          </v-tooltip>
+                          <a class="purple--text text--darken-3" :href="'https://imgur.com/delete/' + item.deletehash" target="_blank">Delete permanently</a>
+                        </span>
+                      </v-list-tile-sub-title>
+                    </v-list-tile-content>
+                    <v-list-tile-action>
+                      <v-list-tile-action-text class="caption grey--text text--lighten-2">{{ item.datetime | formatDate }}</v-list-tile-action-text>
+                      <v-tooltip left>
+                        <span>Remove from history</span>
+                        <v-btn slot="activator" @click.prevent="removeHistory(key)" small icon>
+                          <v-icon>delete</v-icon>
+                        </v-btn>
+                      </v-tooltip>
+                    </v-list-tile-action>
+                  </v-list-tile>
+                </v-scale-transition>
+              </v-list>
+            </v-card-text>
           </v-card>
         </v-flex>
       </v-layout>
@@ -333,7 +368,7 @@
             <v-flex sm8>
               <v-img v-if="draw.uploaded.link !== null" :src="draw.uploaded.link" :lazy-src="draw.uploaded.img" class="grey lighten-2" :height="'auto'" :width="'100%'" max-height="500" contain>
                 <v-layout slot="placeholder" fill-height align-center justify-center ma-0>
-                  <v-progress-circular indeterminate color="grey lighten-4"></v-progress-circular>
+                  <v-progress-circular indeterminate color="teal lighten-2"></v-progress-circular>
                 </v-layout>
               </v-img>
             </v-flex>
@@ -438,7 +473,8 @@ export default {
             b: 0
           }
         }
-      }
+      },
+      history: []
     }
   },
   created () {
@@ -447,6 +483,9 @@ export default {
 
     if (window.localStorage.getItem('imgur-draw-fill') !== null)
       this.draw.fill = JSON.parse(window.localStorage.getItem('imgur-draw-fill'))
+
+    if (window.localStorage.getItem('imgur-history') !== null)
+      this.history =  JSON.parse(window.localStorage.getItem('imgur-history'))
   },
   mounted () {
     this.canvas = document.getElementById('draw')
@@ -488,6 +527,9 @@ export default {
         this.draw.uploaded.deletehash = null
         this.draw.uploaded.deleteLink = null
       }
+    },
+    history (history) {
+      window.localStorage.setItem('imgur-history', JSON.stringify(history))
     }
   },
   computed: {
@@ -1050,6 +1092,8 @@ export default {
         this.draw.uploaded.deletehash = data.deletehash
         this.draw.uploaded.deleteLink = 'https://imgur.com/delete/' + data.deletehash
         this.draw.uploaded.active = true
+
+        this._saveHistory(data)
       }).catch((e) => {
         let res = JSON.parse(e.request.response)
 
@@ -1098,6 +1142,9 @@ export default {
     openImageDeleteLink () {
       window.open('https://imgur.com/delete/' + this.draw.uploaded.deletehash, '_blank')
     },
+    removeHistory (key) {
+      this.history.splice(key, 1)
+    },
     _initImage (onload = () => {}) {
       let image = new Image()
 
@@ -1117,6 +1164,37 @@ export default {
     },
     _fixZoom (val) {
       return val * 100 / this.draw.zoom
+    },
+    _saveHistory ({id, link, deletehash, datetime}) {
+      this.history.unshift({ id, link, deletehash, datetime })
+
+      if (this.history.length > 100) this.history.pop()
+    }
+  },
+  filters: {
+    formatDate (datetime) {
+      let hh, mm, ampm, today, date, todayObj, dateObj
+
+      today = new Date()
+      date = new Date(new Date(0).setUTCSeconds(datetime))
+      todayObj = {
+        year: today.getFullYear(),
+        month: today.getMonth() + 1,
+        date: today.getDate()
+      }
+      dateObj = {
+        year: date.getFullYear(),
+        month: date.getMonth() + 1,
+        date: date.getDate()
+      }
+
+      if (todayObj.year === dateObj.year && todayObj.month === dateObj.month && todayObj.date === dateObj.date) {
+        hh = date.getHours() > 12 ? date.getHours() - 12 : date.getHours() === 0 ? 12 : date.getHours()
+        mm = `0${date.getMinutes()}`.slice(-2)
+        ampm = date.getHours() < 12 ? 'am' : 'pm'
+
+        return `${hh}:${mm} ${ampm}`
+      } else return `${date.getMonth() + 1}/${date.getDate()}`
     }
   }
 }
@@ -1144,5 +1222,10 @@ export default {
 
   .slider-value {
     width: 60px;
+  }
+
+  .history-list {
+    max-height: 50vh;
+    overflow-y: auto;
   }
 </style>
