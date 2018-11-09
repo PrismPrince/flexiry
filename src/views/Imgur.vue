@@ -304,7 +304,8 @@
                 <p>Flexiry stores your uploads to your local computer and you can manage it here!<br><br>Flexiry only keep 100 uploads for smooth experience.</p>
               </v-tooltip>
             </v-card-text>
-            <v-card-text class="font-weight-light">
+            <v-card-text v-if="history.length === 0" class="font-weight-light">Your history is empty. Upload some images!</v-card-text>
+            <v-card-text v-else>
               <v-list class="purple lighten-1 elevation-1 history-list" three-lines dark>
                 <v-scale-transition group mode="out-in">
                   <v-list-tile v-for="(item, key) in history" :key="item.id" :href="item.link" target="_blank" avatar>
@@ -1165,7 +1166,7 @@ export default {
     _fixZoom (val) {
       return val * 100 / this.draw.zoom
     },
-    _saveHistory ({id, link, deletehash, datetime}) {
+    _saveHistory ({ id, link, deletehash, datetime }) {
       this.history.unshift({ id, link, deletehash, datetime })
 
       if (this.history.length > 100) this.history.pop()
