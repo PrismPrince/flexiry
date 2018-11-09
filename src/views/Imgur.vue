@@ -355,6 +355,15 @@
     <v-dialog v-model="popup.active" width="400" hide-overlay :persistent="popup.persistent">
       <v-card :color="popup.color" dark>
         <v-card-text class="text-xs-center">
+          <v-menu v-if="popup.color === 'error darken-1'" :close-on-content-click="false" :max-width="350" :nudge-bottom="25" :nudge-left="150" close-delay="150" open-on-hover>
+            <v-icon slot="activator" size="21px">error_outline</v-icon>
+            <v-card dark>
+              <v-card-text>
+                Oops! Sorry about that. This is probably on <a class="white--text" href="https://imgur.com" target="_blank">Imgur</a> server. Click <a class="white--text" href="https://api.imgur.com/errorhandling" target="_blank">here</a> for more info.
+              </v-card-text>
+              <v-card-text class="pt-0">If you keep on seeing this, contact the developer.</v-card-text>
+            </v-card>
+          </v-menu>
           {{ popup.note }}
           <v-progress-linear v-if="popup.progress" class="mb-0" color="white" indeterminate></v-progress-linear>
         </v-card-text>
