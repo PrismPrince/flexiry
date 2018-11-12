@@ -742,6 +742,7 @@ export default {
         switch (this.draw.tool) {
           case 'crop':
             image = this._initImage(() => {
+              this.ctx.clearRect(0, 0, image.width, image.height)
               this.ctx.drawImage(image, 0, 0)
 
               ;({ x, y, w, h } = this._findXYWH(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY)))
@@ -771,6 +772,7 @@ export default {
             if (startX === this._fixZoom(event.offsetX) && startY === this._fixZoom(event.offsetY)) return
 
             image = this._initImage(() => {
+              this.ctx.clearRect(0, 0, image.width, image.height)
               this.ctx.drawImage(image, 0, 0)
               this.ctx.beginPath()
               this.plotLine(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
@@ -790,6 +792,7 @@ export default {
             if (startX === this._fixZoom(event.offsetX) && startY === this._fixZoom(event.offsetY)) return
 
             image = this._initImage(() => {
+              this.ctx.clearRect(0, 0, image.width, image.height)
               this.ctx.drawImage(image, 0, 0)
               this.ctx.beginPath()
               this.plotRect(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
@@ -807,26 +810,28 @@ export default {
             image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
             break
           case 'circ':
-          if (!this.draw.stroke.has && !this.draw.fill.has) return
+            if (!this.draw.stroke.has && !this.draw.fill.has) return
 
-          if (startX === this._fixZoom(event.offsetX) && startY === this._fixZoom(event.offsetY)) return
+            if (startX === this._fixZoom(event.offsetX) && startY === this._fixZoom(event.offsetY)) return
 
-          image = this._initImage(() => {
-            this.ctx.drawImage(image, 0, 0)
-            this.ctx.beginPath()
-            this.plotCirc(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
-            this.ctx.setLineDash([])
+            image = this._initImage(() => {
+              this.ctx.clearRect(0, 0, image.width, image.height)
+              this.ctx.drawImage(image, 0, 0)
+              this.ctx.beginPath()
+              this.plotCirc(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+              this.ctx.setLineDash([])
 
-            this.ctx.fillStyle = this.fillColor
-            this.ctx.strokeStyle = this.strokeColor
-            this.ctx.lineWidth = this.draw.stroke.size
+              this.ctx.fillStyle = this.fillColor
+              this.ctx.strokeStyle = this.strokeColor
+              this.ctx.lineWidth = this.draw.stroke.size
 
-            if (this.draw.fill.has) this.ctx.fill()
+              if (this.draw.fill.has) this.ctx.fill()
 
-            if (this.draw.stroke.has) this.ctx.stroke()
-          })
+              if (this.draw.stroke.has) this.ctx.stroke()
+            })
 
-          image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+            image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+            break
         }
       }
     },
@@ -849,6 +854,7 @@ export default {
             this.canvas.width = image.width
             this.canvas.height = image.height
 
+            this.ctx.clearRect(0, 0, image.width, image.height)
             this.ctx.drawImage(image, 0, 0)
             this.crop(startX, startY, endX, endY)
 
@@ -879,6 +885,7 @@ export default {
             this.canvas.width = image.width
             this.canvas.height = image.height
 
+            this.ctx.clearRect(0, 0, image.width, image.height)
             this.ctx.drawImage(image, 0, 0)
             this.plotLine(startX, startY, endX, endY)
             this.ctx.setLineDash([])
@@ -905,6 +912,7 @@ export default {
             this.canvas.width = image.width
             this.canvas.height = image.height
 
+            this.ctx.clearRect(0, 0, image.width, image.height)
             this.ctx.drawImage(image, 0, 0)
             this.plotRect(startX, startY, endX, endY)
             this.ctx.setLineDash([])
@@ -934,6 +942,7 @@ export default {
             this.canvas.width = image.width
             this.canvas.height = image.height
 
+            this.ctx.clearRect(0, 0, image.width, image.height)
             this.ctx.drawImage(image, 0, 0)
             this.plotCirc(startX, startY, endX, endY)
             this.ctx.setLineDash([])
@@ -960,18 +969,17 @@ export default {
       let { x, y, w, h } = this._findXYWH(startX, startY, endX, endY)
       let tempCanvas, tempCtx
 
-      this.ctx.drawImage(this.canvas, x, y, w, h, 0, 0, w, h)
-
       tempCanvas = document.createElement('canvas')
       tempCanvas.width = w
       tempCanvas.height = h
       tempCtx = tempCanvas.getContext('2d')
 
-      tempCtx.drawImage(this.canvas, 0, 0)
+      tempCtx.drawImage(this.canvas, x, y, w, h, 0, 0, w, h)
 
       this.canvas.width = w
       this.canvas.height = h
 
+      this.ctx.clearRect(0, 0, w, h)
       this.ctx.drawImage(tempCanvas, 0, 0)
 
       this.draw.tool = null
