@@ -66,7 +66,7 @@
             <v-card>
               <v-card-text>
                 <v-layout align-center justify-space-between row>
-                  <v-responsive :style="{ background: `rgb(${draw.stroke.color.r}, ${draw.stroke.color.g}, ${draw.stroke.color.b})` }" :height="`${draw.stroke.size}px`"></v-responsive>
+                  <v-responsive class="checkered-transparent elevation-1" :style="{ background: draw.stroke.has ? `rgb(${draw.stroke.color.r}, ${draw.stroke.color.g}, ${draw.stroke.color.b})` : '' }" :height="`${draw.stroke.size}px`"></v-responsive>
                   <v-tooltip top>
                     <span>{{ draw.stroke.has ? 'Remove stroke' : 'Add stroke' }}</span>
                     <v-btn slot="activator" color="teal" icon flat small dark @click="draw.stroke.has = !draw.stroke.has">
@@ -80,26 +80,26 @@
 
               <v-card-text>
                 <v-layout align-center justify-space-between row>
-                  <v-flex shrink>
+                  <v-flex xs9>
                     <v-slider v-model="draw.stroke.color.r" label="R" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="red"></v-slider>
                   </v-flex>
-                  <v-flex shrink>
+                  <v-flex class="ml-3" xs3>
                     <v-text-field class="mt-0" v-model="draw.stroke.color.r" type="number" min="0" max="255"></v-text-field>
                   </v-flex>
                 </v-layout>
                 <v-layout align-center justify-space-between row>
-                  <v-flex shrink>
+                  <v-flex xs9>
                     <v-slider v-model="draw.stroke.color.g" label="G" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="green"></v-slider>
                   </v-flex>
-                  <v-flex shrink>
+                  <v-flex class="ml-3" xs3>
                     <v-text-field class="mt-0" v-model="draw.stroke.color.g" type="number" min="0" max="255"></v-text-field>
                   </v-flex>
                 </v-layout>
                 <v-layout align-center justify-space-between row>
-                  <v-flex shrink>
+                  <v-flex xs9>
                     <v-slider v-model="draw.stroke.color.b" label="B" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="blue"></v-slider>
                   </v-flex>
-                  <v-flex shrink>
+                  <v-flex class="ml-3" xs3>
                     <v-text-field class="mt-0" v-model="draw.stroke.color.b" type="number" min="0" max="255"></v-text-field>
                   </v-flex>
                 </v-layout>
@@ -109,10 +109,10 @@
 
               <v-card-text>
                 <v-layout align-center justify-space-between row>
-                  <v-flex shrink>
+                  <v-flex xs9>
                 <v-slider class="stroke-size" v-model="draw.stroke.size" label="Size" :thumb-size="24" always-dirty thumb-label="" :min="1" :max="30" color="teal"></v-slider>
                   </v-flex>
-                  <v-flex shrink>
+                  <v-flex class="ml-3" xs3>
                     <v-text-field class="mt-0" v-model="draw.stroke.size" type="number" min="1" max="30"></v-text-field>
                   </v-flex>
                 </v-layout>
@@ -134,7 +134,7 @@
             <v-card>
               <v-card-text>
                 <v-layout align-center justify-space-between row>
-                  <v-responsive :style="{ background: `rgb(${draw.fill.color.r}, ${draw.fill.color.g}, ${draw.fill.color.b})` }" height="20px"></v-responsive>
+                  <v-responsive class="checkered-transparent elevation-1" :style="{ background: draw.fill.has ? `rgb(${draw.fill.color.r}, ${draw.fill.color.g}, ${draw.fill.color.b})` : '' }" height="20px"></v-responsive>
                   <v-tooltip top>
                     <span>{{ draw.fill.has ? 'Remove fill' : 'Add fill' }}</span>
                     <v-btn slot="activator" color="teal" icon flat small dark @click="draw.fill.has = !draw.fill.has">
@@ -148,26 +148,26 @@
 
               <v-card-text>
                 <v-layout align-center justify-space-between row>
-                  <v-flex shrink>
+                  <v-flex xs9>
                     <v-slider v-model="draw.fill.color.r" label="R" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="red"></v-slider>
                   </v-flex>
-                  <v-flex shrink>
+                  <v-flex class="ml-3" xs3>
                     <v-text-field class="mt-0" v-model="draw.fill.color.r" type="number" min="0" max="255"></v-text-field>
                   </v-flex>
                 </v-layout>
                 <v-layout align-center justify-space-between row>
-                  <v-flex shrink>
+                  <v-flex xs9>
                     <v-slider v-model="draw.fill.color.g" label="G" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="green"></v-slider>
                   </v-flex>
-                  <v-flex shrink>
+                  <v-flex class="ml-3" xs3>
                     <v-text-field class="mt-0" v-model="draw.fill.color.g" type="number" min="0" max="255"></v-text-field>
                   </v-flex>
                 </v-layout>
                 <v-layout align-center justify-space-between row>
-                  <v-flex shrink>
+                  <v-flex xs9>
                     <v-slider v-model="draw.fill.color.b" label="B" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="blue"></v-slider>
                   </v-flex>
-                  <v-flex shrink>
+                  <v-flex class="ml-3" xs3>
                     <v-text-field class="mt-0" v-model="draw.fill.color.b" type="number" min="0" max="255"></v-text-field>
                   </v-flex>
                 </v-layout>
@@ -226,7 +226,7 @@
 
     <v-slide-y-transition>
       <v-layout v-if="!draw.active" class="text-xs-center draw-inactive" align-center row>
-        <v-flex xs4 d-flex child-flex fill-height>
+        <v-flex xs4 d-flex fill-height>
           <v-card color="deep-orange" dark>
             <v-card-text class="display-3 font-weight-thin text-xs-center">Paste an Image</v-card-text>
             <v-card-text class="title font-weight-light">Paste image data from clipboard to start</v-card-text>
@@ -266,7 +266,7 @@
           </v-card>
         </v-flex>
 
-        <v-flex xs4 d-flex child-flex fill-height>
+        <v-flex xs4 d-flex fill-height>
           <v-card color="pink" dark>
             <v-card-text class="display-3 font-weight-thin text-xs-center">Start From Scratch</v-card-text>
             <v-card-text class="title font-weight-light">Create a blank canvas to draw on</v-card-text>
@@ -277,17 +277,74 @@
                 </v-flex>
               </v-layout>
 
-              <v-layout v-if="draw.custom.size === 'Custom...'" row>
-                <v-flex>
+              <v-layout v-if="draw.custom.size === 'Custom...'" row wrap>
+                <v-flex xs12 md6>
                   <v-text-field v-model="draw.custom.width" type="number" color="white" label="Width" suffix="px" hide-details></v-text-field>
                 </v-flex>
-                <v-flex>
+                <v-flex xs12 md6>
                   <v-text-field v-model="draw.custom.height" type="number" color="white" label="Height" suffix="px" hide-details></v-text-field>
                 </v-flex>
               </v-layout>
 
-              <v-layout justify-center row>
-                <v-flex md8>
+              <v-layout justify-center row wrap>
+                <v-flex xs12 md6>
+                  <v-tooltip bottom>
+                    <span>Canvas Background</span>
+                    <v-menu slot="activator" :close-on-content-click="false" :nudge-width="80" :nudge-bottom="45" :nudge-left="40" full-width light>
+                      <v-btn slot="activator" :color="`rgb(${draw.custom.background.color.r}, ${draw.custom.background.color.g}, ${draw.custom.background.color.b})`" block
+                        :outline="!draw.custom.background.has"
+                        :dark="draw.custom.background.color.r + draw.custom.background.color.g + draw.custom.background.color.b < 383"
+                        :light="draw.custom.background.color.r + draw.custom.background.color.g + draw.custom.background.color.b >= 383">
+                        <v-icon class="mr-1">format_color_fill</v-icon>Canvas Background
+                      </v-btn>
+
+                      <v-card>
+                        <v-card-text>
+                          <v-layout align-center justify-space-between row>
+                            <v-responsive class="checkered-transparent elevation-1" :style="{ background: draw.custom.background.has ? `rgb(${draw.custom.background.color.r}, ${draw.custom.background.color.g}, ${draw.custom.background.color.b})` : '' }" height="20px"></v-responsive>
+                            <v-tooltip top>
+                              <span>{{ draw.custom.background.has ? 'Remove background' : 'Add background' }}</span>
+                              <v-btn slot="activator" color="teal" icon flat small dark @click="draw.custom.background.has = !draw.custom.background.has">
+                                <v-icon>{{ draw.custom.background.has ? 'invert_colors_off' : 'invert_colors' }}</v-icon>
+                              </v-btn>
+                            </v-tooltip>
+                          </v-layout>
+                        </v-card-text>
+
+                        <v-divider></v-divider>
+
+                        <v-card-text>
+                          <v-layout align-center justify-space-between row>
+                            <v-flex xs9>
+                              <v-slider v-model="draw.custom.background.color.r" label="R" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="red"></v-slider>
+                            </v-flex>
+                            <v-flex class="ml-3" xs3>
+                              <v-text-field class="mt-0" v-model="draw.custom.background.color.r" type="number" min="0" max="255"></v-text-field>
+                            </v-flex>
+                          </v-layout>
+                          <v-layout align-center justify-space-between row>
+                            <v-flex xs9>
+                              <v-slider v-model="draw.custom.background.color.g" label="G" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="green"></v-slider>
+                            </v-flex>
+                            <v-flex class="ml-3" xs3>
+                              <v-text-field class="mt-0" v-model="draw.custom.background.color.g" type="number" min="0" max="255"></v-text-field>
+                            </v-flex>
+                          </v-layout>
+                          <v-layout align-center justify-space-between row>
+                            <v-flex xs9>
+                              <v-slider v-model="draw.custom.background.color.b" label="B" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="blue"></v-slider>
+                            </v-flex>
+                            <v-flex class="ml-3" xs3>
+                              <v-text-field class="mt-0" v-model="draw.custom.background.color.b" type="number" min="0" max="255"></v-text-field>
+                            </v-flex>
+                          </v-layout>
+                        </v-card-text>
+                      </v-card>
+                    </v-menu>
+                  </v-tooltip>
+                </v-flex>
+
+                <v-flex xs12 md6>
                   <v-btn color="pink lighten-1" block @click="createCanvas" :disabled="draw.custom.size === 'Custom...' ? draw.custom.height <= 0 || draw.custom.width <= 0 : draw.custom.size === null">Create Canvas</v-btn>
                 </v-flex>
               </v-layout>
@@ -295,7 +352,7 @@
           </v-card>
         </v-flex>
 
-        <v-flex xs4 d-flex child-flex fill-height>
+        <v-flex xs4 d-flex fill-height>
           <v-card color="purple history-column" dark>
             <v-card-text class="display-3 font-weight-thin text-xs-center">History</v-card-text>
             <v-card-text class="title font-weight-light">You can see your past uploads here
@@ -348,7 +405,7 @@
 
     <v-layout row>
       <v-flex id="container">
-        <canvas id="draw" class="elevation-3" @mousedown.left.prevent="startPlot($event)" @mouseup.left.prevent="endPlot($event)" @mousemove="move($event)" @mouseout="endPlot($event)" :style="{zoom: `${draw.zoom}%`, cursor: draw.tool === 'crop' ? 'crosshair' : ''}" height="0" width="0"></canvas>
+        <canvas id="draw" class="checkered-transparent elevation-3" @mousedown.left.prevent="startPlot($event)" @mouseup.left.prevent="endPlot($event)" @mousemove="move($event)" @mouseout="endPlot($event)" :style="{zoom: `${draw.zoom}%`, cursor: draw.tool === 'crop' ? 'crosshair' : ''}" height="0" width="0"></canvas>
       </v-flex>
     </v-layout>
 
@@ -449,7 +506,15 @@ export default {
         custom: {
           size: null,
           width: 0,
-          height: 0
+          height: 0,
+          background: {
+            has: true,
+            color: {
+              r: 255,
+              g: 255,
+              b: 255
+            }
+          }
         },
         uploaded: {
           active: false,
@@ -559,66 +624,24 @@ export default {
 
       switch (this.draw.custom.size) {
         case '720 x 480':
-          this.canvas.width = 720
-          this.canvas.height = 480
-
-          this.ctx.rect(0, 0, 720, 480)
-
-          this.ctx.fillStyle = 'rgb(255, 255, 255)'
-
-          this.ctx.fill()
+          this._drawCanvas(720, 480)
           break
         case '1024 x 768':
-          this.canvas.width = 1024
-          this.canvas.height = 768
-
-          this.ctx.rect(0, 0, 1024, 768)
-
-          this.ctx.fillStyle = 'rgb(255, 255, 255)'
-
-          this.ctx.fill()
+          this._drawCanvas(1024, 768)
           break
         case '1024 x 1024':
-          this.canvas.width = 1024
-          this.canvas.height = 1024
-
-          this.ctx.rect(0, 0, 1024, 1024)
-
-          this.ctx.fillStyle = 'rgb(255, 255, 255)'
-
-          this.ctx.fill()
+          this._drawCanvas(1024, 1024)
           break
         case '1920 x 1080':
-          this.canvas.width = 1920
-          this.canvas.height = 1080
-
-          this.ctx.rect(0, 0, 1920, 1080)
-
-          this.ctx.fillStyle = 'rgb(255, 255, 255)'
-
-          this.ctx.fill()
+          this._drawCanvas(1920, 1080)
           break
         case '2048 x 2048':
-          this.canvas.width = 2048
-          this.canvas.height = 2048
-
-          this.ctx.rect(0, 0, 2048, 2048)
-
-          this.ctx.fillStyle = 'rgb(255, 255, 255)'
-
-          this.ctx.fill()
+          this._drawCanvas(2048, 2048)
           break
         case 'Custom...':
           if (this.draw.custom.width <= 0 || this.draw.custom.height <= 0) return
 
-          this.canvas.width = this.draw.custom.width
-          this.canvas.height = this.draw.custom.height
-
-          this.ctx.rect(0, 0, this.draw.custom.width, this.draw.custom.height)
-
-          this.ctx.fillStyle = 'rgb(255, 255, 255)'
-
-          this.ctx.fill()
+          this._drawCanvas(this.draw.custom.width, this.draw.custom.height)
           break
       }
 
@@ -1170,6 +1193,21 @@ export default {
 
       return image
     },
+    _drawCanvas (width, height) {
+      let { r, g, b } = this.draw.custom.background.color
+
+      this.canvas.width = width
+      this.canvas.height = height
+
+      if (this.draw.custom.background.has) {
+        this.ctx.rect(0, 0, width, height)
+
+        this.ctx.fillStyle = `rgb(${r}, ${g}, ${b})`
+
+        this.ctx.fill()
+      }
+
+    },
     _findXYWH (startX, startY, endX, endY) {
       let x, y, w, h
 
@@ -1222,16 +1260,19 @@ export default {
   #container {
     overflow: auto;
     max-height: calc(100vh - 200px);
+  }
 
-    canvas {
-      background-color: #eee;
-      background-image: linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%);
-      background-size: 20px 20px;
-      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-      background-repeat: repeat;
-      display: block;
-      margin: auto;
-    }
+  #draw {
+    display: block;
+    margin: auto;
+  }
+
+  .checkered-transparent {
+    background-color: #eee;
+    background-image: linear-gradient(45deg, #aaa 25%, transparent 25%), linear-gradient(-45deg, #aaa 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #aaa 75%), linear-gradient(-45deg, transparent 75%, #aaa 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    background-repeat: repeat;
   }
 
   .draw-inactive {
