@@ -66,7 +66,7 @@
             <v-card>
               <v-card-text>
                 <v-layout align-center justify-space-between row>
-                  <v-responsive class="elevation-1" :style="{ background: `rgb(${draw.stroke.color.r}, ${draw.stroke.color.g}, ${draw.stroke.color.b})` }" :height="`${draw.stroke.size}px`"></v-responsive>
+                  <v-responsive class="checkered-transparent elevation-1" :style="{ background: draw.stroke.has ? `rgb(${draw.stroke.color.r}, ${draw.stroke.color.g}, ${draw.stroke.color.b})` : '' }" :height="`${draw.stroke.size}px`"></v-responsive>
                   <v-tooltip top>
                     <span>{{ draw.stroke.has ? 'Remove stroke' : 'Add stroke' }}</span>
                     <v-btn slot="activator" color="teal" icon flat small dark @click="draw.stroke.has = !draw.stroke.has">
@@ -134,7 +134,7 @@
             <v-card>
               <v-card-text>
                 <v-layout align-center justify-space-between row>
-                  <v-responsive class="elevation-1" :style="{ background: `rgb(${draw.fill.color.r}, ${draw.fill.color.g}, ${draw.fill.color.b})` }" height="20px"></v-responsive>
+                  <v-responsive class="checkered-transparent elevation-1" :style="{ background: draw.fill.has ? `rgb(${draw.fill.color.r}, ${draw.fill.color.g}, ${draw.fill.color.b})` : '' }" height="20px"></v-responsive>
                   <v-tooltip top>
                     <span>{{ draw.fill.has ? 'Remove fill' : 'Add fill' }}</span>
                     <v-btn slot="activator" color="teal" icon flat small dark @click="draw.fill.has = !draw.fill.has">
@@ -405,7 +405,7 @@
 
     <v-layout row>
       <v-flex id="container">
-        <canvas id="draw" class="elevation-3" @mousedown.left.prevent="startPlot($event)" @mouseup.left.prevent="endPlot($event)" @mousemove="move($event)" @mouseout="endPlot($event)" :style="{zoom: `${draw.zoom}%`, cursor: draw.tool === 'crop' ? 'crosshair' : ''}" height="0" width="0"></canvas>
+        <canvas id="draw" class="checkered-transparent elevation-3" @mousedown.left.prevent="startPlot($event)" @mouseup.left.prevent="endPlot($event)" @mousemove="move($event)" @mouseout="endPlot($event)" :style="{zoom: `${draw.zoom}%`, cursor: draw.tool === 'crop' ? 'crosshair' : ''}" height="0" width="0"></canvas>
       </v-flex>
     </v-layout>
 
@@ -1260,16 +1260,11 @@ export default {
   #container {
     overflow: auto;
     max-height: calc(100vh - 200px);
+  }
 
-    canvas {
-      background-color: #eee;
-      background-image: linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%);
-      background-size: 20px 20px;
-      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-      background-repeat: repeat;
-      display: block;
-      margin: auto;
-    }
+  #draw {
+    display: block;
+    margin: auto;
   }
 
   .checkered-transparent {
