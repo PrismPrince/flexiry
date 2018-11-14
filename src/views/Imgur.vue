@@ -279,10 +279,10 @@
 
               <v-layout v-if="draw.custom.size === 'Custom...'" row wrap>
                 <v-flex xs12 md6>
-                  <v-text-field v-model="draw.custom.width" type="number" color="white" label="Width" suffix="px" hide-details></v-text-field>
+                  <v-text-field v-model="draw.custom.width" type="number" min="1" color="white" label="Width" suffix="px" hide-details></v-text-field>
                 </v-flex>
                 <v-flex xs12 md6>
-                  <v-text-field v-model="draw.custom.height" type="number" color="white" label="Height" suffix="px" hide-details></v-text-field>
+                  <v-text-field v-model="draw.custom.height" type="number" min="1" color="white" label="Height" suffix="px" hide-details></v-text-field>
                 </v-flex>
               </v-layout>
 
