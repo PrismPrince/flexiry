@@ -361,6 +361,12 @@
             <v-card-text v-if="history.length === 0" class="font-weight-light">Your history is empty. Upload some images!</v-card-text>
             <v-card-text v-else>
               <v-list class="purple lighten-1 elevation-1 history-list" three-lines dark>
+                <v-list-tile>
+                  <v-list-tile-content>Upload History</v-list-tile-content>
+                  <v-list-tile-action>
+                    <v-chip color="purple white--text" small>{{ `${history.length} upload${ history.length > 1 ? 's' : '' }` }}</v-chip>
+                  </v-list-tile-action>
+                </v-list-tile>
                 <v-scale-transition group mode="out-in">
                   <v-list-tile v-for="(item, key) in history" :key="item.id" :href="item.link" target="_blank" avatar>
                     <v-list-tile-avatar>
