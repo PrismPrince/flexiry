@@ -288,60 +288,57 @@
 
               <v-layout justify-center row wrap>
                 <v-flex xs12 md6>
-                  <v-tooltip bottom>
-                    <span>Canvas Background</span>
-                    <v-menu slot="activator" :close-on-content-click="false" :nudge-width="80" :nudge-bottom="45" :nudge-left="40" full-width light>
-                      <v-btn slot="activator" :color="`rgb(${draw.custom.background.color.r}, ${draw.custom.background.color.g}, ${draw.custom.background.color.b})`" block
-                        :outline="!draw.custom.background.has"
-                        :dark="draw.custom.background.color.r + draw.custom.background.color.g + draw.custom.background.color.b < 383"
-                        :light="draw.custom.background.color.r + draw.custom.background.color.g + draw.custom.background.color.b >= 383">
-                        <v-icon class="mr-1">format_color_fill</v-icon>Canvas Background
-                      </v-btn>
+                  <v-menu slot="activator" :close-on-content-click="false" :nudge-width="80" :nudge-bottom="45" :nudge-left="40" full-width light>
+                    <v-btn slot="activator" :color="`rgb(${draw.custom.background.color.r}, ${draw.custom.background.color.g}, ${draw.custom.background.color.b})`" block
+                      :outline="!draw.custom.background.has"
+                      :dark="draw.custom.background.color.r + draw.custom.background.color.g + draw.custom.background.color.b < 383"
+                      :light="draw.custom.background.color.r + draw.custom.background.color.g + draw.custom.background.color.b >= 383">
+                      <v-icon class="mr-1">format_color_fill</v-icon>Canvas Background
+                    </v-btn>
 
-                      <v-card>
-                        <v-card-text>
-                          <v-layout align-center justify-space-between row>
-                            <v-responsive class="checkered-transparent elevation-1" :style="{ background: draw.custom.background.has ? `rgb(${draw.custom.background.color.r}, ${draw.custom.background.color.g}, ${draw.custom.background.color.b})` : '' }" height="20px"></v-responsive>
-                            <v-tooltip top>
-                              <span>{{ draw.custom.background.has ? 'Remove background' : 'Add background' }}</span>
-                              <v-btn slot="activator" color="teal" icon flat small dark @click="draw.custom.background.has = !draw.custom.background.has">
-                                <v-icon>{{ draw.custom.background.has ? 'invert_colors_off' : 'invert_colors' }}</v-icon>
-                              </v-btn>
-                            </v-tooltip>
-                          </v-layout>
-                        </v-card-text>
+                    <v-card>
+                      <v-card-text>
+                        <v-layout align-center justify-space-between row>
+                          <v-responsive class="checkered-transparent elevation-1" :style="{ background: draw.custom.background.has ? `rgb(${draw.custom.background.color.r}, ${draw.custom.background.color.g}, ${draw.custom.background.color.b})` : '' }" height="20px"></v-responsive>
+                          <v-tooltip top>
+                            <span>{{ draw.custom.background.has ? 'Remove background' : 'Add background' }}</span>
+                            <v-btn slot="activator" color="teal" icon flat small dark @click="draw.custom.background.has = !draw.custom.background.has">
+                              <v-icon>{{ draw.custom.background.has ? 'invert_colors_off' : 'invert_colors' }}</v-icon>
+                            </v-btn>
+                          </v-tooltip>
+                        </v-layout>
+                      </v-card-text>
 
-                        <v-divider></v-divider>
+                      <v-divider></v-divider>
 
-                        <v-card-text>
-                          <v-layout align-center justify-space-between row>
-                            <v-flex xs9>
-                              <v-slider v-model="draw.custom.background.color.r" label="R" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="red"></v-slider>
-                            </v-flex>
-                            <v-flex class="ml-3" xs3>
-                              <v-text-field class="mt-0" v-model="draw.custom.background.color.r" type="number" min="0" max="255"></v-text-field>
-                            </v-flex>
-                          </v-layout>
-                          <v-layout align-center justify-space-between row>
-                            <v-flex xs9>
-                              <v-slider v-model="draw.custom.background.color.g" label="G" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="green"></v-slider>
-                            </v-flex>
-                            <v-flex class="ml-3" xs3>
-                              <v-text-field class="mt-0" v-model="draw.custom.background.color.g" type="number" min="0" max="255"></v-text-field>
-                            </v-flex>
-                          </v-layout>
-                          <v-layout align-center justify-space-between row>
-                            <v-flex xs9>
-                              <v-slider v-model="draw.custom.background.color.b" label="B" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="blue"></v-slider>
-                            </v-flex>
-                            <v-flex class="ml-3" xs3>
-                              <v-text-field class="mt-0" v-model="draw.custom.background.color.b" type="number" min="0" max="255"></v-text-field>
-                            </v-flex>
-                          </v-layout>
-                        </v-card-text>
-                      </v-card>
-                    </v-menu>
-                  </v-tooltip>
+                      <v-card-text>
+                        <v-layout align-center justify-space-between row>
+                          <v-flex xs9>
+                            <v-slider v-model="draw.custom.background.color.r" label="R" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="red"></v-slider>
+                          </v-flex>
+                          <v-flex class="ml-3" xs3>
+                            <v-text-field class="mt-0" v-model="draw.custom.background.color.r" type="number" min="0" max="255"></v-text-field>
+                          </v-flex>
+                        </v-layout>
+                        <v-layout align-center justify-space-between row>
+                          <v-flex xs9>
+                            <v-slider v-model="draw.custom.background.color.g" label="G" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="green"></v-slider>
+                          </v-flex>
+                          <v-flex class="ml-3" xs3>
+                            <v-text-field class="mt-0" v-model="draw.custom.background.color.g" type="number" min="0" max="255"></v-text-field>
+                          </v-flex>
+                        </v-layout>
+                        <v-layout align-center justify-space-between row>
+                          <v-flex xs9>
+                            <v-slider v-model="draw.custom.background.color.b" label="B" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="blue"></v-slider>
+                          </v-flex>
+                          <v-flex class="ml-3" xs3>
+                            <v-text-field class="mt-0" v-model="draw.custom.background.color.b" type="number" min="0" max="255"></v-text-field>
+                          </v-flex>
+                        </v-layout>
+                      </v-card-text>
+                    </v-card>
+                  </v-menu>
                 </v-flex>
 
                 <v-flex xs12 md6>
