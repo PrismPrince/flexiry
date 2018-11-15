@@ -569,12 +569,16 @@ export default {
     this.canvas = document.getElementById('draw')
     this.ctx = this.canvas.getContext('2d')
 
-    document.addEventListener('paste', (e) => { this.paste(e) }, false)
-    document.addEventListener('keypress', (e) => { this.handleKeypress(e) }, false)
+    this.$el.addEventListener('paste', (e) => { this.paste(e) }, false)
+    this.$el.addEventListener('keypress', (e) => { this.handleKeypress(e) }, false)
+
+    console.log('Event added!')
   },
   beforeDestroy () {
-    document.removeEventListener('paste', (e) => { this.paste(e) }, false)
-    document.removeEventListener('keypress', (e) => { this.handleKeypress(e) }, false)
+    this.$el.removeEventListener('paste', (e) => { this.paste(e) }, false)
+    this.$el.removeEventListener('keypress', (e) => { this.handleKeypress(e) }, false)
+
+    console.log('Event removed!')
   },
   watch: {
     'draw.stroke': {
@@ -663,7 +667,11 @@ export default {
 
         this.draw.active = true
         this.popup.active = false
+
+        console.log('Image pasted!')
       })
+
+      console.log('Pasting image...')
 
       this.draw.uploaded.active = false
       this.popup.active = false
