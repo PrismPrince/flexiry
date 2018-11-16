@@ -569,14 +569,14 @@ export default {
     this.canvas = document.getElementById('draw')
     this.ctx = this.canvas.getContext('2d')
 
-    this.$el.addEventListener('paste', (e) => { this.paste(e) }, false)
-    this.$el.addEventListener('keypress', (e) => { this.handleKeypress(e) }, false)
+    document.addEventListener('paste', this.paste, false)
+    document.addEventListener('keypress', this.handleKeypress, false)
 
     console.log('Event added!')
   },
   beforeDestroy () {
-    this.$el.removeEventListener('paste', (e) => { this.paste(e) }, false)
-    this.$el.removeEventListener('keypress', (e) => { this.handleKeypress(e) }, false)
+    document.removeEventListener('paste', this.paste, false)
+    document.removeEventListener('keypress', this.handleKeypress, false)
 
     console.log('Event removed!')
   },
@@ -702,6 +702,8 @@ export default {
     handleKeypress (event) {
       if (!this.draw.active) return
 
+      console.log('Keypress fired!')
+
       if (event.ctrlKey && !event.shiftKey && event.keyCode === 25) this.redo()
       else if (event.ctrlKey && event.shiftKey && event.keyCode === 26) this.redo()
       else if (event.ctrlKey && !event.shiftKey && event.keyCode === 26) this.undo()
@@ -709,48 +711,70 @@ export default {
         case 67:
         case 99:
           this.draw.tool = this.draw.tool !== 'crop' ? 'crop' : null
+
+          console.log('Keypress: C', event.keyCode)
           break
         case 72:
         case 104:
           this.draw.tool = this.draw.tool !== 'free' ? 'free' : null
+
+          console.log('Keypress: H', event.keyCode)
           break
         case 76:
         case 108:
           this.draw.tool = this.draw.tool !== 'line' ? 'line' : null
+
+          console.log('Keypress: L', event.keyCode)
           break
         case 82:
         case 114:
           this.draw.tool = this.draw.tool !== 'rect' ? 'rect' : null
+
+          console.log('Keypress: R', event.keyCode)
           break
         case 69:
         case 101:
           this.draw.tool = this.draw.tool !== 'circ' ? 'circ' : null
+
+          console.log('Keypress: E', event.keyCode)
           break
         case 83:
         case 115:
           this.draw.stroke.has = !this.draw.stroke.has
+
+          console.log('Keypress: S', event.keyCode)
           break
         case 70:
         case 102:
           this.draw.fill.has = !this.draw.fill.has
+
+          console.log('Keypress: F', event.keyCode)
           break
         case 61:
         case 48:
           this.draw.zoom = 100
+
+          console.log('Keypress: 0 / =', event.keyCode)
           break
         case 43:
         case 73:
         case 105:
           if (this.draw.zoom < 300) this.draw.zoom += 10
+
+          console.log('Keypress: + / I', event.keyCode)
           break
         case 45:
         case 79:
         case 111:
           if (this.draw.zoom > 10) this.draw.zoom -= 10
+
+          console.log('Keypress: - / O', event.keyCode)
           break
         case 81:
         case 113:
           this.reset()
+
+          console.log('Keypress: Q', event.keyCode)
       }
     },
     startPlot (event) {
