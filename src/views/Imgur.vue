@@ -361,12 +361,14 @@
             <v-card-text v-if="history.length === 0" class="font-weight-light">Your history is empty. Upload some images!</v-card-text>
             <v-card-text v-else>
               <v-list class="purple lighten-1 elevation-1 history-list" three-lines dark>
-                <v-list-tile>
-                  <v-list-tile-content>Upload History</v-list-tile-content>
-                  <v-list-tile-action>
-                    <v-chip color="purple white--text" small>{{ `${history.length} upload${ history.length > 1 ? 's' : '' }` }}</v-chip>
-                  </v-list-tile-action>
-                </v-list-tile>
+                <v-subheader>
+                  <span>Upload History</span>
+                  <v-spacer></v-spacer>
+                  <v-chip color="purple white--text" small disabled>{{ `${history.length} upload${ history.length > 1 ? 's' : '' }` }}</v-chip>
+                </v-subheader>
+
+                <v-divider></v-divider>
+
                 <v-scale-transition group mode="out-in">
                   <v-list-tile v-for="(item, key) in history" :key="item.id" :href="item.link" target="_blank" avatar>
                     <v-list-tile-avatar>
@@ -480,10 +482,7 @@
 </template>
 
 <script>
-import Firebase from '@/services/firebase'
 import imgur from '@/services/imgur'
-
-const database = Firebase.firestore()
 
 export default {
   name: 'imgur',
@@ -704,10 +703,19 @@ export default {
 
       console.log('Keypress fired!')
 
-      if (event.ctrlKey && !event.shiftKey && event.keyCode === 25) this.redo()
-      else if (event.ctrlKey && event.shiftKey && event.keyCode === 26) this.redo()
-      else if (event.ctrlKey && !event.shiftKey && event.keyCode === 26) this.undo()
-      else switch (event.keyCode) {
+      if (event.ctrlKey && !event.shiftKey && event.keyCode === 25) {
+        this.redo()
+
+        console.log('Keypress: Ctrl + Y', event.ctrlKey, event.shiftKey, event.keyCode)
+      } else if (event.ctrlKey && event.shiftKey && event.keyCode === 26) {
+        this.redo()
+
+        console.log('Keypress: Ctrl + Shift + Z', event.ctrlKey, event.shiftKey, event.keyCode)
+      } else if (event.ctrlKey && !event.shiftKey && event.keyCode === 26) {
+        this.undo()
+
+        console.log('Keypress: Ctrl + Z', event.ctrlKey, event.shiftKey, event.keyCode)
+      } else switch (event.keyCode) {
         case 67:
         case 99:
           this.draw.tool = this.draw.tool !== 'crop' ? 'crop' : null
