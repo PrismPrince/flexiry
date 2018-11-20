@@ -884,7 +884,7 @@ export default {
               this.ctx.clearRect(0, 0, image.width, image.height)
               this.ctx.drawImage(image, 0, 0)
               this.ctx.beginPath()
-              this.plotCirc(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+              this.plotCirc(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
               this.ctx.setLineDash([])
 
               this.ctx.fillStyle = this.fillColor
@@ -1010,7 +1010,7 @@ export default {
 
             this.ctx.clearRect(0, 0, image.width, image.height)
             this.ctx.drawImage(image, 0, 0)
-            this.plotCirc(startX, startY, endX, endY)
+            this.plotCirc(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
             this.ctx.setLineDash([])
 
             this.ctx.fillStyle = this.fillColor
@@ -1069,26 +1069,28 @@ export default {
 
       this.ctx.rect(x, y, w, h)
     },
-    plotCirc (startX, startY, endX, endY) {
+    plotCirc (startX, startY, endX, endY, centered = false, exact = false) {
       let { x, y, w, h } = this._findXYWH(startX, startY, endX, endY)
-      let t, r, b, l, tr, br, bl, tl
+      let px, py, rx, ry
 
-      t = [(w / 2) + x, y]
-      r = [x + w, (h / 2) + y]
-      b = [(w / 2) + x, y + h]
-      l = [x, (h / 2) + y]
-
-      tr = [x + w, y]
-      br = [x + w, y + h]
-      bl = [x, y + h]
-      tl = [x, y]
+      if (centered && exact) {
+        px = startX
+        py = startY
+        rx = ry = w >= h ? w : h
+      } else if (centered && !exact) {
+        px = startX
+        py = startY
+        rx = w
+        ry = h
+      } else {
+        px = x + w / 2
+        py = y + h / 2
+        rx = w / 2
+        ry = h / 2
+      }
 
       this.ctx.beginPath()
-      this.ctx.moveTo(t[0], t[1])
-      this.ctx.quadraticCurveTo(tr[0], tr[1], r[0], r[1])
-      this.ctx.quadraticCurveTo(br[0], br[1], b[0], b[1])
-      this.ctx.quadraticCurveTo(bl[0], bl[1], l[0], l[1])
-      this.ctx.quadraticCurveTo(tl[0], tl[1], t[0], t[1])
+      this.ctx.ellipse(px, py, rx, ry, 0, 0, 2 * Math.PI)
     },
     drawPlot () {
       this.ctx.fillStyle = this.fillColor
