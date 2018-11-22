@@ -1,0 +1,64 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10.11.0
+    working_directory: ~/flexiry
+    steps:
+      - checkout
+      - run:
+          name: Update `npm`
+          command: 'sudo npm install -g npm@latest'
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install dependency
+          command: npm i
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Build
+          command: npm run build
+      - persist_to_workspace:
+          root: .
+          paths: dist
+      - run:
+          name: Change directory to `functions`
+          command: cd functions
+      - restore_cache:
+          key: functions-dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install `functions` dependency
+          command: npm i
+      - save_cache:
+          key: functions-dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+
+  deploy:
+    docker:
+      - image: circleci/node:10.11.0
+    working_directory: ~/flexiry
+    steps:
+      - checkout
+      - run:
+          name: Install `firebase-tools`
+          command: npm i -D firebase-tools
+      - run:
+          name: Deploy `master` branch to Firebase
+          command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN
+
+workflows:
+  version: 2
+
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
