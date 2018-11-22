@@ -841,9 +841,10 @@ export default {
               this.ctx.clearRect(0, 0, image.width, image.height)
               this.ctx.drawImage(image, 0, 0)
               this.ctx.beginPath()
-              this.plotLine(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+              this.plotLine(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey)
 
               this.ctx.lineCap = 'round'
+              this.ctx.lineJoin = 'round'
               this.ctx.strokeStyle = this.strokeColor
               this.ctx.lineWidth = this.draw.stroke.size
 
@@ -861,9 +862,10 @@ export default {
               this.ctx.clearRect(0, 0, image.width, image.height)
               this.ctx.drawImage(image, 0, 0)
               this.ctx.beginPath()
-              this.plotRect(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+              this.plotRect(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
               this.ctx.setLineDash([])
 
+              this.ctx.lineJoin = 'round'
               this.ctx.fillStyle = this.fillColor
               this.ctx.strokeStyle = this.strokeColor
               this.ctx.lineWidth = this.draw.stroke.size
@@ -953,7 +955,7 @@ export default {
 
             this.ctx.clearRect(0, 0, image.width, image.height)
             this.ctx.drawImage(image, 0, 0)
-            this.plotLine(startX, startY, endX, endY)
+            this.plotLine(startX, startY, endX, endY, event.ctrlKey)
             this.ctx.setLineDash([])
 
             this.ctx.lineCap = 'round'
@@ -980,9 +982,10 @@ export default {
 
             this.ctx.clearRect(0, 0, image.width, image.height)
             this.ctx.drawImage(image, 0, 0)
-            this.plotRect(startX, startY, endX, endY)
+            this.plotRect(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
             this.ctx.setLineDash([])
 
+            this.ctx.lineJoin = 'round'
             this.ctx.fillStyle = this.fillColor
             this.ctx.strokeStyle = this.strokeColor
             this.ctx.lineWidth = this.draw.stroke.size
@@ -1060,16 +1063,81 @@ export default {
 
       this.ctx.stroke()
     },
-    plotLine (startX, startY, endX, endY) {
+    plotLine (startX, startY, endX, endY, snap) {
+      let { w, h } = this._findXYWH(startX, startY, endX, endY)
+      let adj, opp, sx, sy, ml = w > h ? w : h
+
+      if (snap) {
+        adj = Math.abs(startX - endX)
+        opp = Math.abs(startY - endY)
+
+        if (this._getDegree(adj, opp) >= 0 && this._getDegree(adj, opp) <= 30) {
+          sx = endX
+          sy = startY
+        } else if (this._getDegree(adj, opp) >= 60 && this._getDegree(adj, opp) <= 90) {
+          sx = startX
+          sy = endY
+        } else {
+          if (startX < endX) sx = startX + ml
+          else sx = startX - ml
+
+          if (startY < endY) sy = startY + ml
+          else sy = startY - ml
+        }
+      } else {
+        sx = endX
+        sy = endY
+      }
+
       this.ctx.moveTo(startX, startY)
-      this.ctx.lineTo(endX, endY)
+      this.ctx.lineTo(sx, sy)
     },
-    plotRect (startX, startY, endX, endY) {
-      let { x, y, w, h } = this._findXYWH(startX, startY, endX, endY)
+    plotRect (startX, startY, endX, endY, centered, exact) {
+      let x, y, w, h
+
+      x = startX
+      y = startY
+      w = endX - startX
+      h = endY - startY
+
+      if (centered && exact) {
+        if (Math.abs(w) > Math.abs(h)) {
+          if (w < 0 && h < 0) h = w
+          else if (w < 0 && h >= 0) h = 0 - w
+          else if (w >= 0 && h >= 0) h = w
+          else if (w >= 0 && h < 0) h = 0 - w
+        } else {
+          if (w < 0 && h < 0) w = h
+          else if (w < 0 && h >= 0) w = 0 - h
+          else if (w >= 0 && h >= 0) w = h
+          else if (w >= 0 && h < 0) w = 0 - h
+        }
+
+        x = startX - w
+        y = startY - h
+        w *= 2
+        h *= 2
+      } else if (centered && !exact) {
+        x = startX - w
+        y = startY - h
+        w *= 2
+        h *= 2
+      } else if (!centered && exact)
+        if (Math.abs(w) > Math.abs(h)) {
+          if (w < 0 && h < 0) h = w
+          else if (w < 0 && h >= 0) h = 0 - w
+          else if (w >= 0 && h >= 0) h = w
+          else if (w >= 0 && h < 0) h = 0 - w
+        } else {
+          if (w < 0 && h < 0) w = h
+          else if (w < 0 && h >= 0) w = 0 - h
+          else if (w >= 0 && h >= 0) w = h
+          else if (w >= 0 && h < 0) w = 0 - h
+        }
 
       this.ctx.rect(x, y, w, h)
     },
-    plotCirc (startX, startY, endX, endY, centered = false, exact = false) {
+    plotCirc (startX, startY, endX, endY, centered, exact) {
       let { x, y, w, h } = this._findXYWH(startX, startY, endX, endY)
       let px, py, rx, ry
 
@@ -1091,15 +1159,6 @@ export default {
 
       this.ctx.beginPath()
       this.ctx.ellipse(px, py, rx, ry, 0, 0, 2 * Math.PI)
-    },
-    drawPlot () {
-      this.ctx.fillStyle = this.fillColor
-      this.ctx.strokeStyle = this.strokeColor
-      this.ctx.lineWidth = this.draw.stroke.size
-
-      if (this.draw.fill.has) this.ctx.fill()
-
-      if (this.draw.stroke.has) this.ctx.stroke()
     },
     undo () {
       let image = new Image()
@@ -1251,7 +1310,6 @@ export default {
 
         this.ctx.fill()
       }
-
     },
     _findXYWH (startX, startY, endX, endY) {
       let x, y, w, h
@@ -1270,6 +1328,9 @@ export default {
       this.history.unshift({ id, link, deletehash, datetime })
 
       if (this.history.length > 100) this.history.pop()
+    },
+    _getDegree (adj, opp) {
+      return Math.asin(opp / Math.sqrt(opp * opp + adj * adj)) * 180 / Math.PI
     }
   },
   filters: {
