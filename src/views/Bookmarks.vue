@@ -14,7 +14,10 @@
         <v-toolbar color="primary" tabs dark flat>
           <v-toolbar-title>Bookmarks</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="800px">
+
+          <!-- ----------------------------- ADMIN ----------------------------- -->
+
+          <!-- <v-dialog v-model="dialog" max-width="800px">
             <v-btn slot="activator" color="white" class="mb-2" light>Add Bookmark</v-btn>
             <v-card>
               <v-card-title>
@@ -105,7 +108,9 @@
                 <v-btn v-else color="blue darken-1" flat @click.native="updateBookmark">Update</v-btn>
               </v-card-actions>
             </v-card>
-          </v-dialog>
+          </v-dialog> -->
+
+          <!-- ----------------------------- ADMIN ----------------------------- -->
 
           <v-tabs slot="extension" color="transparent" slider-color="accent" align-with-title dark>
             <v-tab to="/bookmarks" ripple>All</v-tab>
@@ -130,10 +135,16 @@
               <td>{{ props.item.version | versionize }}</td>
               <td>{{ props.item.type | optimize_type }}</td>
               <td>{{ props.item.description | str_limit(40, '...') }}</td>
-              <td>
+
+              <!-- ----------------------------- ADMIN ----------------------------- -->
+
+              <!-- <td>
                 <v-icon class="mr-2" @click.stop="editBookmark(props.item)" small>edit</v-icon>
                 <v-icon @click.stop="removeBookmark(props.item)" small>delete</v-icon>
-              </td>
+              </td> -->
+
+              <!-- ----------------------------- ADMIN ----------------------------- -->
+
             </tr>
           </template>
 
@@ -261,11 +272,11 @@ export default {
           text: 'Description',
           value: 'description',
           sortable: false
-        },
-        {
-          text: 'Actions',
-          value: 'title',
-          sortable: false
+        // },
+        // {
+        //   text: 'Actions',
+        //   value: 'title',
+        //   sortable: false
         }
       ],
       editCodeRef: '',

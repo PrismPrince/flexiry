@@ -9,7 +9,10 @@
           <!-- <v-btn color="error" @click="__seedFonts">
             <v-icon small>warning</v-icon> Seed Fonts
           </v-btn> -->
-          <v-dialog v-model="font.dialog" max-width="900px" persistent>
+
+          <!-- ----------------------------- ADMIN ----------------------------- -->
+
+          <!-- <v-dialog v-model="font.dialog" max-width="900px" persistent>
             <v-btn slot="activator" color="white" class="mb-2" light>Add Font Swap</v-btn>
             <v-card>
               <v-card-text>
@@ -34,7 +37,10 @@
                 <v-btn v-else @click="addFontSwap" color="primary" flat>Add</v-btn>
               </v-card-actions>
             </v-card>
-          </v-dialog>
+          </v-dialog> -->
+
+          <!-- ----------------------------- ADMIN ----------------------------- -->
+
         </v-toolbar>
 
         <!-- --------------------------------- -->
@@ -44,10 +50,16 @@
               <td>{{ props.item.nonMintedFont }}</td>
               <td>{{ props.item.mintedFont }}</td>
               <td>{{ props.item.note }}</td>
-              <td>
+
+              <!-- ----------------------------- ADMIN ----------------------------- -->
+
+              <!-- <td>
                 <v-icon class="mr-2" @click.stop="editFontSwap(props.item)" small>edit</v-icon>
                 <v-icon @click.stop="removeFontSwap(props.item)" small>delete</v-icon>
-              </td>
+              </td> -->
+
+              <!-- ----------------------------- ADMIN ----------------------------- -->
+
             </tr>
           </template>
 
@@ -109,11 +121,11 @@ export default {
           text: 'Note',
           value: 'note',
           sortable: false
-        },
-        {
-          text: 'Actions',
-          value: 'nonMintedFont',
-          sortable: false
+        // },
+        // {
+        //   text: 'Actions',
+        //   value: 'nonMintedFont',
+        //   sortable: false
         }
       ]
     }
