@@ -355,7 +355,7 @@
             <v-card-text class="title font-weight-light">You can see your past uploads here
               <v-tooltip max-width="300" :nudge-left="125" bottom>
                 <v-icon slot="activator" size="21px">help_outline</v-icon>
-                <p>Flexiry stores your uploads to your local computer and you can manage it here!<br><br>Flexiry only keep 100 uploads for smooth experience.</p>
+                <p>Flexiry stores your uploads to your local computer and you can manage it here!<br><br>Flexiry only keep 500 uploads for smooth experience.</p>
               </v-tooltip>
             </v-card-text>
             <v-card-text v-if="history.length === 0" class="font-weight-light">Your history is empty. Upload some images!</v-card-text>
@@ -1327,7 +1327,7 @@ export default {
     _saveHistory ({ id, link, deletehash, datetime }) {
       this.history.unshift({ id, link, deletehash, datetime })
 
-      if (this.history.length > 100) this.history.pop()
+      if (this.history.length > 500) this.history.pop()
     },
     _getDegree (adj, opp) {
       return Math.asin(opp / Math.sqrt(opp * opp + adj * adj)) * 180 / Math.PI
