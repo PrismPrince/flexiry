@@ -355,7 +355,7 @@
             <v-card-text class="title font-weight-light">You can see your past uploads here
               <v-tooltip max-width="300" :nudge-left="125" bottom>
                 <v-icon slot="activator" size="21px">help_outline</v-icon>
-                <p>Flexiry stores your uploads to your local computer and you can manage it here!<br><br>Flexiry only keep 500 uploads for smooth experience.</p>
+                <span>Flexiry stores your uploads to your local computer and you can manage it here!<br>Flexiry only keep 500 uploads for smooth experience.</span>
               </v-tooltip>
             </v-card-text>
             <v-card-text v-if="history.length === 0" class="font-weight-light">Your history is empty. Upload some images!</v-card-text>
@@ -1100,65 +1100,56 @@ export default {
       w = endX - startX
       h = endY - startY
 
-      if (centered && exact) {
+      if (exact)
         if (Math.abs(w) > Math.abs(h)) {
-          if (w < 0 && h < 0) h = w
-          else if (w < 0 && h >= 0) h = 0 - w
-          else if (w >= 0 && h >= 0) h = w
-          else if (w >= 0 && h < 0) h = 0 - w
+          if (w < 0 && h < 0 || w >= 0 && h >= 0) h = w
+          else if (w < 0 && h >= 0 || w >= 0 && h < 0) h = 0 - w
         } else {
-          if (w < 0 && h < 0) w = h
-          else if (w < 0 && h >= 0) w = 0 - h
-          else if (w >= 0 && h >= 0) w = h
-          else if (w >= 0 && h < 0) w = 0 - h
+          if (w < 0 && h < 0 || w >= 0 && h >= 0) w = h
+          else if (w < 0 && h >= 0 || w >= 0 && h < 0) w = 0 - h
         }
 
+      if (centered) {
         x = startX - w
         y = startY - h
         w *= 2
         h *= 2
-      } else if (centered && !exact) {
-        x = startX - w
-        y = startY - h
-        w *= 2
-        h *= 2
-      } else if (!centered && exact)
-        if (Math.abs(w) > Math.abs(h)) {
-          if (w < 0 && h < 0) h = w
-          else if (w < 0 && h >= 0) h = 0 - w
-          else if (w >= 0 && h >= 0) h = w
-          else if (w >= 0 && h < 0) h = 0 - w
-        } else {
-          if (w < 0 && h < 0) w = h
-          else if (w < 0 && h >= 0) w = 0 - h
-          else if (w >= 0 && h >= 0) w = h
-          else if (w >= 0 && h < 0) w = 0 - h
-        }
+      }
 
       this.ctx.rect(x, y, w, h)
     },
     plotCirc (startX, startY, endX, endY, centered, exact) {
-      let { x, y, w, h } = this._findXYWH(startX, startY, endX, endY)
-      let px, py, rx, ry
+      let x, y, radX, radY, w, h
+
+      w = endX - startX
+      h = endY - startY
+
+      if (exact)
+        if (Math.abs(w) > Math.abs(h)) {
+          if (w < 0 && h < 0 || w >= 0 && h >= 0) h = w
+          else if (w < 0 && h >= 0 || w >= 0 && h < 0) h = 0 - w
+        } else {
+          if (w < 0 && h < 0 || w >= 0 && h >= 0) w = h
+          else if (w < 0 && h >= 0 || w >= 0 && h < 0) w = 0 - h
+        }
+
+      x = centered ? startX : startX + w / 2
+      y = centered ? startY : startY + h / 2
 
       if (centered && exact) {
-        px = startX
-        py = startY
-        rx = ry = w >= h ? w : h
+        radX = radY = Math.abs(w) >= Math.abs(h) ? Math.abs(w) : Math.abs(h)
       } else if (centered && !exact) {
-        px = startX
-        py = startY
-        rx = w
-        ry = h
+        radX = Math.abs(w)
+        radY = Math.abs(h)
+      } else if (!centered && exact) {
+        radX = radY = Math.abs(w) >= Math.abs(h) ? Math.abs(w) / 2 : Math.abs(h) / 2
       } else {
-        px = x + w / 2
-        py = y + h / 2
-        rx = w / 2
-        ry = h / 2
+        radX = Math.abs(w) / 2
+        radY = Math.abs(h) / 2
       }
 
       this.ctx.beginPath()
-      this.ctx.ellipse(px, py, rx, ry, 0, 0, 2 * Math.PI)
+      this.ctx.ellipse(x, y, radX, radY, 0, 0, 2 * Math.PI)
     },
     undo () {
       let image = new Image()
