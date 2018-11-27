@@ -811,14 +811,11 @@ export default {
               this.ctx.clearRect(0, 0, image.width, image.height)
               this.ctx.drawImage(image, 0, 0)
 
-              ;({ x, y, w, h } = this._findXYWH(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY)))
-
               if (w === 0 || h === 0) return
 
               this.ctx.beginPath()
-              this.ctx.rect(x, y, w, h)
+              this.plotRect(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
               this.ctx.setLineDash([10, 5])
-
               this.ctx.strokeStyle = 'rgb(34, 34, 34)'
               this.ctx.lineWidth = 2
 
@@ -924,7 +921,7 @@ export default {
 
             this.ctx.clearRect(0, 0, image.width, image.height)
             this.ctx.drawImage(image, 0, 0)
-            this.crop(startX, startY, endX, endY)
+            this.crop(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
 
             this.draw.history.undo.push(this.canvas.toDataURL())
 
@@ -1034,9 +1031,29 @@ export default {
           return
       }
     },
-    crop (startX, startY, endX, endY) {
-      let { x, y, w, h } = this._findXYWH(startX, startY, endX, endY)
-      let tempCanvas, tempCtx
+    crop (startX, startY, endX, endY, centered, exact) {
+      let x, y, w, h, tempCanvas, tempCtx
+
+      x = startX
+      y = startY
+      w = endX - startX
+      h = endY - startY
+
+      if (exact)
+        if (Math.abs(w) > Math.abs(h)) {
+          if (w < 0 && h < 0 || w >= 0 && h >= 0) h = w
+          else if (w < 0 && h >= 0 || w >= 0 && h < 0) h = 0 - w
+        } else {
+          if (w < 0 && h < 0 || w >= 0 && h >= 0) w = h
+          else if (w < 0 && h >= 0 || w >= 0 && h < 0) w = 0 - h
+        }
+
+      if (centered) {
+        x = startX - w
+        y = startY - h
+        w *= 2
+        h *= 2
+      }
 
       tempCanvas = document.createElement('canvas')
       tempCanvas.width = w
@@ -1327,16 +1344,6 @@ export default {
 
         this.ctx.fill()
       }
-    },
-    _findXYWH (startX, startY, endX, endY) {
-      let x, y, w, h
-
-      x = startX < endX ? startX : endX
-      y = startY < endY ? startY : endY
-      w = Math.abs(startX - endX)
-      h = Math.abs(startY - endY)
-
-      return { x, y, w, h }
     },
     _fixZoom (val) {
       return val * 100 / this.draw.zoom
