@@ -841,7 +841,7 @@ export default {
               this.ctx.clearRect(0, 0, image.width, image.height)
               this.ctx.drawImage(image, 0, 0)
               this.ctx.beginPath()
-              this.plotLine(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey)
+              this.plotLine(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
 
               this.ctx.lineCap = 'round'
               this.ctx.lineJoin = 'round'
@@ -955,7 +955,7 @@ export default {
 
             this.ctx.clearRect(0, 0, image.width, image.height)
             this.ctx.drawImage(image, 0, 0)
-            this.plotLine(startX, startY, endX, endY, event.ctrlKey)
+            this.plotLine(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
             this.ctx.setLineDash([])
 
             this.ctx.lineCap = 'round'
@@ -1063,34 +1063,60 @@ export default {
 
       this.ctx.stroke()
     },
-    plotLine (startX, startY, endX, endY, snap) {
-      let { w, h } = this._findXYWH(startX, startY, endX, endY)
-      let adj, opp, sx, sy, ml = w > h ? w : h
+    plotLine (startX, startY, endX, endY, centered, exact) {
+      let w, h, x1, x2, x3, y1, y2, y3
 
-      if (snap) {
-        adj = Math.abs(startX - endX)
-        opp = Math.abs(startY - endY)
+      x1 = startX
+      y1 = startY
+      x3 = endX
+      y3 = endY
 
-        if (this._getDegree(adj, opp) >= 0 && this._getDegree(adj, opp) <= 30) {
-          sx = endX
-          sy = startY
-        } else if (this._getDegree(adj, opp) >= 60 && this._getDegree(adj, opp) <= 90) {
-          sx = startX
-          sy = endY
-        } else {
-          if (startX < endX) sx = startX + ml
-          else sx = startX - ml
-
-          if (startY < endY) sy = startY + ml
-          else sy = startY - ml
-        }
-      } else {
-        sx = endX
-        sy = endY
+      if (centered) {
+        x2 = x1
+        y2 = y1
+        x1 = 2 * x2 - x3
+        y1 = 2 * y2 - y3
       }
 
-      this.ctx.moveTo(startX, startY)
-      this.ctx.lineTo(sx, sy)
+      if (exact) {
+        w = (x2 ? x2 : x3) - x1
+        h = (y2 ? y2 : y3) - y1
+
+        if (this._getDegree(Math.abs(w), Math.abs(h)) >= 0 && this._getDegree(Math.abs(w), Math.abs(h)) <= 30) {
+          y1 = y2 ? y2 : y1
+          y3 = y1
+        } else if (this._getDegree(Math.abs(w), Math.abs(h)) >= 60 && this._getDegree(Math.abs(w), Math.abs(h)) <= 90) {
+          x1 = x2 ? x2 : x1
+          x3 = x1
+        } else if ((x1 > x3 && y1 > y3) || (x1 < x3 && y1 < y3)) {
+            x3 = (x2 ? x2 : x1) + (w > h ? w : h)
+            y3 = (y2 ? y2 : y1) + (w > h ? w : h)
+
+            if (centered) {
+              x1 = 2 * x2 - x3
+              y1 = 2 * y2 - y3
+            }
+        } else if (x1 > x3 && y1 < y3) {
+          x3 = (x2 ? x2 : x1) - (w > h ? w : h)
+          y3 = (y2 ? y2 : y1) + (w > h ? w : h)
+
+          if (centered) {
+            x1 = 2 * x2 - x3
+            y1 = 2 * y2 - y3
+          }
+        } else if (x1 < x3 && y1 > y3) {
+          x3 = (x2 ? x2 : x1) + (w > h ? w : h)
+          y3 = (y2 ? y2 : y1) - (w > h ? w : h)
+
+          if (centered) {
+            x1 = 2 * x2 - x3
+            y1 = 2 * y2 - y3
+          }
+        }
+      }
+
+      this.ctx.moveTo(x1, y1)
+      this.ctx.lineTo(x3, y3)
     },
     plotRect (startX, startY, endX, endY, centered, exact) {
       let x, y, w, h
