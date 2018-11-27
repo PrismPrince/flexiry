@@ -1279,7 +1279,7 @@ export default {
         this.popup.progress = false
         this.popup.persistent = false
         this.popup.color = 'error darken-1'
-        this.popup.note = res.data.error.message
+        this.popup.note = res.data.error.message || 'Opps! Something unexpected happen.'
       })
     },
     saveAs () {
