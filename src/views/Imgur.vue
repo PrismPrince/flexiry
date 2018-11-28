@@ -395,7 +395,7 @@
                       <v-tooltip left>
                         <span>Remove from history</span>
                         <v-btn slot="activator" @click.prevent="removeHistory(key)" small icon>
-                          <v-icon>delete</v-icon>
+                          <v-icon size="20">delete</v-icon>
                         </v-btn>
                       </v-tooltip>
                     </v-list-tile-action>
@@ -448,13 +448,13 @@
               <v-text-field id="img-view-link" v-model="draw.uploaded.link" color="teal" label="Image view link" readonly>
                 <v-tooltip slot="append" top>
                   <v-btn slot="activator" @click="copyImageViewLink" color="teal" flat small icon>
-                    <v-icon>file_copy</v-icon>
+                    <v-icon size="20">file_copy</v-icon>
                   </v-btn>
                   <span>Copy</span>
                 </v-tooltip>
                 <v-tooltip slot="append-outer" top>
                   <v-btn slot="activator" @click="openImageViewLink" color="teal" flat small icon>
-                    <v-icon>launch</v-icon>
+                    <v-icon size="20">launch</v-icon>
                   </v-btn>
                   <span>Open New Tab</span>
                 </v-tooltip>
@@ -462,13 +462,13 @@
               <v-text-field id="img-delete-link" v-model="draw.uploaded.deleteLink" color="teal" label="Image delete link" readonly>
                 <v-tooltip slot="append" top>
                   <v-btn slot="activator" @click="copyImageDeleteLink" color="teal" flat small icon>
-                    <v-icon>file_copy</v-icon>
+                    <v-icon size="20">file_copy</v-icon>
                   </v-btn>
                   <span>Copy</span>
                 </v-tooltip>
                 <v-tooltip slot="append-outer" top>
                   <v-btn slot="activator" @click="openImageDeleteLink" color="teal" flat small icon>
-                    <v-icon>launch</v-icon>
+                    <v-icon size="20">launch</v-icon>
                   </v-btn>
                   <span>Open New Tab</span>
                 </v-tooltip>
