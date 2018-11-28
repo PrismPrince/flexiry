@@ -210,11 +210,12 @@ export default {
   name: 'tools-web',
   components: { Marked },
   beforeRouteEnter (to, from, next) {
-    if (to.params.type) next(vm => {
-      if (['csl', 'cu3', 'mdp', 'pdp', 'trello'].indexOf(to.params.type.toLowerCase().trim()) !== -1) vm.type = to.params.type
-      else next('/bookmarks')
-    })
-    else next()
+    if (to.params.type) {
+      next(vm => {
+        if (['csl', 'cu3', 'mdp', 'pdp', 'trello'].indexOf(to.params.type.toLowerCase().trim()) !== -1) vm.type = to.params.type
+        else next('/bookmarks')
+      })
+    } else next()
   },
   beforeRouteUpdate (to, from, next) {
     this.type = to.params.type ? to.params.type : null
@@ -327,12 +328,12 @@ export default {
     pagination: {
       deep: true,
       handler () {
-        let { descending, page, rowsPerPage, sortBy, totalItems } = this.pagination
+        let { descending, page, rowsPerPage, sortBy } = this.pagination
         let query = database.collection('tools/bookmarks/manipulators').orderBy(sortBy || 'title', descending ? 'desc' : 'asc')
 
         this.loader = true
 
-        if (!!this.type) query = query.where(`type.${this.type}`, '==', true)
+        if (this.type) query = query.where(`type.${this.type}`, '==', true)
 
         if ((rowsPerPage * (page - 1)) > 0) query = query.startAfter(this.lastItem)
 
@@ -370,10 +371,12 @@ export default {
   methods: {
     startAlertDismissTimer () {
       this.alert.isRunning = true
-      if (!this.alert.timer) this.alert.timer = setInterval(() => {
-        if (this.alert.time > 0) this.alert.time--
-        else this.stopAlertDismissTimer()
-      }, 1000)
+      if (!this.alert.timer) {
+        this.alert.timer = setInterval(() => {
+          if (this.alert.time > 0) this.alert.time--
+          else this.stopAlertDismissTimer()
+        }, 1000)
+      }
     },
     stopAlertDismissTimer () {
       clearInterval(this.alert.timer)
@@ -472,7 +475,7 @@ export default {
         }).catch(e => { console.log(e) })
       }
     },
-    removeBookmark ({id, title}) {
+    removeBookmark ({ id, title }) {
       this.loader = true
 
       database.collection('tools/bookmarks/manipulators').doc(id).delete().then(() => {

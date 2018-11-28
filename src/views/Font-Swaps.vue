@@ -134,7 +134,7 @@ export default {
     pagination: {
       deep: true,
       handler () {
-        let { descending, page, rowsPerPage, sortBy, totalItems } = this.pagination
+        let { descending, page, rowsPerPage, sortBy } = this.pagination
         let query = database.collection('tools/font-swaps/fonts').orderBy(sortBy || 'nonMintedFont', descending ? 'desc' : 'asc')
 
         this.loader = true
@@ -185,7 +185,7 @@ export default {
         alert('Wrong input!')
       }
     },
-    editFontSwap ({id, mintedFont, nonMintedFont, note}) {
+    editFontSwap ({ id, mintedFont, nonMintedFont, note }) {
       this.font = {
         id,
         mintedFont,
@@ -210,7 +210,7 @@ export default {
         this.loader = false
       }).catch(e => { console.log(e) })
     },
-    removeFontSwap ({id}) {
+    removeFontSwap ({ id }) {
       this.loader = true
 
       database.collection('tools/font-swaps/fonts').doc(id).delete().then(() => {

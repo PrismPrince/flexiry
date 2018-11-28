@@ -167,7 +167,7 @@ export default {
 
             this.subscription.token = null
           }).catch(err => {
-          this.subscription.status = true
+            this.subscription.status = true
             console.error('Error unsubscribing', err)
           })
         })

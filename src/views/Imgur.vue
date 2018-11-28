@@ -555,14 +555,11 @@ export default {
     }
   },
   created () {
-    if (window.localStorage.getItem('imgur-draw-stroke') !== null)
-      this.draw.stroke = JSON.parse(window.localStorage.getItem('imgur-draw-stroke'))
+    if (window.localStorage.getItem('imgur-draw-stroke') !== null) this.draw.stroke = JSON.parse(window.localStorage.getItem('imgur-draw-stroke'))
 
-    if (window.localStorage.getItem('imgur-draw-fill') !== null)
-      this.draw.fill = JSON.parse(window.localStorage.getItem('imgur-draw-fill'))
+    if (window.localStorage.getItem('imgur-draw-fill') !== null) this.draw.fill = JSON.parse(window.localStorage.getItem('imgur-draw-fill'))
 
-    if (window.localStorage.getItem('imgur-history') !== null)
-      this.history =  JSON.parse(window.localStorage.getItem('imgur-history'))
+    if (window.localStorage.getItem('imgur-history') !== null) this.history = JSON.parse(window.localStorage.getItem('imgur-history'))
   },
   mounted () {
     this.canvas = document.getElementById('draw')
@@ -627,7 +624,6 @@ export default {
   },
   methods: {
     createCanvas () {
-
       switch (this.draw.custom.size) {
         case '720 x 480':
           this._drawCanvas(720, 480)
@@ -715,74 +711,76 @@ export default {
         this.undo()
 
         console.log('Keypress: Ctrl + Z', event.ctrlKey, event.shiftKey, event.keyCode)
-      } else switch (event.keyCode) {
-        case 67:
-        case 99:
-          this.draw.tool = this.draw.tool !== 'crop' ? 'crop' : null
+      } else {
+        switch (event.keyCode) {
+          case 67:
+          case 99:
+            this.draw.tool = this.draw.tool !== 'crop' ? 'crop' : null
 
-          console.log('Keypress: C', event.keyCode)
-          break
-        case 72:
-        case 104:
-          this.draw.tool = this.draw.tool !== 'free' ? 'free' : null
+            console.log('Keypress: C', event.keyCode)
+            break
+          case 72:
+          case 104:
+            this.draw.tool = this.draw.tool !== 'free' ? 'free' : null
 
-          console.log('Keypress: H', event.keyCode)
-          break
-        case 76:
-        case 108:
-          this.draw.tool = this.draw.tool !== 'line' ? 'line' : null
+            console.log('Keypress: H', event.keyCode)
+            break
+          case 76:
+          case 108:
+            this.draw.tool = this.draw.tool !== 'line' ? 'line' : null
 
-          console.log('Keypress: L', event.keyCode)
-          break
-        case 82:
-        case 114:
-          this.draw.tool = this.draw.tool !== 'rect' ? 'rect' : null
+            console.log('Keypress: L', event.keyCode)
+            break
+          case 82:
+          case 114:
+            this.draw.tool = this.draw.tool !== 'rect' ? 'rect' : null
 
-          console.log('Keypress: R', event.keyCode)
-          break
-        case 69:
-        case 101:
-          this.draw.tool = this.draw.tool !== 'circ' ? 'circ' : null
+            console.log('Keypress: R', event.keyCode)
+            break
+          case 69:
+          case 101:
+            this.draw.tool = this.draw.tool !== 'circ' ? 'circ' : null
 
-          console.log('Keypress: E', event.keyCode)
-          break
-        case 83:
-        case 115:
-          this.draw.stroke.has = !this.draw.stroke.has
+            console.log('Keypress: E', event.keyCode)
+            break
+          case 83:
+          case 115:
+            this.draw.stroke.has = !this.draw.stroke.has
 
-          console.log('Keypress: S', event.keyCode)
-          break
-        case 70:
-        case 102:
-          this.draw.fill.has = !this.draw.fill.has
+            console.log('Keypress: S', event.keyCode)
+            break
+          case 70:
+          case 102:
+            this.draw.fill.has = !this.draw.fill.has
 
-          console.log('Keypress: F', event.keyCode)
-          break
-        case 61:
-        case 48:
-          this.draw.zoom = 100
+            console.log('Keypress: F', event.keyCode)
+            break
+          case 61:
+          case 48:
+            this.draw.zoom = 100
 
-          console.log('Keypress: 0 / =', event.keyCode)
-          break
-        case 43:
-        case 73:
-        case 105:
-          if (this.draw.zoom < 300) this.draw.zoom += 10
+            console.log('Keypress: 0 / =', event.keyCode)
+            break
+          case 43:
+          case 73:
+          case 105:
+            if (this.draw.zoom < 300) this.draw.zoom += 10
 
-          console.log('Keypress: + / I', event.keyCode)
-          break
-        case 45:
-        case 79:
-        case 111:
-          if (this.draw.zoom > 10) this.draw.zoom -= 10
+            console.log('Keypress: + / I', event.keyCode)
+            break
+          case 45:
+          case 79:
+          case 111:
+            if (this.draw.zoom > 10) this.draw.zoom -= 10
 
-          console.log('Keypress: - / O', event.keyCode)
-          break
-        case 81:
-        case 113:
-          this.reset()
+            console.log('Keypress: - / O', event.keyCode)
+            break
+          case 81:
+          case 113:
+            this.reset()
 
-          console.log('Keypress: Q', event.keyCode)
+            console.log('Keypress: Q', event.keyCode)
+        }
       }
     },
     startPlot (event) {
@@ -801,8 +799,7 @@ export default {
       }
     },
     move (event) {
-      let { startX, startY } = this.draw.dimen
-      let x, y, w, h, t, r, b, l, tr, br, bl, tl, image
+      let image, { startX, startY } = this.draw.dimen
 
       if (this.draw.dimen.active) {
         switch (this.draw.tool) {
@@ -810,11 +807,8 @@ export default {
             image = this._initImage(() => {
               this.ctx.clearRect(0, 0, image.width, image.height)
               this.ctx.drawImage(image, 0, 0)
-
-              if (w === 0 || h === 0) return
-
               this.ctx.beginPath()
-              this.plotRect(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
+              this._plotRect(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
               this.ctx.setLineDash([10, 5])
               this.ctx.strokeStyle = 'rgb(34, 34, 34)'
               this.ctx.lineWidth = 2
@@ -827,7 +821,7 @@ export default {
           case 'free':
             if (!this.draw.stroke.has) return
 
-            this.freeHand(this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+            this._freeHand(this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
             break
           case 'line':
             if (!this.draw.stroke.has) return
@@ -838,7 +832,7 @@ export default {
               this.ctx.clearRect(0, 0, image.width, image.height)
               this.ctx.drawImage(image, 0, 0)
               this.ctx.beginPath()
-              this.plotLine(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
+              this._plotLine(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
 
               this.ctx.lineCap = 'round'
               this.ctx.lineJoin = 'round'
@@ -859,7 +853,7 @@ export default {
               this.ctx.clearRect(0, 0, image.width, image.height)
               this.ctx.drawImage(image, 0, 0)
               this.ctx.beginPath()
-              this.plotRect(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
+              this._plotRect(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
               this.ctx.setLineDash([])
 
               this.ctx.lineJoin = 'round'
@@ -883,7 +877,7 @@ export default {
               this.ctx.clearRect(0, 0, image.width, image.height)
               this.ctx.drawImage(image, 0, 0)
               this.ctx.beginPath()
-              this.plotCirc(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
+              this._plotCirc(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
               this.ctx.setLineDash([])
 
               this.ctx.fillStyle = this.fillColor
@@ -921,7 +915,7 @@ export default {
 
             this.ctx.clearRect(0, 0, image.width, image.height)
             this.ctx.drawImage(image, 0, 0)
-            this.crop(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
+            this._crop(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
 
             this.draw.history.undo.push(this.canvas.toDataURL())
 
@@ -952,7 +946,7 @@ export default {
 
             this.ctx.clearRect(0, 0, image.width, image.height)
             this.ctx.drawImage(image, 0, 0)
-            this.plotLine(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
+            this._plotLine(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
             this.ctx.setLineDash([])
 
             this.ctx.lineCap = 'round'
@@ -979,7 +973,7 @@ export default {
 
             this.ctx.clearRect(0, 0, image.width, image.height)
             this.ctx.drawImage(image, 0, 0)
-            this.plotRect(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
+            this._plotRect(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
             this.ctx.setLineDash([])
 
             this.ctx.lineJoin = 'round'
@@ -1010,7 +1004,7 @@ export default {
 
             this.ctx.clearRect(0, 0, image.width, image.height)
             this.ctx.drawImage(image, 0, 0)
-            this.plotCirc(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
+            this._plotCirc(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
             this.ctx.setLineDash([])
 
             this.ctx.fillStyle = this.fillColor
@@ -1027,172 +1021,7 @@ export default {
           })
 
           image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
-
-          return
       }
-    },
-    crop (startX, startY, endX, endY, centered, exact) {
-      let x, y, w, h, tempCanvas, tempCtx
-
-      x = startX
-      y = startY
-      w = endX - startX
-      h = endY - startY
-
-      if (exact)
-        if (Math.abs(w) > Math.abs(h)) {
-          if (w < 0 && h < 0 || w >= 0 && h >= 0) h = w
-          else if (w < 0 && h >= 0 || w >= 0 && h < 0) h = 0 - w
-        } else {
-          if (w < 0 && h < 0 || w >= 0 && h >= 0) w = h
-          else if (w < 0 && h >= 0 || w >= 0 && h < 0) w = 0 - h
-        }
-
-      if (centered) {
-        x = startX - w
-        y = startY - h
-        w *= 2
-        h *= 2
-      }
-
-      tempCanvas = document.createElement('canvas')
-      tempCanvas.width = w
-      tempCanvas.height = h
-      tempCtx = tempCanvas.getContext('2d')
-
-      tempCtx.drawImage(this.canvas, x, y, w, h, 0, 0, w, h)
-
-      this.canvas.width = w
-      this.canvas.height = h
-
-      this.ctx.clearRect(0, 0, w, h)
-      this.ctx.drawImage(tempCanvas, 0, 0)
-
-      this.draw.tool = null
-    },
-    freeHand (x, y) {
-      this.ctx.lineTo(x, y)
-
-      this.ctx.lineCap = 'round'
-      this.ctx.lineJoin = 'round'
-      this.ctx.strokeStyle = this.strokeColor
-      this.ctx.lineWidth = this.draw.stroke.size
-
-      this.ctx.stroke()
-    },
-    plotLine (startX, startY, endX, endY, centered, exact) {
-      let w, h, x1, x2, x3, y1, y2, y3
-
-      x1 = startX
-      y1 = startY
-      x3 = endX
-      y3 = endY
-
-      if (centered) {
-        x2 = x1
-        y2 = y1
-        x1 = 2 * x2 - x3
-        y1 = 2 * y2 - y3
-      }
-
-      if (exact) {
-        w = (x2 ? x2 : x3) - x1
-        h = (y2 ? y2 : y3) - y1
-
-        if (this._getDegree(Math.abs(w), Math.abs(h)) >= 0 && this._getDegree(Math.abs(w), Math.abs(h)) <= 30) {
-          y1 = y2 ? y2 : y1
-          y3 = y1
-        } else if (this._getDegree(Math.abs(w), Math.abs(h)) >= 60 && this._getDegree(Math.abs(w), Math.abs(h)) <= 90) {
-          x1 = x2 ? x2 : x1
-          x3 = x1
-        } else if ((x1 > x3 && y1 > y3) || (x1 < x3 && y1 < y3)) {
-            x3 = (x2 ? x2 : x1) + (w > h ? w : h)
-            y3 = (y2 ? y2 : y1) + (w > h ? w : h)
-
-            if (centered) {
-              x1 = 2 * x2 - x3
-              y1 = 2 * y2 - y3
-            }
-        } else if (x1 > x3 && y1 < y3) {
-          x3 = (x2 ? x2 : x1) - (w > h ? w : h)
-          y3 = (y2 ? y2 : y1) + (w > h ? w : h)
-
-          if (centered) {
-            x1 = 2 * x2 - x3
-            y1 = 2 * y2 - y3
-          }
-        } else if (x1 < x3 && y1 > y3) {
-          x3 = (x2 ? x2 : x1) + (w > h ? w : h)
-          y3 = (y2 ? y2 : y1) - (w > h ? w : h)
-
-          if (centered) {
-            x1 = 2 * x2 - x3
-            y1 = 2 * y2 - y3
-          }
-        }
-      }
-
-      this.ctx.moveTo(x1, y1)
-      this.ctx.lineTo(x3, y3)
-    },
-    plotRect (startX, startY, endX, endY, centered, exact) {
-      let x, y, w, h
-
-      x = startX
-      y = startY
-      w = endX - startX
-      h = endY - startY
-
-      if (exact)
-        if (Math.abs(w) > Math.abs(h)) {
-          if (w < 0 && h < 0 || w >= 0 && h >= 0) h = w
-          else if (w < 0 && h >= 0 || w >= 0 && h < 0) h = 0 - w
-        } else {
-          if (w < 0 && h < 0 || w >= 0 && h >= 0) w = h
-          else if (w < 0 && h >= 0 || w >= 0 && h < 0) w = 0 - h
-        }
-
-      if (centered) {
-        x = startX - w
-        y = startY - h
-        w *= 2
-        h *= 2
-      }
-
-      this.ctx.rect(x, y, w, h)
-    },
-    plotCirc (startX, startY, endX, endY, centered, exact) {
-      let x, y, radX, radY, w, h
-
-      w = endX - startX
-      h = endY - startY
-
-      if (exact)
-        if (Math.abs(w) > Math.abs(h)) {
-          if (w < 0 && h < 0 || w >= 0 && h >= 0) h = w
-          else if (w < 0 && h >= 0 || w >= 0 && h < 0) h = 0 - w
-        } else {
-          if (w < 0 && h < 0 || w >= 0 && h >= 0) w = h
-          else if (w < 0 && h >= 0 || w >= 0 && h < 0) w = 0 - h
-        }
-
-      x = centered ? startX : startX + w / 2
-      y = centered ? startY : startY + h / 2
-
-      if (centered && exact) {
-        radX = radY = Math.abs(w) >= Math.abs(h) ? Math.abs(w) : Math.abs(h)
-      } else if (centered && !exact) {
-        radX = Math.abs(w)
-        radY = Math.abs(h)
-      } else if (!centered && exact) {
-        radX = radY = Math.abs(w) >= Math.abs(h) ? Math.abs(w) / 2 : Math.abs(h) / 2
-      } else {
-        radX = Math.abs(w) / 2
-        radY = Math.abs(h) / 2
-      }
-
-      this.ctx.beginPath()
-      this.ctx.ellipse(x, y, radX, radY, 0, 0, 2 * Math.PI)
     },
     undo () {
       let image = new Image()
@@ -1323,6 +1152,172 @@ export default {
     },
     removeHistory (key) {
       this.history.splice(key, 1)
+    },
+    _crop (startX, startY, endX, endY, centered, exact) {
+      let x, y, w, h, tempCanvas, tempCtx
+
+      x = startX
+      y = startY
+      w = endX - startX
+      h = endY - startY
+
+      if (exact) {
+        if (Math.abs(w) > Math.abs(h)) {
+          if ((w < 0 && h < 0) || (w >= 0 && h >= 0)) h = w
+          else if ((w < 0 && h >= 0) || (w >= 0 && h < 0)) h = 0 - w
+        } else {
+          if ((w < 0 && h < 0) || (w >= 0 && h >= 0)) w = h
+          else if ((w < 0 && h >= 0) || (w >= 0 && h < 0)) w = 0 - h
+        }
+      }
+
+      if (centered) {
+        x = startX - w
+        y = startY - h
+        w *= 2
+        h *= 2
+      }
+
+      tempCanvas = document.createElement('canvas')
+      tempCanvas.width = w
+      tempCanvas.height = h
+      tempCtx = tempCanvas.getContext('2d')
+
+      tempCtx.drawImage(this.canvas, x, y, w, h, 0, 0, w, h)
+
+      this.canvas.width = w
+      this.canvas.height = h
+
+      this.ctx.clearRect(0, 0, w, h)
+      this.ctx.drawImage(tempCanvas, 0, 0)
+
+      this.draw.tool = null
+    },
+    _freeHand (x, y) {
+      this.ctx.lineTo(x, y)
+
+      this.ctx.lineCap = 'round'
+      this.ctx.lineJoin = 'round'
+      this.ctx.strokeStyle = this.strokeColor
+      this.ctx.lineWidth = this.draw.stroke.size
+
+      this.ctx.stroke()
+    },
+    _plotLine (startX, startY, endX, endY, centered, exact) {
+      let w, h, x1, x2, x3, y1, y2, y3
+
+      x1 = startX
+      y1 = startY
+      x3 = endX
+      y3 = endY
+
+      if (centered) {
+        x2 = x1
+        y2 = y1
+        x1 = 2 * x2 - x3
+        y1 = 2 * y2 - y3
+      }
+
+      if (exact) {
+        w = (x2 || x3) - x1
+        h = (y2 || y3) - y1
+
+        if (this._getDegree(Math.abs(w), Math.abs(h)) >= 0 && this._getDegree(Math.abs(w), Math.abs(h)) <= 30) {
+          y1 = y2 || y1
+          y3 = y1
+        } else if (this._getDegree(Math.abs(w), Math.abs(h)) >= 60 && this._getDegree(Math.abs(w), Math.abs(h)) <= 90) {
+          x1 = x2 || x1
+          x3 = x1
+        } else if ((x1 > x3 && y1 > y3) || (x1 < x3 && y1 < y3)) {
+          x3 = (x2 || x1) + (w > h ? w : h)
+          y3 = (y2 || y1) + (w > h ? w : h)
+
+          if (centered) {
+            x1 = 2 * x2 - x3
+            y1 = 2 * y2 - y3
+          }
+        } else if (x1 > x3 && y1 < y3) {
+          x3 = (x2 || x1) - (w > h ? w : h)
+          y3 = (y2 || y1) + (w > h ? w : h)
+
+          if (centered) {
+            x1 = 2 * x2 - x3
+            y1 = 2 * y2 - y3
+          }
+        } else if (x1 < x3 && y1 > y3) {
+          x3 = (x2 || x1) + (w > h ? w : h)
+          y3 = (y2 || y1) - (w > h ? w : h)
+
+          if (centered) {
+            x1 = 2 * x2 - x3
+            y1 = 2 * y2 - y3
+          }
+        }
+      }
+
+      this.ctx.moveTo(x1, y1)
+      this.ctx.lineTo(x3, y3)
+    },
+    _plotRect (startX, startY, endX, endY, centered, exact) {
+      let x, y, w, h
+
+      x = startX
+      y = startY
+      w = endX - startX
+      h = endY - startY
+
+      if (exact) {
+        if (Math.abs(w) > Math.abs(h)) {
+          if ((w < 0 && h < 0) || (w >= 0 && h >= 0)) h = w
+          else if ((w < 0 && h >= 0) || (w >= 0 && h < 0)) h = 0 - w
+        } else {
+          if ((w < 0 && h < 0) || (w >= 0 && h >= 0)) w = h
+          else if ((w < 0 && h >= 0) || (w >= 0 && h < 0)) w = 0 - h
+        }
+      }
+
+      if (centered) {
+        x = startX - w
+        y = startY - h
+        w *= 2
+        h *= 2
+      }
+
+      this.ctx.rect(x, y, w, h)
+    },
+    _plotCirc (startX, startY, endX, endY, centered, exact) {
+      let x, y, radX, radY, w, h
+
+      w = endX - startX
+      h = endY - startY
+
+      if (exact) {
+        if (Math.abs(w) > Math.abs(h)) {
+          if ((w < 0 && h < 0) || (w >= 0 && h >= 0)) h = w
+          else if ((w < 0 && h >= 0) || (w >= 0 && h < 0)) h = 0 - w
+        } else {
+          if ((w < 0 && h < 0) || (w >= 0 && h >= 0)) w = h
+          else if ((w < 0 && h >= 0) || (w >= 0 && h < 0)) w = 0 - h
+        }
+      }
+
+      x = centered ? startX : startX + w / 2
+      y = centered ? startY : startY + h / 2
+
+      if (centered && exact) {
+        radX = radY = Math.abs(w) >= Math.abs(h) ? Math.abs(w) : Math.abs(h)
+      } else if (centered && !exact) {
+        radX = Math.abs(w)
+        radY = Math.abs(h)
+      } else if (!centered && exact) {
+        radX = radY = Math.abs(w) >= Math.abs(h) ? Math.abs(w) / 2 : Math.abs(h) / 2
+      } else {
+        radX = Math.abs(w) / 2
+        radY = Math.abs(h) / 2
+      }
+
+      this.ctx.beginPath()
+      this.ctx.ellipse(x, y, radX, radY, 0, 0, 2 * Math.PI)
     },
     _initImage (onload = () => {}) {
       let image = new Image()
