@@ -283,7 +283,7 @@ export default {
       let updateFontsTexts = this.updateFonts.updates.map(update => {
         let { nonMinted, minted, note } = update
 
-        if (nonMinted && minted) return `- Update ${nonMinted.trim()} to ${minted.trim()}${note ?  ' ' + note.trim() : ''}`
+        if (nonMinted && minted) return `- Update ${nonMinted.trim()} to ${minted.trim()}${note ? ' ' + note.trim() : ''}`
         else return null
       }).filter(update => update !== null)
 
@@ -293,12 +293,14 @@ export default {
 
         if (fonts.length === 0 && !note) return null
 
-        if (fonts.length > 0)
-          for (let i = 0; i < fonts.length; i++)
+        if (fonts.length > 0) {
+          for (let i = 0; i < fonts.length; i++) {
             if (fonts.length === 1) fontsText += fonts[i].trim()
             else if (i === fonts.length - 1) fontsText += ` and ${fonts[i].trim()}`
             else if (i === fonts.length - 2) fontsText += fonts[i].trim()
             else fontsText += `${fonts[i].trim()}, `
+          }
+        }
 
         if (note) fontsText += ` ${note.trim()}`
 
@@ -327,12 +329,12 @@ export default {
     formPlusText () {
       let { header, screenshot, note } = this.formPlus
 
-      if (note)
+      if (note) {
         if (header && screenshot) return [header.trim(), screenshot.trim()].join('\n') + '\n\n' + note.trim()
         else if (header) return `${header.trim()}\n\n${note.trim()}`
         else if (screenshot) return `${screenshot.trim()}\n\n${note.trim()}`
         else return note.trim()
-      else return null
+      } else return null
     },
     stampReviewText () {
       return this.stampReview.note ? this.stampReview.note.trim() : null
