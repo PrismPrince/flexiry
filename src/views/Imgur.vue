@@ -414,7 +414,7 @@
       </v-flex>
     </v-layout>
 
-    <v-dialog v-model="popup.active" width="400" hide-overlay :persistent="popup.persistent">
+    <v-dialog v-model="popup.active" width="400" :persistent="popup.persistent">
       <v-card :color="popup.color" dark>
         <v-card-text class="text-xs-center">
           <v-menu v-if="popup.color === 'error darken-1'" :close-on-content-click="false" :max-width="350" :nudge-bottom="25" :nudge-left="150" close-delay="150" open-on-hover>
@@ -488,6 +488,10 @@ export default {
   name: 'imgur',
   data () {
     return {
+      windowSize: {
+        height: 0,
+        width: 0
+      },
       canvas: null,
       ctx: null,
       popup: {
@@ -562,21 +566,36 @@ export default {
     if (window.localStorage.getItem('imgur-history') !== null) this.history = JSON.parse(window.localStorage.getItem('imgur-history'))
   },
   mounted () {
+    this.windowSize.width = window.innerWidth
+    this.windowSize.height = window.innerHeight
     this.canvas = document.getElementById('draw')
     this.ctx = this.canvas.getContext('2d')
 
-    document.addEventListener('paste', this.paste, false)
+    window.addEventListener('resize', this.handleResize, false)
+    document.addEventListener('paste', this.handlePaste, false)
     document.addEventListener('keypress', this.handleKeypress, false)
 
     console.log('Event added!')
   },
   beforeDestroy () {
-    document.removeEventListener('paste', this.paste, false)
+    window.removeEventListener('resize', this.handleResize, false)
+    document.removeEventListener('paste', this.handlePaste, false)
     document.removeEventListener('keypress', this.handleKeypress, false)
 
     console.log('Event removed!')
   },
   watch: {
+    windowSize: {
+      deep: true,
+      handler (size) {
+        if (size.width < 960 || size.height < 500) {
+          this.popup.active = true
+          this.popup.persistent = true
+          this.popup.color = 'grey darken-4'
+          this.popup.note = 'Please make your browser larger so the Flexiry interface can work reliably.'
+        } else this.popup.active = false
+      }
+    },
     'draw.stroke': {
       deep: true,
       handler (stroke) {
@@ -623,6 +642,12 @@ export default {
     }
   },
   methods: {
+    handleResize () {
+      console.log('Resize:', window.innerWidth, window.innerHeight)
+
+      this.windowSize.width = window.innerWidth
+      this.windowSize.height = window.innerHeight
+    },
     createCanvas () {
       switch (this.draw.custom.size) {
         case '720 x 480':
@@ -651,7 +676,7 @@ export default {
 
       this.draw.active = true
     },
-    paste (event) {
+    handlePaste (event) {
       let items, blob, source, objURL = window.URL || window.webkitURL
       let image = this._initImage(() => {
         this.canvas.width = image.width
@@ -668,6 +693,11 @@ export default {
 
       console.log('Pasting image...')
 
+      if (this.windowSize.width < 960 || this.windowSize.height < 500) {
+        console.warn('Image not pasted: window size limit')
+        return
+      }
+
       this.draw.uploaded.active = false
       this.popup.active = false
       this.popup.persistent = true
@@ -679,6 +709,7 @@ export default {
         items = event.clipboardData.items
 
         if (!items) {
+          console.warn('No items on clipboard', items)
           this.popup.active = false
           return
         }
@@ -688,11 +719,17 @@ export default {
             blob = items[i].getAsFile()
             source = objURL.createObjectURL(blob)
             image.src = source
-          } else this.popup.active = false
+          } else {
+            console.warn('No image on clipboard items', items)
+            this.popup.active = false
+          }
 
           event.preventDefault()
         }
-      } else this.popup.active = false
+      } else {
+        console.warn('clipboardData not supported')
+        this.popup.active = false
+      }
     },
     handleKeypress (event) {
       if (!this.draw.active) return
