@@ -1,16 +1,15 @@
 const plugins = []
 
-if(process.env.NODE_ENV === "production")
-  plugins.push(["transform-remove-console", { "exclude": ["error"] }])
+if (process.env.NODE_ENV === 'production') plugins.push(['transform-remove-console', { exclude: ['error'] }])
 
 module.exports = {
-  "presets": [
+  presets: [
     [
-      "@vue/app",
+      '@vue/app',
       {
-        "useBuiltIns": "entry"
+        useBuiltIns: 'entry'
       }
     ]
   ],
-  "plugins": plugins
+  plugins: plugins
 }
