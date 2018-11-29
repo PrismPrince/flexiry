@@ -677,7 +677,10 @@ export default {
       this.draw.active = true
     },
     handlePaste (event) {
-      let items, blob, source, objURL = window.URL || window.webkitURL
+      let items
+      let blob
+      let source
+      let objURL = window.URL || window.webkitURL
       let image = this._initImage(() => {
         this.canvas.width = image.width
         this.canvas.height = image.height
@@ -836,7 +839,8 @@ export default {
       }
     },
     move (event) {
-      let image, { startX, startY } = this.draw.dimen
+      let image
+      let { startX, startY } = this.draw.dimen
 
       if (this.draw.dimen.active) {
         switch (this.draw.tool) {
@@ -1149,7 +1153,8 @@ export default {
       })
     },
     saveAs () {
-      let dateStr, date = new Date()
+      let dateStr
+      let date = new Date()
       let link = document.createElement('a')
 
       dateStr = [
