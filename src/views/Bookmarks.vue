@@ -525,7 +525,7 @@ export default {
         return batch.commit().then(() => versions.size).catch(e => { console.log(e) })
       }).then(size => {
         if (size === 0) {
-          resolve()
+          resolve() // eslint-disable-line no-undef
           return
         }
 
