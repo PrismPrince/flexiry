@@ -55,19 +55,26 @@
 
         <v-tooltip bottom :disabled="!draw.active">
           <span>Stroke <kbd>S</kbd></span>
-          <color-picker slot="activator" @select="setStrokeColor"  :min-width="150" :nudge-left="75" :nudge-bottom="5" offset-y>
-            <v-btn slot="activator" :color="draw.stroke.color.hex" :disabled="!draw.active" fab small offset-y
-              :outline="!draw.stroke.has"
-              :dark="parseInt(draw.stroke.color.hex.replace('#', '0x')) < parseInt(0x7FFFFF) / 2"
-              :light="parseInt(draw.stroke.color.hex.replace('#', '0x')) >= parseInt(0x7FFFFF) / 2">
-              <v-icon>border_style</v-icon>
-            </v-btn>
+          <color-picker slot="activator" @select="setStrokeColor"  :min-width="150" :nudge-left="75" :nudge-bottom="5"  :disabled="!draw.active" offset-y>
+            <v-menu slot="activator" :nudge-left="5" :nudge-top="11" :disabled="!draw.stroke.has" open-on-hover offset-x left>
+              <v-btn slot="activator" :color="draw.stroke.color.hex" :disabled="!draw.active" fab small offset-y
+                :outline="!draw.stroke.has"
+                :dark="parseInt(draw.stroke.color.hex.replace('#', '0x')) < parseInt(0x7FFFFF) / 2"
+                :light="parseInt(draw.stroke.color.hex.replace('#', '0x')) >= parseInt(0x7FFFFF) / 2">
+                <v-icon>border_style</v-icon>
+              </v-btn>
+              <v-card dark>
+                <v-card-text class="pt-1 pb-0">
+                  <v-slider class="stroke-size" v-model="draw.stroke.size" label="Size" :thumb-size="18" always-dirty thumb-label :min="1" :max="30" color="teal"></v-slider>
+                </v-card-text>
+              </v-card>
+            </v-menu>
           </color-picker>
         </v-tooltip>
 
         <v-tooltip bottom :disabled="!draw.active">
           <span>Fill <kbd>F</kbd></span>
-          <color-picker slot="activator" @select="setFillColor" :min-width="150" :nudge-left="75" :nudge-bottom="5" offset-y>
+          <color-picker slot="activator" @select="setFillColor" :min-width="150" :nudge-left="75" :nudge-bottom="5"  :disabled="!draw.active" offset-y>
             <v-btn slot="activator" :color="draw.fill.color.hex" :disabled="!draw.active" fab small offset-y
               :outline="!draw.fill.has"
               :dark="parseInt(draw.fill.color.hex.replace('#', '0x')) < parseInt(0x7FFFFF) / 2"

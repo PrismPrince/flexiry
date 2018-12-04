@@ -1,5 +1,5 @@
 <template>
-  <v-menu v-model="baseColorMenu" :min-width="minWidth" :nudge-left="nudgeLeft" :nudge-bottom="nudgeBottom" :offset-x="offsetX" :offset-y="offsetY">
+  <v-menu v-model="baseColorMenu"  :disabled="disabled" :min-width="minWidth" :nudge-left="nudgeLeft" :nudge-bottom="nudgeBottom" :offset-x="offsetX" :offset-y="offsetY">
     <slot name="activator" slot="activator"></slot>
     <v-list dense style="max-height: 528px;">
       <v-menu v-for="(color, key) in colors" :key="color.text" offset-x left open-on-hover full-width>
@@ -29,6 +29,10 @@ import colors from '@/mixins/colors'
 export default {
   name: 'color-picker',
   props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     minWidth: {
       type: [String, Number],
       default: undefined
