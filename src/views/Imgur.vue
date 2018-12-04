@@ -55,126 +55,29 @@
 
         <v-tooltip bottom :disabled="!draw.active">
           <span>Stroke <kbd>S</kbd></span>
-          <v-menu slot="activator" :close-on-content-click="false" :nudge-width="300" :nudge-bottom="45" :nudge-left="150" :disabled="!draw.active" light>
-            <v-btn slot="activator" :color="strokeColor" :disabled="!draw.active" fab small offset-y
+          <color-picker slot="activator" @select="setStrokeColor"  :min-width="150" :nudge-left="75" :nudge-bottom="5" offset-y>
+            <v-btn slot="activator" :color="draw.stroke.color.hex" :disabled="!draw.active" fab small offset-y
               :outline="!draw.stroke.has"
-              :dark="draw.stroke.color.r + draw.stroke.color.g + draw.stroke.color.b < 383"
-              :light="draw.stroke.color.r + draw.stroke.color.g + draw.stroke.color.b >= 383">
+              :dark="parseInt(draw.stroke.color.hex.replace('#', '0x')) < parseInt(0x7FFFFF) / 2"
+              :light="parseInt(draw.stroke.color.hex.replace('#', '0x')) >= parseInt(0x7FFFFF) / 2">
               <v-icon>border_style</v-icon>
             </v-btn>
-
-            <v-card>
-              <v-card-text>
-                <v-layout align-center justify-space-between row>
-                  <v-responsive class="checkered-transparent elevation-1" :style="{ background: draw.stroke.has ? `rgb(${draw.stroke.color.r}, ${draw.stroke.color.g}, ${draw.stroke.color.b})` : '' }" :height="`${draw.stroke.size}px`"></v-responsive>
-                  <v-tooltip top>
-                    <span>{{ draw.stroke.has ? 'Remove stroke' : 'Add stroke' }}</span>
-                    <v-btn slot="activator" color="teal" icon flat small dark @click="draw.stroke.has = !draw.stroke.has">
-                      <v-icon>{{ draw.stroke.has ? 'invert_colors_off' : 'invert_colors' }}</v-icon>
-                    </v-btn>
-                  </v-tooltip>
-                </v-layout>
-              </v-card-text>
-
-              <v-divider></v-divider>
-
-              <v-card-text>
-                <v-layout align-center justify-space-between row>
-                  <v-flex xs9>
-                    <v-slider v-model="draw.stroke.color.r" label="R" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="red"></v-slider>
-                  </v-flex>
-                  <v-flex class="ml-3" xs3>
-                    <v-text-field class="mt-0" v-model="draw.stroke.color.r" type="number" min="0" max="255"></v-text-field>
-                  </v-flex>
-                </v-layout>
-                <v-layout align-center justify-space-between row>
-                  <v-flex xs9>
-                    <v-slider v-model="draw.stroke.color.g" label="G" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="green"></v-slider>
-                  </v-flex>
-                  <v-flex class="ml-3" xs3>
-                    <v-text-field class="mt-0" v-model="draw.stroke.color.g" type="number" min="0" max="255"></v-text-field>
-                  </v-flex>
-                </v-layout>
-                <v-layout align-center justify-space-between row>
-                  <v-flex xs9>
-                    <v-slider v-model="draw.stroke.color.b" label="B" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="blue"></v-slider>
-                  </v-flex>
-                  <v-flex class="ml-3" xs3>
-                    <v-text-field class="mt-0" v-model="draw.stroke.color.b" type="number" min="0" max="255"></v-text-field>
-                  </v-flex>
-                </v-layout>
-              </v-card-text>
-
-              <v-divider></v-divider>
-
-              <v-card-text>
-                <v-layout align-center justify-space-between row>
-                  <v-flex xs9>
-                <v-slider class="stroke-size" v-model="draw.stroke.size" label="Size" :thumb-size="24" always-dirty thumb-label="" :min="1" :max="30" color="teal"></v-slider>
-                  </v-flex>
-                  <v-flex class="ml-3" xs3>
-                    <v-text-field class="mt-0" v-model="draw.stroke.size" type="number" min="1" max="30"></v-text-field>
-                  </v-flex>
-                </v-layout>
-              </v-card-text>
-            </v-card>
-          </v-menu>
+          </color-picker>
         </v-tooltip>
 
         <v-tooltip bottom :disabled="!draw.active">
           <span>Fill <kbd>F</kbd></span>
-          <v-menu slot="activator" :close-on-content-click="false" :nudge-width="300" :nudge-bottom="45" :nudge-left="150" :disabled="!draw.active" light>
-            <v-btn slot="activator" :color="fillColor" :disabled="!draw.active" fab small offset-y
+          <color-picker slot="activator" @select="setFillColor" :min-width="150" :nudge-left="75" :nudge-bottom="5" offset-y>
+            <v-btn slot="activator" :color="draw.fill.color.hex" :disabled="!draw.active" fab small offset-y
               :outline="!draw.fill.has"
-              :dark="draw.fill.color.r + draw.fill.color.g + draw.fill.color.b < 383"
-              :light="draw.fill.color.r + draw.fill.color.g + draw.fill.color.b >= 383">
+              :dark="parseInt(draw.fill.color.hex.replace('#', '0x')) < parseInt(0x7FFFFF) / 2"
+              :light="parseInt(draw.fill.color.hex.replace('#', '0x')) >= parseInt(0x7FFFFF) / 2">
               <v-icon>format_color_fill</v-icon>
             </v-btn>
-
-            <v-card>
-              <v-card-text>
-                <v-layout align-center justify-space-between row>
-                  <v-responsive class="checkered-transparent elevation-1" :style="{ background: draw.fill.has ? `rgb(${draw.fill.color.r}, ${draw.fill.color.g}, ${draw.fill.color.b})` : '' }" height="20px"></v-responsive>
-                  <v-tooltip top>
-                    <span>{{ draw.fill.has ? 'Remove fill' : 'Add fill' }}</span>
-                    <v-btn slot="activator" color="teal" icon flat small dark @click="draw.fill.has = !draw.fill.has">
-                      <v-icon>{{ draw.fill.has ? 'invert_colors_off' : 'invert_colors' }}</v-icon>
-                    </v-btn>
-                  </v-tooltip>
-                </v-layout>
-              </v-card-text>
-
-              <v-divider></v-divider>
-
-              <v-card-text>
-                <v-layout align-center justify-space-between row>
-                  <v-flex xs9>
-                    <v-slider v-model="draw.fill.color.r" label="R" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="red"></v-slider>
-                  </v-flex>
-                  <v-flex class="ml-3" xs3>
-                    <v-text-field class="mt-0" v-model="draw.fill.color.r" type="number" min="0" max="255"></v-text-field>
-                  </v-flex>
-                </v-layout>
-                <v-layout align-center justify-space-between row>
-                  <v-flex xs9>
-                    <v-slider v-model="draw.fill.color.g" label="G" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="green"></v-slider>
-                  </v-flex>
-                  <v-flex class="ml-3" xs3>
-                    <v-text-field class="mt-0" v-model="draw.fill.color.g" type="number" min="0" max="255"></v-text-field>
-                  </v-flex>
-                </v-layout>
-                <v-layout align-center justify-space-between row>
-                  <v-flex xs9>
-                    <v-slider v-model="draw.fill.color.b" label="B" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="blue"></v-slider>
-                  </v-flex>
-                  <v-flex class="ml-3" xs3>
-                    <v-text-field class="mt-0" v-model="draw.fill.color.b" type="number" min="0" max="255"></v-text-field>
-                  </v-flex>
-                </v-layout>
-              </v-card-text>
-            </v-card>
-          </v-menu>
+          </color-picker>
         </v-tooltip>
+
+
 
         <v-spacer></v-spacer>
 
@@ -288,57 +191,14 @@
 
               <v-layout justify-center row wrap>
                 <v-flex xs12 md6>
-                  <v-menu slot="activator" :close-on-content-click="false" :nudge-width="80" :nudge-bottom="45" :nudge-left="40" full-width light>
-                    <v-btn slot="activator" :color="`rgb(${draw.custom.background.color.r}, ${draw.custom.background.color.g}, ${draw.custom.background.color.b})`" block
+                  <color-picker @select="setCanvasBackground" offset-x>
+                    <v-btn slot="activator" :color="draw.custom.background.color.hex" block
                       :outline="!draw.custom.background.has"
-                      :dark="draw.custom.background.color.r + draw.custom.background.color.g + draw.custom.background.color.b < 383"
-                      :light="draw.custom.background.color.r + draw.custom.background.color.g + draw.custom.background.color.b >= 383">
+                      :dark="parseInt(draw.custom.background.color.hex.replace('#', '0x')) < parseInt(0x7FFFFF) / 2"
+                      :light="parseInt(draw.custom.background.color.hex.replace('#', '0x')) >= parseInt(0x7FFFFF) / 2">
                       <v-icon class="mr-1">format_color_fill</v-icon>Canvas Background
                     </v-btn>
-
-                    <v-card>
-                      <v-card-text>
-                        <v-layout align-center justify-space-between row>
-                          <v-responsive class="checkered-transparent elevation-1" :style="{ background: draw.custom.background.has ? `rgb(${draw.custom.background.color.r}, ${draw.custom.background.color.g}, ${draw.custom.background.color.b})` : '' }" height="20px"></v-responsive>
-                          <v-tooltip top>
-                            <span>{{ draw.custom.background.has ? 'Remove background' : 'Add background' }}</span>
-                            <v-btn slot="activator" color="teal" icon flat small dark @click="draw.custom.background.has = !draw.custom.background.has">
-                              <v-icon>{{ draw.custom.background.has ? 'invert_colors_off' : 'invert_colors' }}</v-icon>
-                            </v-btn>
-                          </v-tooltip>
-                        </v-layout>
-                      </v-card-text>
-
-                      <v-divider></v-divider>
-
-                      <v-card-text>
-                        <v-layout align-center justify-space-between row>
-                          <v-flex xs9>
-                            <v-slider v-model="draw.custom.background.color.r" label="R" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="red"></v-slider>
-                          </v-flex>
-                          <v-flex class="ml-3" xs3>
-                            <v-text-field class="mt-0" v-model="draw.custom.background.color.r" type="number" min="0" max="255"></v-text-field>
-                          </v-flex>
-                        </v-layout>
-                        <v-layout align-center justify-space-between row>
-                          <v-flex xs9>
-                            <v-slider v-model="draw.custom.background.color.g" label="G" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="green"></v-slider>
-                          </v-flex>
-                          <v-flex class="ml-3" xs3>
-                            <v-text-field class="mt-0" v-model="draw.custom.background.color.g" type="number" min="0" max="255"></v-text-field>
-                          </v-flex>
-                        </v-layout>
-                        <v-layout align-center justify-space-between row>
-                          <v-flex xs9>
-                            <v-slider v-model="draw.custom.background.color.b" label="B" :thumb-size="24" always-dirty thumb-label :min="0" :max="255" color="blue"></v-slider>
-                          </v-flex>
-                          <v-flex class="ml-3" xs3>
-                            <v-text-field class="mt-0" v-model="draw.custom.background.color.b" type="number" min="0" max="255"></v-text-field>
-                          </v-flex>
-                        </v-layout>
-                      </v-card-text>
-                    </v-card>
-                  </v-menu>
+                  </color-picker>
                 </v-flex>
 
                 <v-flex xs12 md6>
@@ -483,9 +343,11 @@
 
 <script>
 import imgur from '@/services/imgur'
+import ColorPicker from '@/components/layouts/Color-Picker'
 
 export default {
   name: 'imgur',
+  components: { ColorPicker },
   data () {
     return {
       windowSize: {
@@ -515,11 +377,7 @@ export default {
           height: 0,
           background: {
             has: true,
-            color: {
-              r: 255,
-              g: 255,
-              b: 255
-            }
+            color: { hex: '#ffffff' }
           }
         },
         uploaded: {
@@ -540,28 +398,26 @@ export default {
         stroke: {
           has: true,
           size: 5,
-          color: {
-            r: 0,
-            g: 0,
-            b: 0
-          }
+          color: { hex: '#000000' }
         },
         fill: {
           has: true,
-          color: {
-            r: 0,
-            g: 0,
-            b: 0
-          }
+          color: { hex: '#000000' }
         }
       },
       history: []
     }
   },
   created () {
-    if (window.localStorage.getItem('imgur-draw-stroke') !== null) this.draw.stroke = JSON.parse(window.localStorage.getItem('imgur-draw-stroke'))
+    if (window.localStorage.getItem('imgur-draw-stroke') !== null) {
+      this.draw.stroke = JSON.parse(window.localStorage.getItem('imgur-draw-stroke'))
+      this.draw.stroke.color.hex = this.draw.stroke.color.hex || '#000000'
+    }
 
-    if (window.localStorage.getItem('imgur-draw-fill') !== null) this.draw.fill = JSON.parse(window.localStorage.getItem('imgur-draw-fill'))
+    if (window.localStorage.getItem('imgur-draw-fill') !== null) {
+      this.draw.fill = JSON.parse(window.localStorage.getItem('imgur-draw-fill'))
+      this.draw.fill.color.hex = this.draw.fill.color.hex || '#000000'
+    }
 
     if (window.localStorage.getItem('imgur-history') !== null) this.history = JSON.parse(window.localStorage.getItem('imgur-history'))
   },
@@ -629,24 +485,20 @@ export default {
       window.localStorage.setItem('imgur-history', JSON.stringify(history))
     }
   },
-  computed: {
-    fillColor () {
-      let { r, g, b } = this.draw.fill.color
-
-      return `rgb(${r}, ${g}, ${b})`
-    },
-    strokeColor () {
-      let { r, g, b } = this.draw.stroke.color
-
-      return `rgb(${r}, ${g}, ${b})`
-    }
-  },
   methods: {
     handleResize () {
       console.log('Resize:', window.innerWidth, window.innerHeight)
 
       this.windowSize.width = window.innerWidth
       this.windowSize.height = window.innerHeight
+    },
+    setCanvasBackground (hex) {
+      if (hex === 'transparent') {
+        this.draw.custom.background.has = false
+      } else {
+        this.draw.custom.background.has = true
+        this.draw.custom.background.color.hex = hex
+      }
     },
     createCanvas () {
       switch (this.draw.custom.size) {
@@ -823,6 +675,20 @@ export default {
         }
       }
     },
+    setStrokeColor (hex) {
+      if (hex === 'transparent') this.draw.stroke.has = false
+      else {
+        this.draw.stroke.has = true
+        this.draw.stroke.color.hex = hex
+      }
+    },
+    setFillColor (hex) {
+      if (hex === 'transparent') this.draw.fill.has = false
+      else {
+        this.draw.fill.has = true
+        this.draw.fill.color.hex = hex
+      }
+    },
     startPlot (event) {
       if (!this.draw.tool) return
 
@@ -851,7 +717,7 @@ export default {
               this.ctx.beginPath()
               this._plotRect(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
               this.ctx.setLineDash([10, 5])
-              this.ctx.strokeStyle = 'rgb(34, 34, 34)'
+              this.ctx.strokeStyle = '#222'
               this.ctx.lineWidth = 2
 
               this.ctx.stroke()
@@ -877,7 +743,7 @@ export default {
 
               this.ctx.lineCap = 'round'
               this.ctx.lineJoin = 'round'
-              this.ctx.strokeStyle = this.strokeColor
+              this.ctx.strokeStyle = this.draw.stroke.color.hex
               this.ctx.lineWidth = this.draw.stroke.size
 
               if (this.draw.stroke.has) this.ctx.stroke()
@@ -898,8 +764,8 @@ export default {
               this.ctx.setLineDash([])
 
               this.ctx.lineJoin = 'round'
-              this.ctx.fillStyle = this.fillColor
-              this.ctx.strokeStyle = this.strokeColor
+              this.ctx.fillStyle = this.draw.fill.color.hex
+              this.ctx.strokeStyle = this.draw.stroke.color.hex
               this.ctx.lineWidth = this.draw.stroke.size
 
               if (this.draw.fill.has) this.ctx.fill()
@@ -921,8 +787,8 @@ export default {
               this._plotCirc(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
               this.ctx.setLineDash([])
 
-              this.ctx.fillStyle = this.fillColor
-              this.ctx.strokeStyle = this.strokeColor
+              this.ctx.fillStyle = this.draw.fill.color.hex
+              this.ctx.strokeStyle = this.draw.stroke.color.hex
               this.ctx.lineWidth = this.draw.stroke.size
 
               if (this.draw.fill.has) this.ctx.fill()
@@ -991,7 +857,8 @@ export default {
             this.ctx.setLineDash([])
 
             this.ctx.lineCap = 'round'
-            this.ctx.strokeStyle = this.strokeColor
+            this.ctx.fillStyle = this.draw.fill.color.hex
+            this.ctx.strokeStyle = this.draw.stroke.color.hex
             this.ctx.lineWidth = this.draw.stroke.size
 
             this.ctx.stroke()
@@ -1018,8 +885,8 @@ export default {
             this.ctx.setLineDash([])
 
             this.ctx.lineJoin = 'round'
-            this.ctx.fillStyle = this.fillColor
-            this.ctx.strokeStyle = this.strokeColor
+            this.ctx.fillStyle = this.draw.fill.color.hex
+            this.ctx.strokeStyle = this.draw.stroke.color.hex
             this.ctx.lineWidth = this.draw.stroke.size
 
             if (this.draw.fill.has) this.ctx.fill()
@@ -1048,8 +915,8 @@ export default {
             this._plotCirc(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
             this.ctx.setLineDash([])
 
-            this.ctx.fillStyle = this.fillColor
-            this.ctx.strokeStyle = this.strokeColor
+            this.ctx.fillStyle = this.draw.fill.color.hex
+            this.ctx.strokeStyle = this.draw.stroke.color.hex
             this.ctx.lineWidth = this.draw.stroke.size
 
             if (this.draw.fill.has) this.ctx.fill()
@@ -1240,7 +1107,7 @@ export default {
 
       this.ctx.lineCap = 'round'
       this.ctx.lineJoin = 'round'
-      this.ctx.strokeStyle = this.strokeColor
+      this.ctx.strokeStyle = this.draw.stroke.color.hex
       this.ctx.lineWidth = this.draw.stroke.size
 
       this.ctx.stroke()
@@ -1377,7 +1244,7 @@ export default {
       if (this.draw.custom.background.has) {
         this.ctx.rect(0, 0, width, height)
 
-        this.ctx.fillStyle = `rgb(${r}, ${g}, ${b})`
+        this.ctx.fillStyle = this.draw.custom.background.color.hex
 
         this.ctx.fill()
       }
