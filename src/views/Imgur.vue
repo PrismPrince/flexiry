@@ -84,8 +84,6 @@
           </color-picker>
         </v-tooltip>
 
-
-
         <v-spacer></v-spacer>
 
         <v-tooltip bottom :disabled="!draw.active || draw.zoom === 100">
@@ -1072,19 +1070,17 @@ export default {
     _crop (startX, startY, endX, endY, centered, exact) {
       let x, y, w, h, tempCanvas, tempCtx
 
-      x = startX
-      y = startY
-      w = endX - startX
-      h = endY - startY
+      x = startX < endX ? startX : endX
+      y = startY < endY ? startY : endY
+      w = Math.abs(endX - startX)
+      h = Math.abs(endY - startY)
 
       if (exact) {
-        if (Math.abs(w) > Math.abs(h)) {
-          if ((w < 0 && h < 0) || (w >= 0 && h >= 0)) h = w
-          else if ((w < 0 && h >= 0) || (w >= 0 && h < 0)) h = 0 - w
-        } else {
-          if ((w < 0 && h < 0) || (w >= 0 && h >= 0)) w = h
-          else if ((w < 0 && h >= 0) || (w >= 0 && h < 0)) w = 0 - h
-        }
+        if (w > h) h = w
+        else w = h
+
+        x = startX < endX ? startX : (startX - w)
+        y = startY < endY ? startY : (startY - h)
       }
 
       if (centered) {
