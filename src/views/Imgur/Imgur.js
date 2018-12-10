@@ -1,10 +1,11 @@
 import imgur from '@/services/imgur'
 import ColorPicker from '@/components/layouts/Color-Picker'
 import ToolBtn from './_components/Tool-Btn'
+import UploadDialog from './_components/Upload-Dialog'
 
 export default {
   name: 'imgur',
-  components: { ColorPicker, ToolBtn },
+  components: { ColorPicker, ToolBtn, UploadDialog },
   data () {
     return {
       windowSize: {
@@ -704,20 +705,6 @@ export default {
       setTimeout(() => {
         this.popup.active = false
       }, 3000)
-    },
-    copyImageViewLink () {
-      document.getElementById('img-view-link').select()
-      document.execCommand('copy')
-    },
-    copyImageDeleteLink () {
-      document.getElementById('img-delete-link').select()
-      document.execCommand('copy')
-    },
-    openImageViewLink () {
-      window.open(this.draw.uploaded.link, '_blank')
-    },
-    openImageDeleteLink () {
-      window.open('https://imgur.com/delete/' + this.draw.uploaded.deletehash, '_blank')
     },
     removeHistory (key) {
       this.history.splice(key, 1)
