@@ -80,6 +80,10 @@ export default {
   watch: {
     active (val) {
       this.dialog = val
+
+    },
+    dialog (val) {
+      if (!this.dialog) this.$emit('close')
     }
   },
   methods: {

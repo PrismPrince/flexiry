@@ -281,5 +281,5 @@
     </v-card>
   </v-dialog>
 
-  <upload-dialog :active="draw.uploaded.active" :link="draw.uploaded.link !== null ? draw.uploaded.link : ''" :delete-link="draw.uploaded.deleteLink !== null ? draw.uploaded.deleteLink : ''" :img="draw.uploaded.img !== null ? draw.uploaded.img : ''"></upload-dialog>
+  <upload-dialog :active="draw.uploaded.active" :link="draw.uploaded.link !== null ? draw.uploaded.link : ''" :delete-link="draw.uploaded.deleteLink !== null ? draw.uploaded.deleteLink : ''" :img="draw.uploaded.img !== null ? draw.uploaded.img : ''" @close="draw.uploaded.active = false"></upload-dialog>
 </v-container>
