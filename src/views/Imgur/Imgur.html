@@ -1,40 +1,25 @@
 <v-container class="imgur" grid-list-lg fluid>
   <v-layout row>
     <v-toolbar color="teal" dark>
-      <v-tooltip bottom :disabled="!draw.active">
+      <tool-btn :active="!draw.active" :active-tool="draw.tool !== null ? draw.tool : ''" tool="crop" icon="crop" @click="setTool">
         <span>Crop <kbd>C</kbd></span>
-        <v-btn slot="activator" fab flat small :outline="draw.tool === 'crop'" @click="draw.tool = draw.tool !== 'crop' ? 'crop' : null" :disabled="!draw.active">
-          <v-icon>crop</v-icon>
-        </v-btn>
-      </v-tooltip>
+      </tool-btn>
 
-      <v-tooltip bottom :disabled="!draw.active">
+      <tool-btn :active="!draw.active" :active-tool="draw.tool !== null ? draw.tool : ''" tool="free" icon="brush" @click="setTool">
         <span>Freehand <kbd>H</kbd></span>
-        <v-btn slot="activator" fab flat small :outline="draw.tool === 'free'" @click="draw.tool = draw.tool !== 'free' ? 'free' : null" :disabled="!draw.active">
-          <v-icon>brush</v-icon>
-        </v-btn>
-      </v-tooltip>
+      </tool-btn>
 
-      <v-tooltip bottom :disabled="!draw.active">
+      <tool-btn :active="!draw.active" :active-tool="draw.tool !== null ? draw.tool : ''" tool="line" icon="show_chart" @click="setTool">
         <span>Line <kbd>L</kbd></span>
-        <v-btn slot="activator" fab flat small :outline="draw.tool === 'line'" @click="draw.tool = draw.tool !== 'line' ? 'line' : null" :disabled="!draw.active">
-          <v-icon>show_chart</v-icon>
-        </v-btn>
-      </v-tooltip>
+      </tool-btn>
 
-      <v-tooltip bottom :disabled="!draw.active">
+      <tool-btn :active="!draw.active" :active-tool="draw.tool !== null ? draw.tool : ''" tool="rect" icon="crop_square" @click="setTool">
         <span>Rectangle <kbd>R</kbd></span>
-        <v-btn slot="activator" fab flat small :outline="draw.tool === 'rect'" @click="draw.tool = draw.tool !== 'rect' ? 'rect' : null" :disabled="!draw.active">
-          <v-icon>crop_square</v-icon>
-        </v-btn>
-      </v-tooltip>
+      </tool-btn>
 
-      <v-tooltip bottom :disabled="!draw.active">
+      <tool-btn :active="!draw.active" :active-tool="draw.tool !== null ? draw.tool : ''" tool="circ" icon="panorama_fish_eye" @click="setTool">
         <span>Ellipse <kbd>E</kbd></span>
-        <v-btn slot="activator" fab flat small :outline="draw.tool === 'circ'" @click="draw.tool = draw.tool !== 'circ' ? 'circ' : null" :disabled="!draw.active">
-          <v-icon>panorama_fish_eye</v-icon>
-        </v-btn>
-      </v-tooltip>
+      </tool-btn>
 
       <v-tooltip bottom :disabled="!draw.active || draw.history.undo.length <= 1">
         <span>Undo <kbd>Ctrl</kbd> + <kbd>Z</kbd></span>

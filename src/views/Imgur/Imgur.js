@@ -1,9 +1,10 @@
 import imgur from '@/services/imgur'
 import ColorPicker from '@/components/layouts/Color-Picker'
+import ToolBtn from './_components/Tool-Btn'
 
 export default {
   name: 'imgur',
-  components: { ColorPicker },
+  components: { ColorPicker, ToolBtn },
   data () {
     return {
       windowSize: {
@@ -330,6 +331,9 @@ export default {
             console.log('Keypress: Q', event.keyCode)
         }
       }
+    },
+    setTool (tool) {
+      this.draw.tool = tool
     },
     setStrokeColor (hex) {
       if (hex === 'transparent') this.draw.stroke.has = false
