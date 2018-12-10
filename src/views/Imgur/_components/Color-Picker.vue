@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import colors from '@/mixins/colors'
+import colors from '../_utils/colors'
 
 export default {
   name: 'color-picker',

@@ -1,5 +1,5 @@
 import imgur from '@/services/imgur'
-import ColorPicker from '@/components/layouts/Color-Picker'
+import ColorPicker from './_components/Color-Picker'
 import ToolBtn from './_components/Tool-Btn'
 import UploadDialog from './_components/Upload-Dialog'
 
