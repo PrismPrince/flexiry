@@ -672,7 +672,7 @@ export default {
 
         this._saveHistory(data)
       }).catch((e) => {
-        let res = JSON.parse(e.request.response)
+        let res = e.request.response ? JSON.parse(e.request.response) : null
 
         this.popup.progress = false
         this.popup.persistent = false
