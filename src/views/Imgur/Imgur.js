@@ -1,358 +1,11 @@
-<template>
-  <v-container class="imgur" grid-list-lg fluid>
-    <v-layout row>
-      <v-toolbar color="teal" dark>
-        <v-tooltip bottom :disabled="!draw.active">
-          <span>Crop <kbd>C</kbd></span>
-          <v-btn slot="activator" fab flat small :outline="draw.tool === 'crop'" @click="draw.tool = draw.tool !== 'crop' ? 'crop' : null" :disabled="!draw.active">
-            <v-icon>crop</v-icon>
-          </v-btn>
-        </v-tooltip>
-
-        <v-tooltip bottom :disabled="!draw.active">
-          <span>Freehand <kbd>H</kbd></span>
-          <v-btn slot="activator" fab flat small :outline="draw.tool === 'free'" @click="draw.tool = draw.tool !== 'free' ? 'free' : null" :disabled="!draw.active">
-            <v-icon>brush</v-icon>
-          </v-btn>
-        </v-tooltip>
-
-        <v-tooltip bottom :disabled="!draw.active">
-          <span>Line <kbd>L</kbd></span>
-          <v-btn slot="activator" fab flat small :outline="draw.tool === 'line'" @click="draw.tool = draw.tool !== 'line' ? 'line' : null" :disabled="!draw.active">
-            <v-icon>show_chart</v-icon>
-          </v-btn>
-        </v-tooltip>
-
-        <v-tooltip bottom :disabled="!draw.active">
-          <span>Rectangle <kbd>R</kbd></span>
-          <v-btn slot="activator" fab flat small :outline="draw.tool === 'rect'" @click="draw.tool = draw.tool !== 'rect' ? 'rect' : null" :disabled="!draw.active">
-            <v-icon>crop_square</v-icon>
-          </v-btn>
-        </v-tooltip>
-
-        <v-tooltip bottom :disabled="!draw.active">
-          <span>Ellipse <kbd>E</kbd></span>
-          <v-btn slot="activator" fab flat small :outline="draw.tool === 'circ'" @click="draw.tool = draw.tool !== 'circ' ? 'circ' : null" :disabled="!draw.active">
-            <v-icon>panorama_fish_eye</v-icon>
-          </v-btn>
-        </v-tooltip>
-
-        <v-tooltip bottom :disabled="!draw.active || draw.history.undo.length <= 1">
-          <span>Undo <kbd>Ctrl</kbd> + <kbd>Z</kbd></span>
-          <v-btn slot="activator" fab flat small @click="undo" :disabled="!draw.active || draw.history.undo.length <= 1">
-            <v-icon>undo</v-icon>
-          </v-btn>
-        </v-tooltip>
-
-        <v-tooltip bottom :disabled="!draw.active || draw.history.redo.length === 0">
-          <span>Redo <kbd>Ctrl</kbd> + <kbd>Y</kbd></span>
-          <v-btn slot="activator" fab flat small @click="redo" :disabled="!draw.active || draw.history.redo.length === 0">
-            <v-icon>redo</v-icon>
-          </v-btn>
-        </v-tooltip>
-
-        <v-spacer></v-spacer>
-
-        <v-tooltip bottom :disabled="!draw.active">
-          <span>Stroke <kbd>S</kbd></span>
-          <color-picker slot="activator" @select="setStrokeColor"  :min-width="150" :nudge-left="75" :nudge-bottom="5"  :disabled="!draw.active" offset-y>
-            <v-menu slot="activator" :nudge-left="5" :nudge-top="11" :disabled="!draw.stroke.has" open-on-hover offset-x left>
-              <v-btn slot="activator" :color="draw.stroke.color.hex" :disabled="!draw.active" fab small offset-y
-                :outline="!draw.stroke.has"
-                :dark="parseInt(draw.stroke.color.hex.replace('#', '0x')) < parseInt(0x7FFFFF) / 2"
-                :light="parseInt(draw.stroke.color.hex.replace('#', '0x')) >= parseInt(0x7FFFFF) / 2">
-                <v-icon>border_style</v-icon>
-              </v-btn>
-              <v-card dark>
-                <v-card-text class="pt-1 pb-0">
-                  <v-slider class="stroke-size" v-model="draw.stroke.size" label="Size" :thumb-size="18" always-dirty thumb-label :min="1" :max="30" color="teal"></v-slider>
-                </v-card-text>
-              </v-card>
-            </v-menu>
-          </color-picker>
-        </v-tooltip>
-
-        <v-tooltip bottom :disabled="!draw.active">
-          <span>Fill <kbd>F</kbd></span>
-          <color-picker slot="activator" @select="setFillColor" :min-width="150" :nudge-left="75" :nudge-bottom="5"  :disabled="!draw.active" offset-y>
-            <v-btn slot="activator" :color="draw.fill.color.hex" :disabled="!draw.active" fab small offset-y
-              :outline="!draw.fill.has"
-              :dark="parseInt(draw.fill.color.hex.replace('#', '0x')) < parseInt(0x7FFFFF) / 2"
-              :light="parseInt(draw.fill.color.hex.replace('#', '0x')) >= parseInt(0x7FFFFF) / 2">
-              <v-icon>format_color_fill</v-icon>
-            </v-btn>
-          </color-picker>
-        </v-tooltip>
-
-        <v-spacer></v-spacer>
-
-        <v-tooltip bottom :disabled="!draw.active || draw.zoom === 100">
-          <span>100% <kbd>=</kbd> / <kbd>0</kbd></span>
-          <v-btn slot="activator" @click="draw.zoom = 100" fab flat small :style="{ visibility: draw.zoom !== 100 ? 'visible' : 'hidden' }" :disabled="!draw.active">
-            <v-icon>crop_free</v-icon>
-          </v-btn>
-        </v-tooltip>
-
-        <v-tooltip bottom :disabled="!draw.active || draw.zoom >= 300">
-          <span>Zoom In <kbd>+</kbd> / <kbd>I</kbd></span>
-          <v-btn slot="activator" @click="draw.zoom += 10" fab flat small :disabled="!draw.active || draw.zoom >= 300">
-            <v-icon>zoom_in</v-icon>
-          </v-btn>
-        </v-tooltip>
-
-        <v-tooltip bottom :disabled="!draw.active || draw.zoom <= 10">
-          <span>Zoom Out <kbd>-</kbd> / <kbd>O</kbd></span>
-          <v-btn slot="activator" @click="draw.zoom -= 10" fab flat small :disabled="!draw.active || draw.zoom <= 10">
-            <v-icon>zoom_out</v-icon>
-          </v-btn>
-        </v-tooltip>
-
-        <v-spacer></v-spacer>
-
-        <v-tooltip bottom :disabled="!draw.active">
-          <span>Restart <kbd>Q</kbd></span>
-          <v-btn slot="activator" @click="reset" fab flat small :disabled="!draw.active">
-            <v-icon>replay</v-icon>
-          </v-btn>
-        </v-tooltip>
-
-        <v-tooltip bottom :disabled="!draw.active">
-          <span>Upload to Imgur</span>
-          <v-btn slot="activator" @click="uploadToImgur" fab flat small :disabled="!draw.active">
-            <v-icon>cloud_upload</v-icon>
-          </v-btn>
-        </v-tooltip>
-
-        <v-tooltip bottom :disabled="!draw.active">
-          <span>Save As</span>
-          <v-btn slot="activator" @click="saveAs" fab flat small :disabled="!draw.active">
-            <v-icon>save</v-icon>
-          </v-btn>
-        </v-tooltip>
-      </v-toolbar>
-    </v-layout>
-
-    <v-slide-y-transition>
-      <v-layout v-if="!draw.active" class="text-xs-center draw-inactive" align-center row>
-        <v-flex xs4 d-flex fill-height>
-          <v-card color="deep-orange" dark>
-            <v-card-text class="display-3 font-weight-thin text-xs-center">Paste an Image</v-card-text>
-            <v-card-text class="title font-weight-light">Paste image data from clipboard to start</v-card-text>
-            <v-card-text class="font-weight-light">
-              <v-divider></v-divider>
-              <v-layout row>
-                <v-flex class="text-xs-left">
-                  <span>Copy Full Screenshot</span>
-                </v-flex>
-                <v-spacer></v-spacer>
-                <v-flex class="text-xs-right">
-                  <span><kbd>PrtScn</kbd></span>
-                </v-flex>
-              </v-layout>
-              <v-divider></v-divider>
-              <v-layout row>
-                <v-flex class="text-xs-left">
-                  <span>Copy Window Screenshot</span>
-                </v-flex>
-                <v-spacer></v-spacer>
-                <v-flex class="text-xs-right">
-                  <span><kbd>Alt</kbd> + <kbd>PrtScn</kbd></span>
-                </v-flex>
-              </v-layout>
-              <v-divider></v-divider>
-              <v-layout row>
-                <v-flex class="text-xs-left">
-                  <span>Paste</span>
-                </v-flex>
-                <v-spacer></v-spacer>
-                <v-flex class="text-xs-right">
-                  <span><kbd>Ctrl</kbd> + <kbd>V</kbd></span>
-                </v-flex>
-              </v-layout>
-              <v-divider></v-divider>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-
-        <v-flex xs4 d-flex fill-height>
-          <v-card color="pink" dark>
-            <v-card-text class="display-3 font-weight-thin text-xs-center">Start From Scratch</v-card-text>
-            <v-card-text class="title font-weight-light">Create a blank canvas to draw on</v-card-text>
-            <v-card-text>
-              <v-layout row>
-                <v-flex>
-                  <v-select v-model="draw.custom.size" label="Canvas Size" color="pink" :items="['720 x 480', '1024 x 768', '1024 x 1024', '1920 x 1080', '2048 x 2048', 'Custom...']" hide-details solo-inverted></v-select>
-                </v-flex>
-              </v-layout>
-
-              <v-layout v-if="draw.custom.size === 'Custom...'" row wrap>
-                <v-flex xs12 md6>
-                  <v-text-field v-model="draw.custom.width" type="number" min="1" color="white" label="Width" suffix="px" hide-details></v-text-field>
-                </v-flex>
-                <v-flex xs12 md6>
-                  <v-text-field v-model="draw.custom.height" type="number" min="1" color="white" label="Height" suffix="px" hide-details></v-text-field>
-                </v-flex>
-              </v-layout>
-
-              <v-layout justify-center row wrap>
-                <v-flex xs12 md6>
-                  <color-picker @select="setCanvasBackground" offset-x>
-                    <v-btn slot="activator" :color="draw.custom.background.color.hex" block
-                      :outline="!draw.custom.background.has"
-                      :dark="parseInt(draw.custom.background.color.hex.replace('#', '0x')) < parseInt(0x7FFFFF) / 2"
-                      :light="parseInt(draw.custom.background.color.hex.replace('#', '0x')) >= parseInt(0x7FFFFF) / 2">
-                      <v-icon class="mr-1">format_color_fill</v-icon>Canvas Background
-                    </v-btn>
-                  </color-picker>
-                </v-flex>
-
-                <v-flex xs12 md6>
-                  <v-btn color="pink lighten-1" block @click="createCanvas" :disabled="draw.custom.size === 'Custom...' ? draw.custom.height <= 0 || draw.custom.width <= 0 : draw.custom.size === null">Create Canvas</v-btn>
-                </v-flex>
-              </v-layout>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-
-        <v-flex xs4 d-flex fill-height>
-          <v-card color="purple history-column" dark>
-            <v-card-text class="display-3 font-weight-thin text-xs-center">History</v-card-text>
-            <v-card-text class="title font-weight-light">You can see your past uploads here
-              <v-tooltip max-width="300" :nudge-left="125" bottom>
-                <v-icon slot="activator" size="21px">help_outline</v-icon>
-                <span>Flexiry stores your uploads to your local computer and you can manage it here!<br>Flexiry only keep 500 uploads for smooth experience.</span>
-              </v-tooltip>
-            </v-card-text>
-            <v-card-text v-if="history.length === 0" class="font-weight-light">Your history is empty. Upload some images!</v-card-text>
-            <v-card-text v-else>
-              <v-list class="purple lighten-1 elevation-1 history-list" three-lines dark>
-                <v-subheader>
-                  <span>Upload History</span>
-                  <v-spacer></v-spacer>
-                  <v-chip color="purple white--text" small disabled>{{ `${history.length} upload${ history.length > 1 ? 's' : '' }` }}</v-chip>
-                </v-subheader>
-
-                <v-divider></v-divider>
-
-                <v-scale-transition group mode="out-in">
-                  <v-list-tile v-for="(item, key) in history" :key="item.id" :href="item.link" target="_blank" avatar>
-                    <v-list-tile-avatar>
-                      <v-img :src="item.link" class="grey lighten-2" aspect-ratio="1">
-                        <v-layout slot="placeholder" fill-height align-center justify-center ma-0>
-                          <v-progress-circular indeterminate color="purple lighten-2" size="16"></v-progress-circular>
-                        </v-layout>
-                      </v-img>
-                    </v-list-tile-avatar>
-                    <v-list-tile-content>
-                      <v-list-tile-title>{{ item.link }}</v-list-tile-title>
-                      <v-list-tile-sub-title>
-                        <span>
-                          <v-tooltip max-width="300" bottom>
-                            <span>Delete image permanently on Imgur server. You cannot undo this action.<br>If you wish to remove this on your history, feel free to click the trash icon to the right.</span>
-                            <v-icon slot="activator" class="mr-1" color="purple darken-2" size="15px">warning</v-icon>
-                          </v-tooltip>
-                          <a class="purple--text text--darken-3" :href="'https://imgur.com/delete/' + item.deletehash" target="_blank">Delete permanently</a>
-                        </span>
-                      </v-list-tile-sub-title>
-                    </v-list-tile-content>
-                    <v-list-tile-action>
-                      <v-list-tile-action-text class="caption grey--text text--lighten-2">{{ item.datetime | formatDate }}</v-list-tile-action-text>
-                      <v-tooltip left>
-                        <span>Remove from history</span>
-                        <v-btn slot="activator" @click.prevent="removeHistory(key)" small icon>
-                          <v-icon size="20">delete</v-icon>
-                        </v-btn>
-                      </v-tooltip>
-                    </v-list-tile-action>
-                  </v-list-tile>
-                </v-scale-transition>
-              </v-list>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-slide-y-transition>
-
-    <v-layout row>
-      <v-flex id="container">
-        <canvas id="draw" class="checkered-transparent elevation-3" @mousedown.left.prevent="startPlot($event)" @mouseup.left.prevent="endPlot($event)" @mousemove="move($event)" @mouseout="endPlot($event)" :style="{zoom: `${draw.zoom}%`, cursor: draw.tool === 'crop' ? 'crosshair' : ''}" height="0" width="0"></canvas>
-      </v-flex>
-    </v-layout>
-
-    <v-dialog v-model="popup.active" width="400" :persistent="popup.persistent">
-      <v-card :color="popup.color" dark>
-        <v-card-text class="text-xs-center">
-          <v-menu v-if="popup.color === 'error darken-1'" :close-on-content-click="false" :max-width="350" :nudge-bottom="25" :nudge-left="150" close-delay="150" open-on-hover>
-            <v-icon slot="activator" size="21px">error_outline</v-icon>
-            <v-card dark>
-              <v-card-text>
-                Oops! Sorry about that. This is probably on <a class="white--text" href="https://imgur.com" target="_blank">Imgur</a> server. Click <a class="white--text" href="https://api.imgur.com/errorhandling" target="_blank">here</a> for more info.
-              </v-card-text>
-              <v-card-text class="pt-0">If you keep on seeing this, contact the developer.</v-card-text>
-            </v-card>
-          </v-menu>
-          {{ popup.note }}
-          <v-progress-linear v-if="popup.progress" class="mb-0" color="white" indeterminate></v-progress-linear>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-
-    <v-dialog v-model="draw.uploaded.active" width="1000">
-      <v-card>
-        <v-card-title class="headline teal white--text" primary-title>Uploaded to Imgur</v-card-title>
-        <v-card-text>
-          <v-layout justify-space-between row fill-height>
-            <v-flex sm8>
-              <v-img v-if="draw.uploaded.link !== null" :src="draw.uploaded.link" :lazy-src="draw.uploaded.img" class="grey lighten-2" :height="'auto'" :width="'100%'" max-height="500" contain>
-                <v-layout slot="placeholder" fill-height align-center justify-center ma-0>
-                  <v-progress-circular indeterminate color="teal lighten-2"></v-progress-circular>
-                </v-layout>
-              </v-img>
-            </v-flex>
-            <v-flex class="ml-3" sm4>
-              <v-text-field id="img-view-link" v-model="draw.uploaded.link" color="teal" label="Image view link" readonly>
-                <v-tooltip slot="append" top>
-                  <v-btn slot="activator" @click="copyImageViewLink" color="teal" flat small icon>
-                    <v-icon size="20">file_copy</v-icon>
-                  </v-btn>
-                  <span>Copy</span>
-                </v-tooltip>
-                <v-tooltip slot="append-outer" top>
-                  <v-btn slot="activator" @click="openImageViewLink" color="teal" flat small icon>
-                    <v-icon size="20">launch</v-icon>
-                  </v-btn>
-                  <span>Open New Tab</span>
-                </v-tooltip>
-              </v-text-field>
-              <v-text-field id="img-delete-link" v-model="draw.uploaded.deleteLink" color="teal" label="Image delete link" readonly>
-                <v-tooltip slot="append" top>
-                  <v-btn slot="activator" @click="copyImageDeleteLink" color="teal" flat small icon>
-                    <v-icon size="20">file_copy</v-icon>
-                  </v-btn>
-                  <span>Copy</span>
-                </v-tooltip>
-                <v-tooltip slot="append-outer" top>
-                  <v-btn slot="activator" @click="openImageDeleteLink" color="teal" flat small icon>
-                    <v-icon size="20">launch</v-icon>
-                  </v-btn>
-                  <span>Open New Tab</span>
-                </v-tooltip>
-              </v-text-field>
-            </v-flex>
-          </v-layout>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-  </v-container>
-</template>
-
-<script>
 import imgur from '@/services/imgur'
-import ColorPicker from '@/components/layouts/Color-Picker'
+import ColorPicker from './_components/Color-Picker'
+import ToolBtn from './_components/Tool-Btn'
+import UploadDialog from './_components/Upload-Dialog'
 
 export default {
   name: 'imgur',
-  components: { ColorPicker },
+  components: { ColorPicker, ToolBtn, UploadDialog },
   data () {
     return {
       windowSize: {
@@ -372,6 +25,10 @@ export default {
         active: false,
         tool: null,
         zoom: 100,
+        free: {
+          activated: false,
+          points: []
+        },
         history: {
           undo: [],
           redo: []
@@ -680,6 +337,9 @@ export default {
         }
       }
     },
+    setTool (tool) {
+      this.draw.tool = tool
+    },
     setStrokeColor (hex) {
       if (hex === 'transparent') this.draw.stroke.has = false
       else {
@@ -706,7 +366,8 @@ export default {
       if (this.draw.tool === 'free') {
         if (!this.draw.stroke.has) return
 
-        this.ctx.moveTo(this.draw.dimen.startX, this.draw.dimen.startY)
+        this.draw.free.points = []
+        this.draw.free.points.push({ x: this.draw.dimen.startX, y: this.draw.dimen.startY })
       }
     },
     move (event) {
@@ -733,7 +394,23 @@ export default {
           case 'free':
             if (!this.draw.stroke.has) return
 
-            this._freeHand(this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+            image = this._initImage(() => {
+              this.ctx.clearRect(0, 0, image.width, image.height)
+              this.ctx.drawImage(image, 0, 0)
+              this.ctx.beginPath()
+              this._freeHand()
+
+              this.ctx.lineCap = 'round'
+              this.ctx.lineJoin = 'round'
+              this.ctx.strokeStyle = this.draw.stroke.color.hex
+              this.ctx.lineWidth = this.draw.stroke.size
+
+              if (this.draw.stroke.has) this.ctx.stroke()
+            })
+
+            this.draw.free.activated = true
+            this.draw.free.points.push({ x: this._fixZoom(event.offsetX), y: this._fixZoom(event.offsetY) })
+            image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
             break
           case 'line':
             if (!this.draw.stroke.has) return
@@ -840,10 +517,11 @@ export default {
         case 'free':
           if (!this.draw.stroke.has) return
 
-          if (startX === endX && startY === endY) return
+          if (!this.draw.free.activated) return
 
           this.draw.history.undo.push(this.canvas.toDataURL())
 
+          this.draw.free.activated = false
           this.draw.history.redo = []
 
           return
@@ -1050,20 +728,6 @@ export default {
         this.popup.active = false
       }, 3000)
     },
-    copyImageViewLink () {
-      document.getElementById('img-view-link').select()
-      document.execCommand('copy')
-    },
-    copyImageDeleteLink () {
-      document.getElementById('img-delete-link').select()
-      document.execCommand('copy')
-    },
-    openImageViewLink () {
-      window.open(this.draw.uploaded.link, '_blank')
-    },
-    openImageDeleteLink () {
-      window.open('https://imgur.com/delete/' + this.draw.uploaded.deletehash, '_blank')
-    },
     removeHistory (key) {
       this.history.splice(key, 1)
     },
@@ -1105,15 +769,26 @@ export default {
 
       this.draw.tool = null
     },
-    _freeHand (x, y) {
-      this.ctx.lineTo(x, y)
+    _freeHand () {
+      let { points } = this.draw.free
+      let x, y, i = 0
 
-      this.ctx.lineCap = 'round'
-      this.ctx.lineJoin = 'round'
-      this.ctx.strokeStyle = this.draw.stroke.color.hex
-      this.ctx.lineWidth = this.draw.stroke.size
+      if (points.length < 3) {
+        this.ctx.moveTo(points[0].x, points[0].y)
+        this.ctx.lineTo(points[1].x, points[1].y)
+        return
+      }
 
-      this.ctx.stroke()
+      this.ctx.moveTo(points[0].x, points[0].y)
+
+      for (i; i < points.length - 2; i++) {
+        x = (points[i].x + points[i + 1].x) / 2
+        y = (points[i].y + points[i + 1].y) / 2
+
+        this.ctx.quadraticCurveTo(points[i].x, points[i].y, x, y)
+      }
+
+      this.ctx.quadraticCurveTo(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y)
     },
     _plotLine (startX, startY, endX, endY, centered, exact) {
       let w, h, x1, x2, x3, y1, y2, y3
@@ -1239,8 +914,6 @@ export default {
       return image
     },
     _drawCanvas (width, height) {
-      let { r, g, b } = this.draw.custom.background.color
-
       this.canvas.width = width
       this.canvas.height = height
 
@@ -1291,37 +964,3 @@ export default {
     }
   }
 }
-</script>
-
-<style lang="scss" scoped>
-  #container {
-    overflow: auto;
-    max-height: calc(100vh - 200px);
-  }
-
-  #draw {
-    display: block;
-    margin: auto;
-  }
-
-  .checkered-transparent {
-    background-color: #eee;
-    background-image: linear-gradient(45deg, #aaa 25%, transparent 25%), linear-gradient(-45deg, #aaa 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #aaa 75%), linear-gradient(-45deg, transparent 75%, #aaa 75%);
-    background-size: 20px 20px;
-    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-    background-repeat: repeat;
-  }
-
-  .draw-inactive {
-    height: calc(100vh - 200px);
-  }
-
-  .slider-value {
-    width: 60px;
-  }
-
-  .history-list {
-    max-height: 50vh;
-    overflow-y: auto;
-  }
-</style>

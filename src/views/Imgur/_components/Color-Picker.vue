@@ -1,8 +1,8 @@
 <template>
-  <v-menu v-model="baseColorMenu"  :disabled="disabled" :min-width="minWidth" :nudge-left="nudgeLeft" :nudge-bottom="nudgeBottom" :offset-x="offsetX" :offset-y="offsetY">
+  <v-menu v-model="baseColorMenu" :transition="offsetY ? 'slide-y-transition' : 'slide-x-reverse-transition'" :disabled="disabled" :min-width="minWidth" :nudge-left="nudgeLeft" :nudge-bottom="nudgeBottom" :offset-x="offsetX" :offset-y="offsetY">
     <slot name="activator" slot="activator"></slot>
     <v-list dense style="max-height: 528px;">
-      <v-menu v-for="(color, key) in colors" :key="color.text" offset-x left open-on-hover full-width>
+      <v-menu v-for="(color, key) in colors" :key="color.text" transition="slide-x-transition" offset-x left open-on-hover full-width>
         <v-list-tile slot="activator" :class="color.text === 'shades' ? 'white' : color.text" @click="select(color.hex !== null ? color.hex : '#ffffff')" style="width: 100%">
           <v-list-tile-title>{{ color.color }}</v-list-tile-title>
           <v-list-tile-action class="justify-end">
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import colors from '@/mixins/colors'
+import colors from '../_utils/colors'
 
 export default {
   name: 'color-picker',
