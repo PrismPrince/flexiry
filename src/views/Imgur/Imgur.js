@@ -25,6 +25,10 @@ export default {
         active: false,
         tool: null,
         zoom: 100,
+        free: {
+          activated: false,
+          points: []
+        },
         history: {
           undo: [],
           redo: []
@@ -362,7 +366,8 @@ export default {
       if (this.draw.tool === 'free') {
         if (!this.draw.stroke.has) return
 
-        this.ctx.moveTo(this.draw.dimen.startX, this.draw.dimen.startY)
+        this.draw.free.points = []
+        this.draw.free.points.push({ x: this.draw.dimen.startX, y: this.draw.dimen.startY })
       }
     },
     move (event) {
@@ -389,7 +394,23 @@ export default {
           case 'free':
             if (!this.draw.stroke.has) return
 
-            this._freeHand(this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+            image = this._initImage(() => {
+              this.ctx.clearRect(0, 0, image.width, image.height)
+              this.ctx.drawImage(image, 0, 0)
+              this.ctx.beginPath()
+              this._freeHand()
+
+              this.ctx.lineCap = 'round'
+              this.ctx.lineJoin = 'round'
+              this.ctx.strokeStyle = this.draw.stroke.color.hex
+              this.ctx.lineWidth = this.draw.stroke.size
+
+              if (this.draw.stroke.has) this.ctx.stroke()
+            })
+
+            this.draw.free.activated = true
+            this.draw.free.points.push({ x: this._fixZoom(event.offsetX), y: this._fixZoom(event.offsetY) })
+            image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
             break
           case 'line':
             if (!this.draw.stroke.has) return
@@ -496,10 +517,11 @@ export default {
         case 'free':
           if (!this.draw.stroke.has) return
 
-          if (startX === endX && startY === endY) return
+          if (!this.draw.free.activated) return
 
           this.draw.history.undo.push(this.canvas.toDataURL())
 
+          this.draw.free.activated = false
           this.draw.history.redo = []
 
           return
@@ -747,15 +769,26 @@ export default {
 
       this.draw.tool = null
     },
-    _freeHand (x, y) {
-      this.ctx.lineTo(x, y)
+    _freeHand () {
+      let { points } = this.draw.free
+      let x, y, i = 0
 
-      this.ctx.lineCap = 'round'
-      this.ctx.lineJoin = 'round'
-      this.ctx.strokeStyle = this.draw.stroke.color.hex
-      this.ctx.lineWidth = this.draw.stroke.size
+      if (points.length < 3) {
+        this.ctx.moveTo(points[0].x, points[0].y)
+        this.ctx.lineTo(points[1].x, points[1].y)
+        return
+      }
 
-      this.ctx.stroke()
+      this.ctx.moveTo(points[0].x, points[0].y)
+
+      for (i; i < points.length - 2; i++) {
+        x = (points[i].x + points[i + 1].x) / 2
+        y = (points[i].y + points[i + 1].y) / 2
+
+        this.ctx.quadraticCurveTo(points[i].x, points[i].y, x, y)
+      }
+
+      this.ctx.quadraticCurveTo(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y)
     },
     _plotLine (startX, startY, endX, endY, centered, exact) {
       let w, h, x1, x2, x3, y1, y2, y3
