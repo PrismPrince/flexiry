@@ -371,7 +371,7 @@ export default {
       }
     },
     move (event) {
-      let image
+      let image, mask = { canvas: null, ctx: null }
       let { startX, startY } = this.draw.dimen
 
       if (this.draw.dimen.active) {
@@ -380,13 +380,20 @@ export default {
             image = this._initImage(() => {
               this.ctx.clearRect(0, 0, image.width, image.height)
               this.ctx.drawImage(image, 0, 0)
-              this.ctx.beginPath()
-              this._plotRect(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
-              this.ctx.setLineDash([10, 5])
-              this.ctx.strokeStyle = '#222'
-              this.ctx.lineWidth = 2
 
-              this.ctx.stroke()
+              mask.canvas = document.createElement('canvas')
+              mask.canvas.width = image.width
+              mask.canvas.height = image.height
+              mask.ctx = mask.canvas.getContext('2d')
+              mask.ctx.fillStyle = 'rgba(0, 0, 0, .8)'
+
+              mask.ctx.fillRect(0, 0, image.width, image.height)
+
+              mask.ctx.globalCompositeOperation = 'xor'
+
+              this._plotRect(mask.ctx, startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
+              mask.ctx.fill()
+              this.ctx.drawImage(mask.canvas, 0, 0)
             })
 
             image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
@@ -442,7 +449,7 @@ export default {
               this.ctx.clearRect(0, 0, image.width, image.height)
               this.ctx.drawImage(image, 0, 0)
               this.ctx.beginPath()
-              this._plotRect(startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
+              this._plotRect(this.ctx, startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
               this.ctx.setLineDash([])
 
               this.ctx.lineJoin = 'round'
@@ -564,7 +571,7 @@ export default {
 
             this.ctx.clearRect(0, 0, image.width, image.height)
             this.ctx.drawImage(image, 0, 0)
-            this._plotRect(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
+            this._plotRect(this.ctx, startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
             this.ctx.setLineDash([])
 
             this.ctx.lineJoin = 'round'
@@ -845,7 +852,7 @@ export default {
       this.ctx.moveTo(x1, y1)
       this.ctx.lineTo(x3, y3)
     },
-    _plotRect (startX, startY, endX, endY, centered, exact) {
+    _plotRect (ctx, startX, startY, endX, endY, centered, exact) {
       let x, y, w, h
 
       x = startX
@@ -870,7 +877,7 @@ export default {
         h *= 2
       }
 
-      this.ctx.rect(x, y, w, h)
+      ctx.rect(x, y, w, h)
     },
     _plotCirc (startX, startY, endX, endY, centered, exact) {
       let x, y, radX, radY, w, h
