@@ -371,6 +371,7 @@ export default {
       }
     },
     move (event) {
+      let x, y, w, h
       let image, mask = { canvas: null, ctx: null }
       let { startX, startY } = this.draw.dimen
 
@@ -391,8 +392,30 @@ export default {
 
               mask.ctx.globalCompositeOperation = 'xor'
 
-              this._plotRect(mask.ctx, startX, startY, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY), event.ctrlKey, event.shiftKey)
-              mask.ctx.fill()
+              x = startX
+              y = startY
+              w = this._fixZoom(event.offsetX) - startX
+              h = this._fixZoom(event.offsetY) - startY
+
+              if (event.shiftKey) {
+                if (Math.abs(w) > Math.abs(h)) {
+                  if ((w < 0 && h < 0) || (w >= 0 && h >= 0)) h = w
+                  else if ((w < 0 && h >= 0) || (w >= 0 && h < 0)) h = 0 - w
+                } else {
+                  if ((w < 0 && h < 0) || (w >= 0 && h >= 0)) w = h
+                  else if ((w < 0 && h >= 0) || (w >= 0 && h < 0)) w = 0 - h
+                }
+              }
+
+              if (event.ctrlKey) {
+                x = startX - w
+                y = startY - h
+                w *= 2
+                h *= 2
+              }
+
+              mask.ctx.clearRect(x, y, w, h)
+
               this.ctx.drawImage(mask.canvas, 0, 0)
             })
 
