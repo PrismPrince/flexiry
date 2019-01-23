@@ -288,6 +288,15 @@ export default {
       }
     },
     handleKeypress (event) {
+      let image = this._initImage(() => {
+        this.canvas.width = image.width
+        this.canvas.height = image.height
+
+        this.ctx.clearRect(0, 0, image.width, image.height)
+        this.ctx.drawImage(image, 0, 0)
+        console.log('canvas cleared')
+      })
+
       if (!this.draw.active) return
 
       if (this.draw.text.field) return
@@ -307,39 +316,52 @@ export default {
 
         console.log('Keypress: Ctrl + Z', event.ctrlKey, event.shiftKey, event.keyCode)
       } else {
+
         switch (event.keyCode) {
           case 67:
           case 99:
+            if (this.draw.tool === 'text') image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+
             this.draw.tool = this.draw.tool !== 'crop' ? 'crop' : null
 
             console.log('Keypress: C', event.keyCode)
             break
           case 72:
           case 104:
+            if (this.draw.tool === 'text') image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+
             this.draw.tool = this.draw.tool !== 'free' ? 'free' : null
 
             console.log('Keypress: H', event.keyCode)
             break
           case 76:
           case 108:
+            if (this.draw.tool === 'text') image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+
             this.draw.tool = this.draw.tool !== 'line' ? 'line' : null
 
             console.log('Keypress: L', event.keyCode)
             break
           case 82:
           case 114:
+            if (this.draw.tool === 'text') image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+
             this.draw.tool = this.draw.tool !== 'rect' ? 'rect' : null
 
             console.log('Keypress: R', event.keyCode)
             break
           case 69:
           case 101:
+            if (this.draw.tool === 'text') image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+
             this.draw.tool = this.draw.tool !== 'circ' ? 'circ' : null
 
             console.log('Keypress: E', event.keyCode)
             break
           case 84:
           case 116:
+            if (this.draw.tool === 'text') image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+
             this.draw.tool = this.draw.tool !== 'text' ? 'text' : null
 
             console.log('Keypress: T', event.keyCode)
@@ -570,16 +592,6 @@ export default {
           if (this.draw.fill.has && this.draw.text.text !== null) this.ctx.fillText(this.draw.text.text, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
 
           if (this.draw.stroke.has && this.draw.text.text !== null) this.ctx.strokeText(this.draw.text.text, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
-        })
-
-        image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
-      } else {
-        image = this._initImage(() => {
-          this.canvas.width = image.width
-          this.canvas.height = image.height
-
-          this.ctx.clearRect(0, 0, image.width, image.height)
-          this.ctx.drawImage(image, 0, 0)
         })
 
         image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
