@@ -1063,6 +1063,7 @@ export default {
       this.ctx.lineCap = 'round'
       this.ctx.lineJoin = 'round'
       this.ctx.strokeStyle = this.draw.stroke.color.hex
+      this.ctx.fillStyle = this.draw.fill.color.hex
       this.ctx.lineWidth = this.draw.stroke.size
     },
     _initImage (onload = () => {}) {
