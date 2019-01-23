@@ -21,6 +21,92 @@
         <span>Ellipse <kbd>E</kbd></span>
       </tool-btn>
 
+      <v-tooltip bottom :disabled="!draw.active || draw.tool === 'text'">
+        <span>Text <kbd>T</kbd></span>
+
+        <v-btn v-if="draw.tool !== 'text'" slot="activator" fab flat small :outline="draw.tool === 'text'" @click="draw.tool = 'text'" :disabled="!draw.active">
+          <v-icon>title</v-icon>
+        </v-btn>
+
+        <v-menu v-else slot="activator" transition="slide-y-transition" :nudge-left="100" :nudge-bottom="10" :disabled="draw.tool !== 'text'" :close-on-content-click="false" :close-delay="300" min-width="500px" full-width open-on-hover offset-y>
+          <v-btn slot="activator" fab flat small outline @click="draw.tool = null">
+            <v-icon>title</v-icon>
+          </v-btn>
+          <v-card dark>
+            <v-card-text>
+
+              <v-toolbar class="toolbar-pa-0 mb-3" color="transparent" dense flat>
+                <v-tooltip top>
+                  <span>Font Weight</span>
+                  <v-btn-toggle class="mr-2" slot="activator" v-model="draw.text.font.weight" mandatory>
+                    <v-btn class="text-capitalize font-weight-thin" color="teal" :value="100">Aa</v-btn>
+                    <v-btn class="text-capitalize font-weight-light" color="teal" :value="300">Aa</v-btn>
+                    <v-btn class="text-capitalize font-weight-regular" color="teal" :value="400">Aa</v-btn>
+                    <v-btn class="text-capitalize font-weight-meduim" color="teal" :value="500">Aa</v-btn>
+                    <v-btn class="text-capitalize font-weight-bold" color="teal" :value="700">Aa</v-btn>
+                    <v-btn class="text-capitalize font-weight-black" color="teal" :value="900">Aa</v-btn>
+                  </v-btn-toggle>
+                </v-tooltip>
+
+                <v-tooltip top>
+                  <span>Text Horizontal Alignment</span>
+                  <v-btn-toggle class="mr-2" slot="activator" v-model="draw.text.align" mandatory>
+                    <v-btn value="left" color="teal">
+                      <v-icon>format_align_left</v-icon>
+                    </v-btn>
+                    <v-btn value="center" color="teal">
+                      <v-icon>format_align_center</v-icon>
+                    </v-btn>
+                    <v-btn value="right" color="teal">
+                      <v-icon>format_align_right</v-icon>
+                    </v-btn>
+                  </v-btn-toggle>
+                </v-tooltip>
+
+                <v-tooltip top>
+                  <span>Text Vertical Alignment</span>
+                  <v-btn-toggle class="mr-2" slot="activator" v-model="draw.text.baseline" mandatory>
+                      <v-btn value="hanging" color="teal">
+                        <v-icon>vertical_align_top</v-icon>
+                      </v-btn>
+                      <v-btn value="middle" color="teal">
+                        <v-icon>vertical_align_center</v-icon>
+                      </v-btn>
+                      <v-btn value="alphabetic" color="teal">
+                        <v-icon>vertical_align_bottom</v-icon>
+                      </v-btn>
+                  </v-btn-toggle>
+                </v-tooltip>
+
+                <v-tooltip top>
+                  <span>Italicize</span>
+                  <v-btn-toggle slot="activator" v-model="draw.text.font.style" multiple>
+                    <v-btn value="italic" color="teal">
+                      <v-icon>format_italic</v-icon>
+                    </v-btn>
+                  </v-btn-toggle>
+                </v-tooltip>
+              </v-toolbar>
+
+              <v-layout class="mb-6" align-center row>
+                <v-flex>
+                  <v-tooltip top>
+                    <span>Font Size</span>
+                    <v-slider class="caption mt-0 mb-3" slot="activator" v-model="draw.text.font.size" color="teal" height="1" ticks="always" :tick-labels="['12px', '14px', '16px', '20px', '24px', '34px', '45px', '56px', '112px']" :max="8" hide-details always-dirty></v-slider>
+                  </v-tooltip>
+                </v-flex>
+              </v-layout>
+
+              <v-layout align-center justify-space-between row>
+                <v-flex>
+                  <v-text-field v-model.trim="draw.text.text" label="Text" color="teal" rows="1" counter="150" @focus="draw.text.field = true" @blur="draw.text.field = false" auto-grow outline clearable></v-text-field>
+                </v-flex>
+              </v-layout>
+            </v-card-text>
+          </v-card>
+        </v-menu>
+      </v-tooltip>
+
       <v-tooltip bottom :disabled="!draw.active || draw.history.undo.length <= 1">
         <span>Undo <kbd>Ctrl</kbd> + <kbd>Z</kbd></span>
         <v-btn slot="activator" fab flat small @click="undo" :disabled="!draw.active || draw.history.undo.length <= 1">
@@ -259,7 +345,7 @@
 
   <v-layout row>
     <v-flex id="container">
-      <canvas id="draw" class="checkered-transparent elevation-3" @mousedown.left.prevent="startPlot" @mouseup.left.prevent="endPlot" @mousemove="move" @mouseout="endPlot" :style="{zoom: `${draw.zoom}%`, cursor: draw.tool === 'crop' ? 'crosshair' : ''}" height="0" width="0"></canvas>
+      <canvas id="draw" class="checkered-transparent elevation-3" :class="{ 'canvas-cursor-crosshair': draw.tool === 'crop', 'canvas-cursor-text': draw.tool === 'text' }" @mousedown.left.prevent="startPlot" @mouseup.left.prevent="endPlot" @mousemove="move" @mouseout="endPlot" :style="{zoom: `${draw.zoom}%`}" height="0" width="0"></canvas>
     </v-flex>
   </v-layout>
 
