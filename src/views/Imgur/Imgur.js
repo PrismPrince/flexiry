@@ -802,6 +802,7 @@ export default {
       this.draw.active = false
       this.draw.tool = null
       this.draw.zoom = 100
+      this.draw.text.text = null
       this.draw.dimen = {
         active: false,
         startX: 0,
