@@ -802,6 +802,7 @@ export default {
       this.draw.active = false
       this.draw.tool = null
       this.draw.zoom = 100
+      this.draw.text.text = null
       this.draw.dimen = {
         active: false,
         startX: 0,
@@ -1062,6 +1063,7 @@ export default {
       this.ctx.lineCap = 'round'
       this.ctx.lineJoin = 'round'
       this.ctx.strokeStyle = this.draw.stroke.color.hex
+      this.ctx.fillStyle = this.draw.fill.color.hex
       this.ctx.lineWidth = this.draw.stroke.size
     },
     _initImage (onload = () => {}) {
