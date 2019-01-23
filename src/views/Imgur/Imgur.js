@@ -29,6 +29,21 @@ export default {
           activated: false,
           points: []
         },
+        text: {
+          active: false,
+          field: false,
+          text: null,
+          align: 'center', // left, center, right, start, end
+          baseline: 'middle', // alphabetic, top, hanging, middle, ideographic, bottom
+          font: {
+            style: [], // normal, italic, oblique <degree>
+            variant: 'normal', // unchanged: normal, small-caps
+            weight: 400, // 400, 100, 300, 500, 700, 900
+            size: '1', // 14px, 12px, 16px, 20px, 24px, 34px, 45px, 56px, 112px
+            lineHeight: 'normal', // unchanged: normal, <number> (unitless), <length>, <percentage>
+            family: 'Roboto' // unchanged
+          }
+        },
         history: {
           undo: [],
           redo: []
@@ -71,6 +86,8 @@ export default {
     }
   },
   created () {
+    let align, baseline, font
+
     if (window.localStorage.getItem('imgur-draw-stroke') !== null) {
       this.draw.stroke = JSON.parse(window.localStorage.getItem('imgur-draw-stroke'))
       this.draw.stroke.color.hex = this.draw.stroke.color.hex || '#000000'
@@ -79,6 +96,14 @@ export default {
     if (window.localStorage.getItem('imgur-draw-fill') !== null) {
       this.draw.fill = JSON.parse(window.localStorage.getItem('imgur-draw-fill'))
       this.draw.fill.color.hex = this.draw.fill.color.hex || '#000000'
+    }
+
+    if (window.localStorage.getItem('imgur-draw-fill') !== null) {
+      ({ align, baseline, font } = JSON.parse(window.localStorage.getItem('imgur-draw-text')))
+
+      this.draw.text.align = align
+      this.draw.text.baseline = baseline
+      this.draw.text.font = font
     }
 
     if (window.localStorage.getItem('imgur-history') !== null) this.history = JSON.parse(window.localStorage.getItem('imgur-history'))
@@ -124,6 +149,18 @@ export default {
       deep: true,
       handler (fill) {
         window.localStorage.setItem('imgur-draw-fill', JSON.stringify(fill))
+      }
+    },
+    'draw.text': {
+      deep: true,
+      handler (options) {
+        let text = {
+          align: options.align,
+          baseline: options.baseline,
+          font: options.font
+        }
+
+        window.localStorage.setItem('imgur-draw-text', JSON.stringify(text))
       }
     },
     'popup.active' (status) {
@@ -210,6 +247,8 @@ export default {
 
       console.log('Pasting image...')
 
+      if (this.draw.text.field) return
+
       if (this.windowSize.width < 960 || this.windowSize.height < 500) {
         console.warn('Image not pasted: window size limit')
         return
@@ -250,6 +289,8 @@ export default {
     },
     handleKeypress (event) {
       if (!this.draw.active) return
+
+      if (this.draw.text.field) return
 
       console.log('Keypress fired!')
 
@@ -296,6 +337,12 @@ export default {
             this.draw.tool = this.draw.tool !== 'circ' ? 'circ' : null
 
             console.log('Keypress: E', event.keyCode)
+            break
+          case 84:
+          case 116:
+            this.draw.tool = this.draw.tool !== 'text' ? 'text' : null
+
+            console.log('Keypress: T', event.keyCode)
             break
           case 83:
           case 115:
@@ -368,7 +415,7 @@ export default {
 
         this.draw.free.points = []
         this.draw.free.points.push({ x: this.draw.dimen.startX, y: this.draw.dimen.startY })
-      }
+      } else if (this.draw.tool === 'text') this.draw.text.active = true
     },
     move (event) {
       let x, y, w, h
@@ -512,136 +559,195 @@ export default {
             break
         }
       }
+
+      if (this.draw.tool === 'text') {
+        image = this._initImage(() => {
+          this.ctx.clearRect(0, 0, image.width, image.height)
+          this.ctx.drawImage(image, 0, 0)
+          this.ctx.beginPath()
+          this._formatText()
+
+          if (this.draw.fill.has && this.draw.text.text !== null) this.ctx.fillText(this.draw.text.text, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+
+          if (this.draw.stroke.has && this.draw.text.text !== null) this.ctx.strokeText(this.draw.text.text, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+        })
+
+        image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+      } else {
+        image = this._initImage(() => {
+          this.canvas.width = image.width
+          this.canvas.height = image.height
+
+          this.ctx.clearRect(0, 0, image.width, image.height)
+          this.ctx.drawImage(image, 0, 0)
+        })
+
+        image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+      }
     },
     endPlot (event) {
       let startX, startY, endX, endY, image
+      let { style, variant, weight, size, lineHeight, family } = this.draw.text.font
 
-      if (!this.draw.dimen.active) return
+      if (this.draw.dimen.active) {
+        this.draw.dimen.endX = this._fixZoom(event.offsetX)
+        this.draw.dimen.endY = this._fixZoom(event.offsetY)
+        this.draw.dimen.active = false
 
-      this.draw.dimen.endX = this._fixZoom(event.offsetX)
-      this.draw.dimen.endY = this._fixZoom(event.offsetY)
-      this.draw.dimen.active = false
+        ;({ startX, startY, endX, endY } = this.draw.dimen)
 
-      ;({ startX, startY, endX, endY } = this.draw.dimen)
+        switch (this.draw.tool) {
+          case 'crop':
+            if (startX === endX && startY === endY) return
 
-      switch (this.draw.tool) {
-        case 'crop':
-          if (startX === endX && startY === endY) return
+            image = this._initImage(() => {
+              this.canvas.width = image.width
+              this.canvas.height = image.height
 
-          image = this._initImage(() => {
-            this.canvas.width = image.width
-            this.canvas.height = image.height
+              this.ctx.clearRect(0, 0, image.width, image.height)
+              this.ctx.drawImage(image, 0, 0)
+              this._crop(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
 
-            this.ctx.clearRect(0, 0, image.width, image.height)
-            this.ctx.drawImage(image, 0, 0)
-            this._crop(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
+              this.draw.history.undo.push(this.canvas.toDataURL())
+
+              this.draw.history.redo = []
+            })
+
+            image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+
+            return
+          case 'free':
+            if (!this.draw.stroke.has) return
+
+            if (!this.draw.free.activated) return
 
             this.draw.history.undo.push(this.canvas.toDataURL())
 
+            this.draw.free.activated = false
             this.draw.history.redo = []
-          })
 
-          image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+            return
+          case 'line':
+            if (!this.draw.stroke.has) return
 
-          return
-        case 'free':
-          if (!this.draw.stroke.has) return
+            if (startX === endX && startY === endY) return
 
-          if (!this.draw.free.activated) return
+            image = this._initImage(() => {
+              this.canvas.width = image.width
+              this.canvas.height = image.height
+
+              this.ctx.clearRect(0, 0, image.width, image.height)
+              this.ctx.drawImage(image, 0, 0)
+              this._plotLine(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
+              this.ctx.setLineDash([])
+
+              this.ctx.lineCap = 'round'
+              this.ctx.fillStyle = this.draw.fill.color.hex
+              this.ctx.strokeStyle = this.draw.stroke.color.hex
+              this.ctx.lineWidth = this.draw.stroke.size
+
+              this.ctx.stroke()
+              this.draw.history.undo.push(this.canvas.toDataURL())
+
+              this.draw.history.redo = []
+            })
+
+            image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+
+            return
+          case 'rect':
+            if (!this.draw.stroke.has && !this.draw.fill.has) return
+
+            if (startX === endX && startY === endY) return
+
+            image = this._initImage(() => {
+              this.canvas.width = image.width
+              this.canvas.height = image.height
+
+              this.ctx.clearRect(0, 0, image.width, image.height)
+              this.ctx.drawImage(image, 0, 0)
+              this._plotRect(this.ctx, startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
+              this.ctx.setLineDash([])
+
+              this.ctx.lineJoin = 'round'
+              this.ctx.fillStyle = this.draw.fill.color.hex
+              this.ctx.strokeStyle = this.draw.stroke.color.hex
+              this.ctx.lineWidth = this.draw.stroke.size
+
+              if (this.draw.fill.has) this.ctx.fill()
+
+              if (this.draw.stroke.has) this.ctx.stroke()
+
+              this.draw.history.undo.push(this.canvas.toDataURL())
+
+              this.draw.history.redo = []
+            })
+
+            image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+
+            return
+          case 'circ':
+            if (!this.draw.stroke.has && !this.draw.fill.has) return
+
+            if (startX === endX && startY === endY) return
+
+            image = this._initImage(() => {
+              this.canvas.width = image.width
+              this.canvas.height = image.height
+
+              this.ctx.clearRect(0, 0, image.width, image.height)
+              this.ctx.drawImage(image, 0, 0)
+              this._plotCirc(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
+              this.ctx.setLineDash([])
+
+              this.ctx.fillStyle = this.draw.fill.color.hex
+              this.ctx.strokeStyle = this.draw.stroke.color.hex
+              this.ctx.lineWidth = this.draw.stroke.size
+
+              if (this.draw.fill.has) this.ctx.fill()
+
+              if (this.draw.stroke.has) this.ctx.stroke()
+
+              this.draw.history.undo.push(this.canvas.toDataURL())
+
+              this.draw.history.redo = []
+            })
+
+            image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+        }
+      }
+
+      if (this.draw.text.active) {
+        image = this._initImage(() => {
+          this.canvas.width = image.width
+          this.canvas.height = image.height
+
+          this.ctx.clearRect(0, 0, image.width, image.height)
+          this.ctx.drawImage(image, 0, 0)
+          this.ctx.beginPath()
+          this._formatText()
+
+          if (this.draw.fill.has && this.draw.text.text !== null) this.ctx.fillText(this.draw.text.text, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
+
+          if (this.draw.stroke.has && this.draw.text.text !== null) this.ctx.strokeText(this.draw.text.text, this._fixZoom(event.offsetX), this._fixZoom(event.offsetY))
 
           this.draw.history.undo.push(this.canvas.toDataURL())
 
-          this.draw.free.activated = false
           this.draw.history.redo = []
+          this.draw.text.active = false
+        })
 
-          return
-        case 'line':
-          if (!this.draw.stroke.has) return
+        image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+      } else {
+        image = this._initImage(() => {
+          this.canvas.width = image.width
+          this.canvas.height = image.height
 
-          if (startX === endX && startY === endY) return
+          this.ctx.clearRect(0, 0, image.width, image.height)
+          this.ctx.drawImage(image, 0, 0)
+        })
 
-          image = this._initImage(() => {
-            this.canvas.width = image.width
-            this.canvas.height = image.height
-
-            this.ctx.clearRect(0, 0, image.width, image.height)
-            this.ctx.drawImage(image, 0, 0)
-            this._plotLine(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
-            this.ctx.setLineDash([])
-
-            this.ctx.lineCap = 'round'
-            this.ctx.fillStyle = this.draw.fill.color.hex
-            this.ctx.strokeStyle = this.draw.stroke.color.hex
-            this.ctx.lineWidth = this.draw.stroke.size
-
-            this.ctx.stroke()
-            this.draw.history.undo.push(this.canvas.toDataURL())
-
-            this.draw.history.redo = []
-          })
-
-          image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
-
-          return
-        case 'rect':
-          if (!this.draw.stroke.has && !this.draw.fill.has) return
-
-          if (startX === endX && startY === endY) return
-
-          image = this._initImage(() => {
-            this.canvas.width = image.width
-            this.canvas.height = image.height
-
-            this.ctx.clearRect(0, 0, image.width, image.height)
-            this.ctx.drawImage(image, 0, 0)
-            this._plotRect(this.ctx, startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
-            this.ctx.setLineDash([])
-
-            this.ctx.lineJoin = 'round'
-            this.ctx.fillStyle = this.draw.fill.color.hex
-            this.ctx.strokeStyle = this.draw.stroke.color.hex
-            this.ctx.lineWidth = this.draw.stroke.size
-
-            if (this.draw.fill.has) this.ctx.fill()
-
-            if (this.draw.stroke.has) this.ctx.stroke()
-
-            this.draw.history.undo.push(this.canvas.toDataURL())
-
-            this.draw.history.redo = []
-          })
-
-          image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
-
-          return
-        case 'circ':
-          if (!this.draw.stroke.has && !this.draw.fill.has) return
-
-          if (startX === endX && startY === endY) return
-
-          image = this._initImage(() => {
-            this.canvas.width = image.width
-            this.canvas.height = image.height
-
-            this.ctx.clearRect(0, 0, image.width, image.height)
-            this.ctx.drawImage(image, 0, 0)
-            this._plotCirc(startX, startY, endX, endY, event.ctrlKey, event.shiftKey)
-            this.ctx.setLineDash([])
-
-            this.ctx.fillStyle = this.draw.fill.color.hex
-            this.ctx.strokeStyle = this.draw.stroke.color.hex
-            this.ctx.lineWidth = this.draw.stroke.size
-
-            if (this.draw.fill.has) this.ctx.fill()
-
-            if (this.draw.stroke.has) this.ctx.stroke()
-
-            this.draw.history.undo.push(this.canvas.toDataURL())
-
-            this.draw.history.redo = []
-          })
-
-          image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
+        image.src = this.draw.history.undo[this.draw.history.undo.length - 1]
       }
     },
     undo () {
@@ -933,8 +1039,18 @@ export default {
         radY = Math.abs(h) / 2
       }
 
-      this.ctx.beginPath()
       this.ctx.ellipse(x, y, radX, radY, 0, 0, 2 * Math.PI)
+    },
+    _formatText () {
+      let { style, variant, weight, size, lineHeight, family } = this.draw.text.font
+
+      this.ctx.font = `${style.length > 0 ? 'italic' : 'normal'} ${variant} ${weight} ${['12px', '14px', '16px', '20px', '24px', '34px', '45px', '56px', '112px'][size]}/${lineHeight} "${family}"`
+      this.ctx.textAlign = this.draw.text.align
+      this.ctx.textBaseline = this.draw.text.baseline
+      this.ctx.lineCap = 'round'
+      this.ctx.lineJoin = 'round'
+      this.ctx.strokeStyle = this.draw.stroke.color.hex
+      this.ctx.lineWidth = this.draw.stroke.size
     },
     _initImage (onload = () => {}) {
       let image = new Image()
@@ -948,6 +1064,7 @@ export default {
       this.canvas.height = height
 
       if (this.draw.custom.background.has) {
+        this.ctx.beginPath()
         this.ctx.rect(0, 0, width, height)
 
         this.ctx.fillStyle = this.draw.custom.background.color.hex
