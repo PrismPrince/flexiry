@@ -98,7 +98,7 @@ export default {
       this.draw.fill.color.hex = this.draw.fill.color.hex || '#000000'
     }
 
-    if (window.localStorage.getItem('imgur-draw-fill') !== null) {
+    if (window.localStorage.getItem('imgur-draw-text') !== null) {
       ({ align, baseline, font } = JSON.parse(window.localStorage.getItem('imgur-draw-text')))
 
       this.draw.text.align = align
