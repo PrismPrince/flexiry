@@ -1,74 +1,145 @@
 {
   "indexes": [
     {
-      "collectionId": "manipulators",
+      "collectionGroup": "manipulators",
+      "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "type.csl", "mode": "ASCENDING" },
-        { "fieldPath": "title", "mode": "ASCENDING" }
+        {
+          "fieldPath": "type.csl",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "title",
+          "order": "ASCENDING"
+        }
       ]
     },
     {
-      "collectionId": "manipulators",
+      "collectionGroup": "manipulators",
+      "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "type.csl", "mode": "ASCENDING" },
-        { "fieldPath": "title", "mode": "DESCENDING" }
+        {
+          "fieldPath": "type.pdp",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "title",
+          "order": "DESCENDING"
+        }
       ]
     },
     {
-      "collectionId": "manipulators",
+      "collectionGroup": "manipulators",
+      "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "type.cu3", "mode": "ASCENDING" },
-        { "fieldPath": "title", "mode": "ASCENDING" }
+        {
+          "fieldPath": "type.cu3",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "title",
+          "order": "ASCENDING"
+        }
       ]
     },
     {
-      "collectionId": "manipulators",
+      "collectionGroup": "manipulators",
+      "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "type.cu3", "mode": "ASCENDING" },
-        { "fieldPath": "title", "mode": "DESCENDING" }
+        {
+          "fieldPath": "type.pdp",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "title",
+          "order": "ASCENDING"
+        }
       ]
     },
     {
-      "collectionId": "manipulators",
+      "collectionGroup": "manipulators",
+      "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "type.mpd", "mode": "ASCENDING" },
-        { "fieldPath": "title", "mode": "ASCENDING" }
+        {
+          "fieldPath": "type.trello",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "title",
+          "order": "ASCENDING"
+        }
       ]
     },
     {
-      "collectionId": "manipulators",
+      "collectionGroup": "manipulators",
+      "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "type.mpd", "mode": "ASCENDING" },
-        { "fieldPath": "title", "mode": "DESCENDING" }
+        {
+          "fieldPath": "type.mpd",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "title",
+          "order": "ASCENDING"
+        }
       ]
     },
     {
-      "collectionId": "manipulators",
+      "collectionGroup": "manipulators",
+      "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "type.pdp", "mode": "ASCENDING" },
-        { "fieldPath": "title", "mode": "ASCENDING" }
+        {
+          "fieldPath": "type.csl",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "title",
+          "order": "DESCENDING"
+        }
       ]
     },
     {
-      "collectionId": "manipulators",
+      "collectionGroup": "manipulators",
+      "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "type.pdp", "mode": "ASCENDING" },
-        { "fieldPath": "title", "mode": "DESCENDING" }
+        {
+          "fieldPath": "type.cu3",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "title",
+          "order": "DESCENDING"
+        }
       ]
     },
     {
-      "collectionId": "manipulators",
+      "collectionGroup": "manipulators",
+      "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "type.trello", "mode": "ASCENDING" },
-        { "fieldPath": "title", "mode": "ASCENDING" }
+        {
+          "fieldPath": "type.mpd",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "title",
+          "order": "DESCENDING"
+        }
       ]
     },
     {
-      "collectionId": "manipulators",
+      "collectionGroup": "manipulators",
+      "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "type.trello", "mode": "ASCENDING" },
-        { "fieldPath": "title", "mode": "DESCENDING" }
+        {
+          "fieldPath": "type.trello",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "title",
+          "order": "DESCENDING"
+        }
       ]
     }
-  ]
+  ],
+  "fieldOverrides": []
 }

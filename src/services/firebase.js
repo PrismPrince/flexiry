@@ -12,6 +12,4 @@ Firebase.initializeApp({
   messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGING_SENDER_ID
 })
 
-Firebase.firestore().settings({ timestampsInSnapshots: true })
-
 export default Firebase
