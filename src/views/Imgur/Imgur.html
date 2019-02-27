@@ -321,7 +321,7 @@
                           <span>Delete image permanently on Imgur server. You cannot undo this action.<br>If you wish to remove this on your history, feel free to click the trash icon to the right.</span>
                           <v-icon slot="activator" class="mr-1" color="purple darken-2" size="15px">warning</v-icon>
                         </v-tooltip>
-                        <a class="purple--text text--darken-3" :href="'https://imgur.com/delete/' + item.deletehash" target="_blank">Delete permanently</a>
+                        <a class="purple--text text--darken-3" :href="'https://imgur.com/delete/' + item.deletehash" @click.prevent="deletePermanently(item.deletehash, key)">Delete permanently</a>
                       </span>
                     </v-list-tile-sub-title>
                   </v-list-tile-content>

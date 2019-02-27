@@ -307,7 +307,6 @@ export default {
 
         console.log('Keypress: Ctrl + Z', event.ctrlKey, event.shiftKey, event.keyCode)
       } else {
-
         switch (event.keyCode) {
           case 67:
           case 99:
@@ -420,7 +419,7 @@ export default {
     },
     move (event) {
       let x, y, w, h
-      let image, mask = { canvas: null, ctx: null }
+      let image; let mask = { canvas: null, ctx: null }
       let { startX, startY } = this.draw.dimen
 
       if (this.draw.dimen.active) {
@@ -825,7 +824,7 @@ export default {
           image: this.canvas.toDataURL().split(',')[1],
           type: 'base64'
         }
-      }).then((img) => {
+      }).then(img => {
         let { data: { data } } = img
 
         this.reset()
@@ -876,6 +875,18 @@ export default {
     removeHistory (key) {
       this.history.splice(key, 1)
     },
+    deletePermanently (deletehash, key) {
+      imgur({
+        url: '/image/' + deletehash,
+        method: 'delete'
+      }).then((img) => {
+        let { data } = img
+
+        if (data.success) this.removeHistory(key)
+      }).catch((e) => {
+        console.error(e)
+      })
+    },
     _crop (startX, startY, endX, endY, centered, exact) {
       let x, y, w, h, tempCanvas, tempCtx
 
@@ -916,7 +927,7 @@ export default {
     },
     _freeHand () {
       let { points } = this.draw.free
-      let x, y, i = 0
+      let x; let y; let i = 0
 
       if (points.length < 3) {
         this.ctx.moveTo(points[0].x, points[0].y)
