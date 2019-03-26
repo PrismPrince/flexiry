@@ -1,0 +1,262 @@
+<v-container fluid grid-list-md>
+<v-layout row wrap>
+  <v-flex d-flex xs3>
+    <v-card class="output" color="green" tile flat dark>
+      <v-card-title>
+        <span class="headline">Output Text</span>
+        <v-spacer></v-spacer>
+        <v-tooltip :disabled="builderText === ''" bottom>
+          <v-btn slot="activator" color="red darken-2" @click="reset" :disabled="builderText === ''" fab depressed dark small>
+            <v-icon>replay</v-icon>
+          </v-btn>
+          <span>Reset</span>
+        </v-tooltip>
+        <v-tooltip :disabled="builderText === ''" bottom>
+          <v-btn slot="activator" color="purple darken-2" @click="copyText" :disabled="builderText === ''" fab depressed dark small>
+            <v-icon>file_copy</v-icon>
+          </v-btn>
+          <span>Copy</span>
+        </v-tooltip>
+        <div id="raw-text-container"></div>
+      </v-card-title>
+
+      <v-card-text v-if="updateFontsList.length > 0 || outlinedFontsList.length > 0" class="py-0 mb-3">
+        <pre>{{ builder.header }}</pre>
+      </v-card-text>
+
+      <v-card-text v-for="(item, key) in updateFontsList" :key="key" class="py-0 list">
+        <v-layout>
+          <v-flex>
+            <pre>{{ item }}</pre>
+          </v-flex>
+          <v-flex align-self-center shrink>
+            <v-btn class="btn-remove ma-0" @click="removeUpdateFont(key)" fab flat small>
+              <v-icon color="white" size="13">close</v-icon>
+            </v-btn>
+          </v-flex>
+        </v-layout>
+      </v-card-text>
+
+      <v-card-text v-for="(item, key) in outlinedFontsList" :key="key" class="py-0 list">
+        <v-layout>
+          <v-flex>
+            <pre>{{ item }}</pre>
+          </v-flex>
+          <v-flex align-self-center shrink>
+            <v-btn class="btn-remove ma-0" @click="removeOutlinedFont(key)" fab flat small>
+              <v-icon color="white" size="13">close</v-icon>
+            </v-btn>
+          </v-flex>
+        </v-layout>
+      </v-card-text>
+
+      <v-card-text v-if="(updateFontsList.length > 0 || outlinedFontsList.length > 0) &&
+        missingFontFormsList.length > 0" class="py-0 my-3">
+        <pre>---</pre>
+      </v-card-text>
+
+      <v-card-text v-if="missingFontFormsList.length > 0" class="py-0 my-3">
+        <pre>{{ builder.missingFonts.header }}</pre>
+      </v-card-text>
+
+      <v-card-text v-for="(item, key) in missingFontFormsList" :key="key" class="py-0 my-3 list">
+        <v-layout>
+          <v-flex>
+            <pre>{{ item }}</pre>
+          </v-flex>
+          <v-flex align-self-center shrink>
+            <v-btn class="btn-remove ma-0" @click="removeMissingFontForm(key)" fab flat small>
+              <v-icon color="white" size="13">close</v-icon>
+            </v-btn>
+          </v-flex>
+        </v-layout>
+      </v-card-text>
+
+      <v-card-text v-if="(updateFontsList.length > 0 || outlinedFontsList.length > 0 || missingFontFormsList.length > 0) && formPlusText" class="py-0 my-3">
+        <pre>---</pre>
+      </v-card-text>
+
+      <v-card-text class="py-0 mb-3">
+        <pre>{{ formPlusText }}</pre>
+      </v-card-text>
+
+      <v-card-text v-if="(updateFontsList.length > 0 || outlinedFontsList.length > 0 || missingFontFormsList.length > 0 || formPlusText) && builder.photoSwaps" class="py-0 my-3">
+        <pre>---</pre>
+      </v-card-text>
+
+      <v-card-text class="py-0 mb-3">
+        <pre>{{ builder.photoSwaps }}</pre>
+      </v-card-text>
+
+      <v-card-text v-if="(updateFontsList.length > 0 || outlinedFontsList.length > 0 || missingFontFormsList.length > 0 || formPlusText || builder.photoSwaps) && builder.stampReview" class="py-0 my-3">
+        <pre>---</pre>
+      </v-card-text>
+
+      <v-card-text class="py-0 mb-3">
+        <pre>{{ builder.stampReview }}</pre>
+      </v-card-text>
+
+      <v-card-text v-if="(updateFontsList.length > 0 || outlinedFontsList.length > 0 || missingFontFormsList.length > 0 || formPlusText || builder.photoSwaps || builder.stampReview) && builder.extraNotes" class="py-0 my-3">
+        <pre>---</pre>
+      </v-card-text>
+
+      <v-card-text class="py-0 mb-3">
+        <pre>{{ builder.extraNotes }}</pre>
+      </v-card-text>
+
+
+    </v-card>
+  </v-flex>
+
+  <v-flex class="builder" d-flex xs9>
+    <v-layout row wrap>
+      <v-flex d-flex xs12>
+        <v-card color="cyan" tile flat dark>
+          <v-card-text>
+            <v-layout row wrap>
+              <v-flex xs12>
+                <v-textarea v-model.trim="builder.header" color="white" label="Header" rows="1" auto-grow clearable></v-textarea>
+              </v-flex>
+            </v-layout>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+
+      <v-flex d-flex xs12>
+        <v-card color="teal" tile flat dark>
+          <v-card-text>
+            <v-layout row wrap>
+              <v-flex xs12 md4>
+                <v-combobox v-model.trim="builder.updateFonts.nonMinted" :items="nonMintedFonts" color="white" label="Non-Minted Font" @change="swapFont($event, key)" @keyup.ctrl.enter.exact="addUpdateFont" hide-no-data hide-selected chips small-chips deletable-chips clearable></v-combobox>
+              </v-flex>
+              <v-flex xs12 md4>
+                <v-combobox v-model.trim="builder.updateFonts.minted" :items="mintedFonts" color="white" label="Minted Font" @keyup.ctrl.enter.exact="addUpdateFont" hide-no-data hide-selected chips small-chips deletable-chips clearable></v-combobox>
+              </v-flex>
+              <v-flex xs12 md4>
+                <v-text-field v-model.trim="builder.updateFonts.note" color="white" label="Note" @keyup.ctrl.enter.exact="addUpdateFont" clearable>
+                  <template v-slot:append-outer>
+                    <v-tooltip color="teal darken-4" bottom offset-overflow>
+                      <v-icon slot="activator" @click="addUpdateFont">add</v-icon>
+                      <span>Add Font Update <kbd>Ctrl</kbd> + <kbd>Enter</kbd></span>
+                    </v-tooltip>
+                  </template>
+                </v-text-field>
+              </v-flex>
+              <v-flex xs12 md6>
+                <v-combobox v-model.trim="builder.outlinedFonts.fonts" :items="mintedFonts" color="white" label="Outlined Fonts" @keyup.ctrl.enter.exact="addOutlinedFont" hide-no-data hide-selected chips small-chips deletable-chips multiple clearable></v-combobox>
+              </v-flex>
+              <v-flex xs12 md6>
+                <v-text-field v-model.trim="builder.outlinedFonts.note" color="white" label="Note" @keyup.ctrl.enter.exact="addOutlinedFont" clearable>
+                  <template v-slot:append-outer>
+                    <v-tooltip color="teal darken-4" bottom offset-overflow>
+                      <v-icon slot="activator" @click="addOutlinedFont">add</v-icon>
+                      <span>Add Outlined Font <kbd>Ctrl</kbd> + <kbd>Enter</kbd></span>
+                    </v-tooltip>
+                  </template>
+                </v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+
+      <v-flex d-flex xs6>
+        <v-card color="amber" tile flat light>
+          <v-card-text>
+            <v-layout row wrap>
+              <v-flex xs12 md12>
+                <v-text-field v-model.trim="builder.missingFonts.header" color="black" label="Missing Fonts Header" clearable></v-text-field>
+              </v-flex>
+              <v-flex xs12 md8>
+                <v-text-field v-model.trim="builder.missingFonts.font" color="black" label="Non-Minted Font" @keyup.ctrl.enter.exact="addMissingFont" clearable></v-text-field>
+              </v-flex>
+              <v-flex xs12 md4>
+                <v-text-field v-model.trim="builder.missingFonts.editable" color="black" label="Editable or Outlined" @keyup.ctrl.enter.exact="addMissingFont" clearable></v-text-field>
+              </v-flex>
+              <v-flex xs12 md6>
+                <v-text-field v-model.trim="builder.missingFonts.usedIn" color="black" label="Where the Font is Used" @keyup.ctrl.enter.exact="addMissingFont" clearable></v-text-field>
+              </v-flex>
+              <v-flex xs12 md6>
+                <v-text-field v-model.trim="builder.missingFonts.link" color="black" label="Purchased Link" @keyup.ctrl.enter.exact="addMissingFont" clearable></v-text-field>
+              </v-flex>
+              <v-flex xs12 md6>
+                <v-text-field v-model.trim="builder.missingFonts.sub" color="black" label="Suggested Sub" @keyup.ctrl.enter.exact="addMissingFont" clearable></v-text-field>
+              </v-flex>
+              <v-flex xs12 md6>
+                <v-text-field v-model.trim="builder.missingFonts.note" color="black" label="Note" @keyup.ctrl.enter.exact="addMissingFont" clearable>
+                  <template v-slot:append-outer>
+                    <v-tooltip color="amber darken-4" bottom offset-overflow>
+                      <v-icon slot="activator" @click="addMissingFont">add</v-icon>
+                      <span>Add Missing Font <kbd>Ctrl</kbd> + <kbd>Enter</kbd></span>
+                    </v-tooltip>
+                  </template>
+                </v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+
+      <v-flex d-flex xs6>
+        <v-layout row wrap>
+          <v-flex d-flex xs12>
+            <v-card color="blue-grey" tile flat dark>
+              <v-card-text>
+                <v-layout row wrap>
+                  <v-flex xs12 md12>
+                    <v-textarea v-model.trim="builder.photoSwaps" color="white" label="Photoswaps" rows="4" height="auto" clearable></v-textarea>
+                  </v-flex>
+                </v-layout>
+              </v-card-text>
+            </v-card>
+          </v-flex>
+
+          <v-flex d-flex xs12>
+            <v-card color="orange" tile flat light>
+              <v-card-text>
+                <v-layout row wrap>
+                  <v-flex xs12 md12>
+                    <v-textarea v-model.trim="builder.stampReview" color="black" label="Stamp Element Preview" rows="4" height="auto" clearable></v-textarea>
+                  </v-flex>
+                </v-layout>
+              </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-flex>
+
+      <v-flex d-flex xs8>
+        <v-card color="red" tile flat dark>
+          <v-card-text>
+            <v-layout row wrap>
+              <v-flex xs12 md6>
+                <v-text-field v-model.trim="builder.formPlus.header" color="white" label="Form+ Header" clearable></v-text-field>
+              </v-flex>
+              <v-flex xs12 md3>
+                <v-text-field v-model.trim="builder.formPlus.date" color="white" label="Date" clearable></v-text-field>
+              </v-flex>
+              <v-flex xs12 md3>
+                <v-text-field v-model.trim="builder.formPlus.screenshot" color="white" label="Screenshot" clearable></v-text-field>
+              </v-flex>
+              <v-flex xs12 md12>
+                <v-textarea v-model.trim="builder.formPlus.note" color="white" label="Note" rows="1" auto-grow clearable></v-textarea>
+              </v-flex>
+            </v-layout>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+      <v-flex d-flex xs4>
+        <v-card color="purple" tile flat dark>
+          <v-card-text>
+            <v-layout row wrap>
+              <v-flex xs12 md12>
+                <v-textarea v-model.trim="builder.extraNotes" color="white" label="Extra Notes" rows="5" clearable></v-textarea>
+              </v-flex>
+            </v-layout>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-flex>
+</v-layout>
+</v-container>

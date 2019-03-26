@@ -1,0 +1,43 @@
+<v-card color="teal" dark>
+  <v-card-title>
+    Master Font List
+    <v-spacer></v-spacer>
+    <v-text-field
+      v-model.trim="search"
+      prepend-icon="search"
+      label="Search"
+      color="teal"
+      single-line
+      hide-details
+      clearable
+    ></v-text-field>
+  </v-card-title>
+  <v-data-table
+    :headers="headers"
+    :items="filteredFonts"
+    :rows-per-page-items="[ 50, 100, 250, { text: '$vuetify.dataIterator.rowsPerPageAll', value: -1} ]"
+    rows-per-page-text="50"
+  >
+    <template v-slot:items="props">
+      <td>{{ props.item.font }}</td>
+      <td>
+        <code v-if="parseInt(props.item.minSize) || parseInt(props.item.minSize) === 0">{{ props.item.minSize }} pt</code>
+        <em v-else-if="props.item.minSize">{{ props.item.minSize }}</em>
+      </td>
+      <td>
+        <code v-if="parseInt(props.item.stroke) || parseInt(props.item.stroke) === 0">{{ props.item.stroke }} pt</code>
+        <em v-else-if="props.item.stroke">{{ props.item.stroke }}</em>
+      </td>
+      <td>{{ props.item.note }}</td>
+      <td>{{ props.item.status }}</td>
+      <!-- <td>{{ props.item.dateAdded }}</td> -->
+      <!-- <td>{{ props.item.filename }}</td> -->
+      <!-- <td>{{ props.item.customizerDefault }}</td> -->
+      <!-- <td>{{ props.item.public }}</td> -->
+      <!-- <td>{{ props.item.frcpEligible }}</td> -->
+    </template>
+    <v-alert v-slot:no-result :value="true" color="error" icon="warning">
+      Your search for "{{ search }}" found no results.
+    </v-alert>
+  </v-data-table>
+</v-card>
