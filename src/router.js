@@ -6,6 +6,7 @@ import Welcome from './views/Welcome'
 import Bookmarks from './views/Bookmarks'
 import FileAudit from './views/File-Audit'
 import FontSwaps from './views/Font-Swaps'
+import FontList from './views/Font-List'
 import Imgur from './views/Imgur'
 
 const database = Firebase.firestore()
@@ -83,6 +84,11 @@ let router = new Router({
       path: '/imgur',
       name: 'Imgur',
       component: Imgur
+    },
+    {
+      path: '/font-list',
+      name: 'FontList',
+      component: FontList
     }
     // {
     //   path: '/qc-rejection',
