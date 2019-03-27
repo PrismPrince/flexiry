@@ -38,6 +38,15 @@
           </v-list-tile-content>
         </v-list-tile>
 
+        <v-list-tile to="/font-list">
+          <v-list-tile-action>
+            <v-icon>font_download</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Font List</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
         <v-list-tile to="/file-audit">
           <v-list-tile-action>
             <v-icon>done_all</v-icon>
