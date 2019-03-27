@@ -69,7 +69,7 @@ export default {
         this.flattenFonts,
         this.missingFontFormsText,
         this.formPlusText,
-        photoSwaps,
+        photoSwaps === '@rachelricci' ? null : photoSwaps,
         stampReview,
         extraNotes
       ].filter(text => text !== null).join('\n\n---\n\n')

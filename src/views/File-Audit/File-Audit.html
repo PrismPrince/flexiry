@@ -80,11 +80,11 @@
         <pre>{{ formPlusText }}</pre>
       </v-card-text>
 
-      <v-card-text v-if="(updateFontsList.length > 0 || outlinedFontsList.length > 0 || missingFontFormsList.length > 0 || formPlusText) && builder.photoSwaps" class="py-0 my-3">
+      <v-card-text v-if="(updateFontsList.length > 0 || outlinedFontsList.length > 0 || missingFontFormsList.length > 0 || formPlusText) && builder.photoSwaps !== '@rachelricci'" class="py-0 my-3">
         <pre>---</pre>
       </v-card-text>
 
-      <v-card-text class="py-0 mb-3">
+      <v-card-text v-if="builder.photoSwaps !== '@rachelricci'" class="py-0 mb-3">
         <pre>{{ builder.photoSwaps }}</pre>
       </v-card-text>
 
