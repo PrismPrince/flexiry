@@ -1,1872 +1,1947 @@
 [
- {
-   "nonMintedFont": "AcademyEngravedLetPlain",
-   "mintedFont": "AcademyEngravedStd",
-   "note": null
- },
- {
-   "nonMintedFont": "ACaslon RegularSC",
-   "mintedFont": "Caslon Twelve SC",
-   "note": null
- },
- {
-   "nonMintedFont": "Adelicia Script",
-   "mintedFont": "Adelicia Script Clean",
-   "note": null
- },
- {
-   "nonMintedFont": "Adobe Jenson Pro",
-   "mintedFont": "Adobe Jenson Pro Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Adobe Jenson Pro Capt",
-   "mintedFont": "Adobe Jenson Pro Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "AdoraBoutonRegular",
-   "mintedFont": "AdoraBouton",
-   "note": null
- },
- {
-   "nonMintedFont": "AdoraBoutonSwashes1Regular",
-   "mintedFont": "AdoraBoutonSwashes1",
-   "note": null
- },
- {
-   "nonMintedFont": "AGaramond Bold",
-   "mintedFont": "Adobe Garamond Pro Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "AGaramond Italic",
-   "mintedFont": "Adobe Garamond Pro Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "AGaramond Regular",
-   "mintedFont": "Adobe Garamond Pro Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Aidanscriptfreetester",
-   "mintedFont": "Aidan",
-   "note": null
- },
- {
-   "nonMintedFont": "AlexBrush-Regular",
-   "mintedFont": "AlexBrush Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Allexis Regular",
-   "mintedFont": "Allexis Normal",
-   "note": null
- },
- {
-   "nonMintedFont": "AmeliaScript DraftVersion",
-   "mintedFont": "AmeliaScript-FineVersion",
-   "note": null
- },
- {
-   "nonMintedFont": "AmeliaScript FineVersion",
-   "mintedFont": "AmeliaScript-FineVersion",
-   "note": null
- },
- {
-   "nonMintedFont": "AmeliaScriptPP FineVersion",
-   "mintedFont": "AmeliaScript-FineVersion",
-   "note": null
- },
- {
-   "nonMintedFont": "Amsterdam 1",
-   "mintedFont": "Amsterdam One",
-   "note": null
- },
- {
-   "nonMintedFont": "Amsterdam 1Slant",
-   "mintedFont": "Amsterdam One Slant",
-   "note": null
- },
- {
-   "nonMintedFont": "AphroditeSlimStylistic",
-   "mintedFont": "AphroditeSlimPro",
-   "note": null
- },
- {
-   "nonMintedFont": "AracneCondensedRegular",
-   "mintedFont": "Aracne Cond Reg-Condensed Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "ArchivoNarrow Bold",
-   "mintedFont": "ArchivoNarrowBold",
-   "note": null
- },
- {
-   "nonMintedFont": "ArchivoNarrow Regular",
-   "mintedFont": "ArchivoNarrowRegular",
-   "note": null
- },
- {
-   "nonMintedFont": "AsterismClean Regular",
-   "mintedFont": "Asterism Clean Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "ATCRosemary Regular",
-   "mintedFont": "ATC Rosemary",
-   "note": null
- },
- {
-   "nonMintedFont": "ATSolidAntiqueRoman",
-   "mintedFont": "Sackers Solid Antique Roman",
-   "note": null
- },
- {
-   "nonMintedFont": "Avenir Black",
-   "mintedFont": "Avenir LT Std-Black",
-   "note": null
- },
- {
-   "nonMintedFont": "Avenir Book",
-   "mintedFont": "Avenir LT Std Roman",
-   "note": null
- },
- {
-   "nonMintedFont": "Avenir BookOblique",
-   "mintedFont": "Avenir LT Std-Book Oblique",
-   "note": null
- },
- {
-   "nonMintedFont": "Avenir Heavy",
-   "mintedFont": "Avenir LT Std-Medium",
-   "note": "with 0.15pt stroke"
- },
- {
-   "nonMintedFont": "Avenir Light",
-   "mintedFont": "Avenir LT Std-Light",
-   "note": null
- },
- {
-   "nonMintedFont": "Avenir Medium",
-   "mintedFont": "Avenir LT Std-Medium",
-   "note": null
- },
- {
-   "nonMintedFont": "Avenir Next Regular",
-   "mintedFont": "Avenir Next LT Pro Medium",
-   "note": null
- },
- {
-   "nonMintedFont": "Avenir Roman",
-   "mintedFont": "Avenir LT Std Roman",
-   "note": null
- },
- {
-   "nonMintedFont": "AvenirNext Bold",
-   "mintedFont": "AvenirNext LTPro-Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "AvenirNext DemiBold",
-   "mintedFont": "AvenirNextLTPro-Medium",
-   "note": "with 0.1pt stroke"
- },
- {
-   "nonMintedFont": "AvenirNext Medium",
-   "mintedFont": "AvenirNextLTPro-Medium",
-   "note": null
- },
- {
-   "nonMintedFont": "AvenirNext UltraLight",
-   "mintedFont": "Avenir Next LT Pro Ultra Light",
-   "note": null
- },
- {
-   "nonMintedFont": "AvenirNextCondensed Medium",
-   "mintedFont": "Avenir Next LT Pro Medium Condensed",
-   "note": null
- },
- {
-   "nonMintedFont": "AvenirNextCondensed-Regular",
-   "mintedFont": "Avenir Next LT Pro Condensed",
-   "note": null
- },
- {
-   "nonMintedFont": "AWConquerorProSans Light",
-   "mintedFont": "AW Conqueror Sans Light",
-   "note": null
- },
- {
-   "nonMintedFont": "BambusaPro_Regular",
-   "mintedFont": "Bambusa Pro Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "BankGothicBold",
-   "mintedFont": "BankGothicEFOP-Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "BankGothicBT Light",
-   "mintedFont": "BankGothicEFOP-Light",
-   "note": null
- },
- {
-   "nonMintedFont": "BankGothicBT Medium",
-   "mintedFont": "BankGothicEFOP-Medium",
-   "note": null
- },
- {
-   "nonMintedFont": "Baro LineOne",
-   "mintedFont": "BaroLineOne",
-   "note": null
- },
- {
-   "nonMintedFont": "Barrio Regular",
-   "mintedFont": "Barrio",
-   "note": null
- },
- {
-   "nonMintedFont": "Baskerville Bold",
-   "mintedFont": "Baskerville MT Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "Baskerville Italic",
-   "mintedFont": "Baskerville Book BQ Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "Baskerville Regular",
-   "mintedFont": "Baskerville Book BQ Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Baskerville Semibold",
-   "mintedFont": "Baskerville MT Semibold",
-   "note": null
- },
- {
-   "nonMintedFont": "Baskerville SemiboldItalic",
-   "mintedFont": "Baskerville MT Semibold Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "Baskerville-BoldItalic",
-   "mintedFont": "Baskerville Book BQ Italic",
-   "note": "with stroke matching OG"
- },
- {
-   "nonMintedFont": "BaskervilleBook MedItalic",
-   "mintedFont": "Baskerville Book BQ Medium Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "BaskervilleURW-Reg",
-   "mintedFont": "Baskerville Book BQ Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "BaskervilleURW-RegIta",
-   "mintedFont": "Baskerville Book BQ Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "BauerBodoni-BoldItalic",
-   "mintedFont": "Bodoni Bold Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "BauerBodoni-BoldOsF",
-   "mintedFont": "Bodoni Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "BauerBodoniBT Roman",
-   "mintedFont": "Bodoni Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Bebas Neue",
-   "mintedFont": "Bebas Neue Regular or Bebas Neue Bold",
-   "note": "always compare OG"
- },
- {
-   "nonMintedFont": "BellGothic Black",
-   "mintedFont": "Bell Gothic Std Black",
-   "note": null
- },
- {
-   "nonMintedFont": "Bellisiaitalic",
-   "mintedFont": "BellisiaItalic",
-   "note": null
- },
- {
-   "nonMintedFont": "BellissimaScriptPro",
-   "mintedFont": "BellissimaScriptRedux",
-   "note": null
- },
- {
-   "nonMintedFont": "BellMTStd-Regular",
-   "mintedFont": "Bell MT Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "BelovedSans Bold",
-   "mintedFont": "BelovedSans-Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "BemboStd",
-   "mintedFont": "Bembo",
-   "note": null
- },
- {
-   "nonMintedFont": "Bergamot Bold",
-   "mintedFont": "Bergamot",
-   "note": "with stroke"
- },
- {
-   "nonMintedFont": "BetterTogetherDemo",
-   "mintedFont": "BetterTogether",
-   "note": null
- },
- {
-   "nonMintedFont": "BioRhyme Bold",
-   "mintedFont": "BioRhymeBold",
-   "note": null
- },
- {
-   "nonMintedFont": "BioRhyme ExtraBold",
-   "mintedFont": "BioRhyme-ExtraBold",
-   "note": null
- },
- {
-   "nonMintedFont": "BioRhymeExpanded Bold",
-   "mintedFont": "BioRhymeExpandedBold",
-   "note": null
- },
- {
-   "nonMintedFont": "BioRhymeExpanded ExtraBold",
-   "mintedFont": "BioRhyme Expanded ExtraBold",
-   "note": null
- },
- {
-   "nonMintedFont": "BioRhymeExpanded Regular",
-   "mintedFont": "BioRhymeExpanded Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "BlackDiamond",
-   "mintedFont": "Black Diamond",
-   "note": null
- },
- {
-   "nonMintedFont": "BlackJackRegular",
-   "mintedFont": "Black Jack Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "BlessedPrint ModernScript",
-   "mintedFont": "ModernScript-Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "BlueshiftStickW01 Regular",
-   "mintedFont": "Blueshift Stick Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Blush-Regular",
-   "mintedFont": "Blush",
-   "note": null
- },
- {
-   "nonMintedFont": "Bodoni Book",
-   "mintedFont": "Bodoni Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Bodoni BT-BookItalic",
-   "mintedFont": "Bodoni Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "BodoniBlack Regular",
-   "mintedFont": "Bodoni LT Poster",
-   "note": null
- },
- {
-   "nonMintedFont": "BodoniBT Roman",
-   "mintedFont": "Bodoni Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "BodoniFLF Roman",
-   "mintedFont": "BodoniSerial Light",
-   "note": "with stroke"
- },
- {
-   "nonMintedFont": "BodoniLTStd Regular",
-   "mintedFont": "Bodoni Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "BodoniMT",
-   "mintedFont": "Bodoni Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "BodoniMT-Bold",
-   "mintedFont": "Bodoni Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "BodoniMT-Italic",
-   "mintedFont": "Bodoni Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "BodoniSicITCBookItalOS",
-   "mintedFont": "Bodoni Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "BodoniStd Book",
-   "mintedFont": "Bodoni Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "BodoniStd Poster",
-   "mintedFont": "Bodoni LT Poster",
-   "note": null
- },
- {
-   "nonMintedFont": "BodoniSvtyTwoITCTT Bold",
-   "mintedFont": "Bodoni Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "BodoniSvtyTwoITCTT Book",
-   "mintedFont": "BodoniSerial-Light / Bodoni Regular",
-   "note": "match OG"
- },
- {
-   "nonMintedFont": "BodoniSvtyTwoITCTT-BookIta",
-   "mintedFont": "Bodoni Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "BodoniSvtyTwoSCITCTT",
-   "mintedFont": "BodoniBertholdBQ RegSC",
-   "note": null
- },
- {
-   "nonMintedFont": "BodoniURW Med",
-   "mintedFont": "Bodoni Regular",
-   "note": "you may need to reduce the font size slightly to match the original submission -per Molly"
- },
- {
-   "nonMintedFont": "BodoniURW Regular",
-   "mintedFont": "Bodoni Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "BodoniURW-Lig",
-   "mintedFont": "Bodoni Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "BodoniURW-RegObl",
-   "mintedFont": "Bodoni Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "Book Antique",
-   "mintedFont": "Palatino Linotype Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "BookmanOldStyle",
-   "mintedFont": "Bookman Old Style Std Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "BookmanOldStyle Italic",
-   "mintedFont": "Bookman Old Style Std Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "Bordeaux Regular",
-   "mintedFont": "Bordeaux",
-   "note": null
- },
- {
-   "nonMintedFont": "BrandonGrotW01-ThinItalic",
-   "mintedFont": "Brandon Grotesque Thin Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "Bromello",
-   "mintedFont": "Bromello Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Brothers",
-   "mintedFont": "BrothersRegular",
-   "note": null
- },
- {
-   "nonMintedFont": "BrunellaScript",
-   "mintedFont": "Brunella Script",
-   "note": null
- },
- {
-   "nonMintedFont": "Business Penmanship Bold",
-   "mintedFont": "Business Penmanship",
-   "note": "compare stroke weight from OG"
- },
- {
-   "nonMintedFont": "Camila Black",
-   "mintedFont": "Camila-Black",
-   "note": null
- },
- {
-   "nonMintedFont": "Camila Medium",
-   "mintedFont": "Camila-Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Camila Semibold",
-   "mintedFont": "Camila-Semibold",
-   "note": null
- },
- {
-   "nonMintedFont": "CampPress Regular",
-   "mintedFont": "CampPress-Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Cantoni Basic",
-   "mintedFont": "Cantoni Pro Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Caslon540ITALIC",
-   "mintedFont": "Caslon540 BT Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "CaslonGraD",
-   "mintedFont": "CaslonGraphiqueEF",
-   "note": null
- },
- {
-   "nonMintedFont": "CaslonOldFaceBT Italic",
-   "mintedFont": "Caslon540 BT Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "CaslonOpenFace Regular",
-   "mintedFont": "Caslon Open Face LT Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "CaslonSB RegularSC",
-   "mintedFont": "Caslon Twelve SC",
-   "note": null
- },
- {
-   "nonMintedFont": "Casual Line-Script",
-   "mintedFont": "Casual-Line-Script",
-   "note": null
- },
- {
-   "nonMintedFont": "Century Regular",
-   "mintedFont": "CenturyOldstyleBTRoman",
-   "note": null
- },
- {
-   "nonMintedFont": "ChasingEmbers",
-   "mintedFont": "Chasing Embers One Regular",
-   "note": "not yet resolved in installing fonts."
- },
- {
-   "nonMintedFont": "CherryCordial Regular",
-   "mintedFont": "CherryCordial",
-   "note": null
- },
- {
-   "nonMintedFont": "ChevalierStrSCD",
-   "mintedFont": "Chevalier LT Stripes Caps",
-   "note": null
- },
- {
-   "nonMintedFont": "ChunkFive",
-   "mintedFont": "ChunkFive Roman",
-   "note": null
- },
- {
-   "nonMintedFont": "ClarendonBT Roman",
-   "mintedFont": "Clarendon Roman",
-   "note": null
- },
- {
-   "nonMintedFont": "ClarendonBT-Light",
-   "mintedFont": "Clarendon Light",
-   "note": null
- },
- {
-   "nonMintedFont": "ClarendonBTHeavy",
-   "mintedFont": "Clarendon Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "ClarendonLT",
-   "mintedFont": "Clarendon Roman",
-   "note": null
- },
- {
-   "nonMintedFont": "ClarendonLT Bold",
-   "mintedFont": "Clarendon Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "ClarendonLTStd",
-   "mintedFont": "Clarendon Roman",
-   "note": "match OG"
- },
- {
-   "nonMintedFont": "Classy Alt",
-   "mintedFont": "ClassyAlt",
-   "note": null
- },
- {
-   "nonMintedFont": "Classy Regular",
-   "mintedFont": "ClassyRegular",
-   "note": null
- },
- {
-   "nonMintedFont": "Cochin",
-   "mintedFont": "Cochin LT",
-   "note": null
- },
- {
-   "nonMintedFont": "Cochin-Italic",
-   "mintedFont": "Cochin LT Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "CompendiumW00 Regular",
-   "mintedFont": "Compendium-Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Copperplate",
-   "mintedFont": "Copperplate Light",
-   "note": null
- },
- {
-   "nonMintedFont": "CopperplateGothic Bold",
-   "mintedFont": "Copperplate Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "CopperplateGothic Light",
-   "mintedFont": "Copperplate Light",
-   "note": null
- },
- {
-   "nonMintedFont": "Coquette",
-   "mintedFont": "Coquette Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Coquette-Bold",
-   "mintedFont": "Coquette Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "Courier",
-   "mintedFont": "Courier New",
-   "note": "0.25pt stroke"
- },
- {
-   "nonMintedFont": "CrawModURW Bol",
-   "mintedFont": "Craw Modern URW Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "DeValencia Regular",
-   "mintedFont": "DeValencia-Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Didot Bold",
-   "mintedFont": "Didot LT Std Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "Didot HTF-M64-Medium-Italic",
-   "mintedFont": "Didot LT Std Italic",
-   "note": "with 0.1pt stroke"
- },
- {
-   "nonMintedFont": "Didot Italic",
-   "mintedFont": "Didot LT Std Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "Didot Regular",
-   "mintedFont": "Didot LT Std Roman",
-   "note": null
- },
- {
-   "nonMintedFont": "DidotHeadline",
-   "mintedFont": "Didot LT Std Headline",
-   "note": null
- },
- {
-   "nonMintedFont": "DidotLH Italic",
-   "mintedFont": "Didot LT Std Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "DidotLH RomanSC",
-   "mintedFont": "Didot LT Std Roman",
-   "note": null
- },
- {
-   "nonMintedFont": "DidotLH-Initials",
-   "mintedFont": "Didot Lt Std Headline",
-   "note": null
- },
- {
-   "nonMintedFont": "DidotLH-ItalicOsF",
-   "mintedFont": "Didot Lit Std Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "DidotLTPro Roman",
-   "mintedFont": "Didot LT Std Roman",
-   "note": null
- },
- {
-   "nonMintedFont": "Dorrotthy Alt1-Regular",
-   "mintedFont": "DorrotthyAlternate1 Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Dorrotthy Regular",
-   "mintedFont": "DorrotthyRegular",
-   "note": null
- },
- {
-   "nonMintedFont": "EBGaramond12-AllSC",
-   "mintedFont": "Adobe Garamond Pro Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "EloquentJFPro Regular",
-   "mintedFont": "EloquentJFRegularPro",
-   "note": null
- },
- {
-   "nonMintedFont": "Elsie Regular",
-   "mintedFont": "ElsieRegular",
-   "note": null
- },
- {
-   "nonMintedFont": "EmmascriptMVBStd",
-   "mintedFont": "Emmascript MVB Std Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "EnamelLine",
-   "mintedFont": "Enamel Line",
-   "note": null
- },
- {
-   "nonMintedFont": "EnamelLine Regular",
-   "mintedFont": "Enamel Line",
-   "note": null
- },
- {
-   "nonMintedFont": "EngraversD-Roma",
-   "mintedFont": "Engravers MT",
-   "note": null
- },
- {
-   "nonMintedFont": "EngraversEF Roman",
-   "mintedFont": "Engravers MT",
-   "note": null
- },
- {
-   "nonMintedFont": "EngraversGothicBT",
-   "mintedFont": "Engravers' Gothic BT",
-   "note": null
- },
- {
-   "nonMintedFont": "EngraversLH-BoldFace",
-   "mintedFont": "Engravers LT Std Bold Face",
-   "note": null
- },
- {
-   "nonMintedFont": "EngraversLT Bold",
-   "mintedFont": "Engravers MT Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "EngraversLTW01-BoldFace",
-   "mintedFont": "Engravers LT Std Bold Face",
-   "note": null
- },
- {
-   "nonMintedFont": "EngraversMTStd Regular",
-   "mintedFont": "Engravers MT",
-   "note": null
- },
- {
-   "nonMintedFont": "EngraversRomanBT Bold",
-   "mintedFont": "Engravers MT Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "EngraversSCD Bold",
-   "mintedFont": "Engravers MT Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "EstiloText Regular",
-   "mintedFont": "Estilo",
-   "note": null
- },
- {
-   "nonMintedFont": "EstiloW01SC Book",
-   "mintedFont": "Estilo Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Euphorigenic Regular",
-   "mintedFont": "Euphorigenic",
-   "note": null
- },
- {
-   "nonMintedFont": "EvelethDotW01 Regular",
-   "mintedFont": "Eveleth Dot Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "EvelethSlantW01 Light",
-   "mintedFont": "Eveleth Slant Light",
-   "note": null
- },
- {
-   "nonMintedFont": "FairwaterScript",
-   "mintedFont": "FairwaterScript-Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Filosofia",
-   "mintedFont": "FilosofiaRegular",
-   "note": null
- },
- {
-   "nonMintedFont": "Fontbox Loveluck Regular",
-   "mintedFont": "Blooming Elegant Monoline Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "FoxAndBear-Regular",
-   "mintedFont": "FoxandBear Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "FrontageCondensed Regular",
-   "mintedFont": "FrontageCondensed-Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "FrontageW00 Regular",
-   "mintedFont": "Frontage Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Futura Book",
-   "mintedFont": "Futura Std Book",
-   "note": null
- },
- {
-   "nonMintedFont": "Futura BookObl",
-   "mintedFont": "Futura Std Book Oblique",
-   "note": null
- },
- {
-   "nonMintedFont": "Futura CondensedMedium",
-   "mintedFont": "Futura Std Medium Condensed",
-   "note": null
- },
- {
-   "nonMintedFont": "Futura Lt BT Book",
-   "mintedFont": "Futura Medium BT",
-   "note": null
- },
- {
-   "nonMintedFont": "Futura LT-Light",
-   "mintedFont": "Futura Light BT",
-   "note": null
- },
- {
-   "nonMintedFont": "Futura Medium",
-   "mintedFont": "Futura Medium BT",
-   "note": null
- },
- {
-   "nonMintedFont": "Futura MediumItalic",
-   "mintedFont": "Futura Std Medium Oblique",
-   "note": null
- },
- {
-   "nonMintedFont": "Futura MedObl",
-   "mintedFont": "Futura Medium Oblique",
-   "note": null
- },
- {
-   "nonMintedFont": "Futura Regular",
-   "mintedFont": "Futura Std Medium",
-   "note": null
- },
- {
-   "nonMintedFont": "Futura-Bold",
-   "mintedFont": "Futura Md BT Bold / Futura Std Bold",
-   "note": "compare OG"
- },
- {
-   "nonMintedFont": "Futura-BoldOblique",
-   "mintedFont": "Futura Std Bold Oblique",
-   "note": null
- },
- {
-   "nonMintedFont": "Futura-Dem",
-   "mintedFont": "Futura Std Medium",
-   "note": null
- },
- {
-   "nonMintedFont": "FuturaBT HeavyItalic",
-   "mintedFont": "Futura Std Heavy Oblique",
-   "note": null
- },
- {
-   "nonMintedFont": "FuturaBT-Heavy",
-   "mintedFont": "Futura Std Heavy",
-   "note": null
- },
- {
-   "nonMintedFont": "FuturaPT-Medium",
-   "mintedFont": "Futura Medium BT",
-   "note": null
- },
- {
-   "nonMintedFont": "FuturaPTCond-Book",
-   "mintedFont": "Futura Std Light Condensed",
-   "note": "with 0.1pt stroke"
- },
- {
-   "nonMintedFont": "GabrielaStencil UltraLight",
-   "mintedFont": "GabrielaStencilUltraLight",
-   "note": null
- },
- {
-   "nonMintedFont": "Garamond Regular",
-   "mintedFont": "Adobe Garamond Pro Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Garamond Regular-NormalItalic",
-   "mintedFont": "Adobe Garamond Pro Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "Garamond-Bold",
-   "mintedFont": "Adobe Garamond Pro Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "Garamond-Italic",
-   "mintedFont": "Adobe Garamond Pro Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "GaramondPremrPro",
-   "mintedFont": "Adobe Garamond Pro Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "GaramondPremrPro Disp",
-   "mintedFont": "Adobe Garamond Pro Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "GaramondPremrPro-It",
-   "mintedFont": "Adobe Garamond Pro Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "GaramondPremrPro-Smbd",
-   "mintedFont": "Adobe Garamond Pro Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "Gill Sans Ultra Bold Italic",
-   "mintedFont": "Gill Sans MT Pro Medium Italic",
-   "note": "taysa not sure ni hehey"
- },
- {
-   "nonMintedFont": "GillSans",
-   "mintedFont": "Gill Sans MT Pro Medium",
-   "note": null
- },
- {
-   "nonMintedFont": "GillSans Bold",
-   "mintedFont": "Gill Sans MT Pro Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "GillSans Italic",
-   "mintedFont": "Gill Sans MT Pro Medium Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "GillSans SemiBold",
-   "mintedFont": "Gill Sans MT Pro Heavy",
-   "note": null
- },
- {
-   "nonMintedFont": "GillSans SemiBoldItalic",
-   "mintedFont": "Gill Sans MT Pro Heavy Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "GillSans-Light",
-   "mintedFont": "Gill Sans MT Pro Light",
-   "note": null
- },
- {
-   "nonMintedFont": "GillSans-LightItalic",
-   "mintedFont": "Gill Sans MT Pro LightItalic",
-   "note": null
- },
- {
-   "nonMintedFont": "GistUprightLineLight",
-   "mintedFont": "Gist Upright Line Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "GistW01 UprightLineReg",
-   "mintedFont": "GistUprightLineRegular",
-   "note": null
- },
- {
-   "nonMintedFont": "Goby-Regular",
-   "mintedFont": "Goby",
-   "note": null
- },
- {
-   "nonMintedFont": "Goku",
-   "mintedFont": "Goku Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Goudy Italic",
-   "mintedFont": "Goudy Old Style TL Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "GoudyOldStyleT Bold",
-   "mintedFont": "Goudy Old Style TL Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "GoudyOldStyleT Italic",
-   "mintedFont": "Goudy Old Style TL Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "GoudyOldStyleT Regular",
-   "mintedFont": "Goudy Old Style TL Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "GuadalupeEssentialGota",
-   "mintedFont": "Guadalupe Essential",
-   "note": null
- },
- {
-   "nonMintedFont": "GuadalupePro",
-   "mintedFont": "Guadalupe Essential",
-   "note": null
- },
- {
-   "nonMintedFont": "Halosense Regular",
-   "mintedFont": "HalosensesRegular",
-   "note": null
- },
- {
-   "nonMintedFont": "HeatherSmallCaps Regular",
-   "mintedFont": "Heather Small Caps",
-   "note": null
- },
- {
-   "nonMintedFont": "HelloBeautiful Marker",
-   "mintedFont": "Hello Beautiful Marker",
-   "note": null
- },
- {
-   "nonMintedFont": "Helsing-Regular",
-   "mintedFont": "Helsing",
-   "note": null
- },
- {
-   "nonMintedFont": "Helvetica Regular",
-   "mintedFont": "Helvetica Neue LT Com 55 Roman",
-   "note": null
- },
- {
-   "nonMintedFont": "HelveticaNeue Bold",
-   "mintedFont": "Helvetica Neue LT Com 75 Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "HelveticaNeue Thin",
-   "mintedFont": "Helvetica Neue LT Com 35 Thin",
-   "note": null
- },
- {
-   "nonMintedFont": "HendersonSlabLight",
-   "mintedFont": "Henderson Slab ExtraLight",
-   "note": null
- },
- {
-   "nonMintedFont": "Heuristica Italic",
-   "mintedFont": "HeuristicaItalic",
-   "note": null
- },
- {
-   "nonMintedFont": "HijrnotesPERSONALUSEONLY",
-   "mintedFont": "Hijrnotes",
-   "note": null
- },
- {
-   "nonMintedFont": "HLTPoemScriptPro",
-   "mintedFont": "Poem Script Pro Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "HLTRollingPen",
-   "mintedFont": "RollingPen Complete",
-   "note": null
- },
- {
-   "nonMintedFont": "HousegrindPersonalUseOnly",
-   "mintedFont": "Housegrind",
-   "note": null
- },
- {
-   "nonMintedFont": "InkBanditsSans Regular",
-   "mintedFont": "InkBanditsSans",
-   "note": null
- },
- {
-   "nonMintedFont": "InkBanditsScript-Regular",
-   "mintedFont": "Ink Bandits Script",
-   "note": null
- },
- {
-   "nonMintedFont": "IntroRustBook Base",
-   "mintedFont": "Intro Rust Book Base",
-   "note": null
- },
- {
-   "nonMintedFont": "Isidora SemiBold",
-   "mintedFont": "Isidora SemiBold",
-   "note": null
- },
- {
-   "nonMintedFont": "ITCAvantGardeStd Demi",
-   "mintedFont": "Avant Garde Demi BT",
-   "note": null
- },
- {
-   "nonMintedFont": "JosefinSans Bold",
-   "mintedFont": "JosefinSansBold",
-   "note": null
- },
- {
-   "nonMintedFont": "JosefinSans SemiBold",
-   "mintedFont": "JosefinSansSemiBold",
-   "note": null
- },
- {
-   "nonMintedFont": "KapraNeue SemiBoldExpanded",
-   "mintedFont": "Kapra Neue SemiBold Expanded",
-   "note": null
- },
- {
-   "nonMintedFont": "Kepler Std Scn",
-   "mintedFont": "Kepler Std",
-   "note": null
- },
- {
-   "nonMintedFont": "KunstlerScript",
-   "mintedFont": "Kuenstler Script LT Medium",
-   "note": null
- },
- {
-   "nonMintedFont": "LeagueGothic Regular",
-   "mintedFont": "League Gothic",
-   "note": null
- },
- {
-   "nonMintedFont": "LearningCurve Bold",
-   "mintedFont": "Learning Curve",
-   "note": "with stroke"
- },
- {
-   "nonMintedFont": "LibreBaskerville-Regular",
-   "mintedFont": "Baskerville Book BQ Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "LietoMe",
-   "mintedFont": "Lie to Me",
-   "note": null
- },
- {
-   "nonMintedFont": "LieveErikaSF-Regular",
-   "mintedFont": "LiebeErika Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "LittleDaysAlt",
-   "mintedFont": "Little Days Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Lora-Italic",
-   "mintedFont": "Lora Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "Lora-Regular",
-   "mintedFont": "Lora Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Luella Bold",
-   "mintedFont": "Luella Regular",
-   "note": "with stroke"
- },
- {
-   "nonMintedFont": "LUELLABasic",
-   "mintedFont": "LUELLA Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "LuloCleanW01 One",
-   "mintedFont": "Lulo Clean One",
-   "note": null
- },
- {
-   "nonMintedFont": "LuloCleanW01-OneBold",
-   "mintedFont": "Lulo Clean-One Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "LuloCleanW01-OutlineBold",
-   "mintedFont": "Lulo Clean One Bold",
-   "note": "with only stroke filled in"
- },
- {
-   "nonMintedFont": "LuloOne",
-   "mintedFont": "Lulo Clean One",
-   "note": null
- },
- {
-   "nonMintedFont": "LuloOne-Bold",
-   "mintedFont": "Lulo Clean One Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "Lust Italic",
-   "mintedFont": "LustScriptDisplay",
-   "note": null
- },
- {
-   "nonMintedFont": "Lust Regular",
-   "mintedFont": "LustDisplay-Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "LustDisplay-Regular",
-   "mintedFont": "Lust Display Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Macarons Bold",
-   "mintedFont": "Macarons Regular",
-   "note": "with stroke"
- },
- {
-   "nonMintedFont": "MadinaClean",
-   "mintedFont": "MadinaScriptStd",
-   "note": null
- },
- {
-   "nonMintedFont": "MadinaScript",
-   "mintedFont": "MadinaScriptStd",
-   "note": null
- },
- {
-   "nonMintedFont": "Madison Street Pro Regular",
-   "mintedFont": "MadisonStreetPro",
-   "note": null
- },
- {
-   "nonMintedFont": "Manhattan Regular",
-   "mintedFont": "Manhattan",
-   "note": null
- },
- {
-   "nonMintedFont": "Marguerite Heavy",
-   "mintedFont": "Marguerite Regular",
-   "note": "with stroke"
- },
- {
-   "nonMintedFont": "Marion Bold",
-   "mintedFont": "MarionBold",
-   "note": null
- },
- {
-   "nonMintedFont": "Marion Regular",
-   "mintedFont": "MarionRegular",
-   "note": null
- },
- {
-   "nonMintedFont": "MCMHellenicWide",
-   "mintedFont": "HellenicWideRegularJF",
-   "note": null
- },
- {
-   "nonMintedFont": "Metropolis-Bold",
-   "mintedFont": "MetropolisBold",
-   "note": null
- },
- {
-   "nonMintedFont": "Mittwoch NorReg",
-   "mintedFont": "MittwochRegular",
-   "note": null
- },
- {
-   "nonMintedFont": "Mrs Eaves Fractions",
-   "mintedFont": "MrsEavesSmallCaps",
-   "note": null
- },
- {
-   "nonMintedFont": "MrsEaves Italic",
-   "mintedFont": "MrsEavesItalic",
-   "note": null
- },
- {
-   "nonMintedFont": "MrsEavesAllPetiteCapsOT",
-   "mintedFont": "MrsEavesAllPetiteCaps",
-   "note": null
- },
- {
-   "nonMintedFont": "MrsEavesAllSmallCaps",
-   "mintedFont": "MrsEavesPetiteCaps",
-   "note": null
- },
- {
-   "nonMintedFont": "MrsEavesAllSmallCapsOT",
-   "mintedFont": "MrsEavesAllPetiteCaps",
-   "note": "increase size by few points"
- },
- {
-   "nonMintedFont": "MrsEavesBold",
-   "mintedFont": "MrsEaves-Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "MrsEavesLiningOT",
-   "mintedFont": "MrsEavesRoman",
-   "note": null
- },
- {
-   "nonMintedFont": "MrsEavesOT-Bold",
-   "mintedFont": "MrsEaves-Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "MrsEavesOT-BoldItalic",
-   "mintedFont": "MrsEavesItalic",
-   "note": "with stroke"
- },
- {
-   "nonMintedFont": "MrsEavesOT-Italic",
-   "mintedFont": "MrsEavesItalic",
-   "note": null
- },
- {
-   "nonMintedFont": "MrsEavesOT-Roman",
-   "mintedFont": "MrsEavesRoman",
-   "note": null
- },
- {
-   "nonMintedFont": "MrsEavesPetiteCapsOT",
-   "mintedFont": "MrsEavesPetiteCaps",
-   "note": null
- },
- {
-   "nonMintedFont": "MrsEavesPetiteCapsPetiteCaps",
-   "mintedFont": "MrsEavesPetiteCaps",
-   "note": null
- },
- {
-   "nonMintedFont": "MrsEavesSmartLig Italic",
-   "mintedFont": "MrsEavesItalic",
-   "note": null
- },
- {
-   "nonMintedFont": "MrsEavesSmartLig-Bold",
-   "mintedFont": "MrsEaves-Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "MrsEavesSmartLigRoman",
-   "mintedFont": "MrsEavesRoman",
-   "note": null
- },
- {
-   "nonMintedFont": "MrSheffieldPro",
-   "mintedFont": "Mr Sheffield",
-   "note": null
- },
- {
-   "nonMintedFont": "MyDear Regular",
-   "mintedFont": "My Dear",
-   "note": null
- },
- {
-   "nonMintedFont": "Naive-Bold",
-   "mintedFont": "Naive Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "NaiveInlineBold",
-   "mintedFont": "Naive Inline Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "NaiveInlineLight",
-   "mintedFont": "Naive Inline Light",
-   "note": null
- },
- {
-   "nonMintedFont": "Nickainley-Normal",
-   "mintedFont": "Nickainley Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Northwell",
-   "mintedFont": "Northwell Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "NoteraPersonalUseOnly",
-   "mintedFont": "Notera",
-   "note": null
- },
- {
-   "nonMintedFont": "NouvelleVaque Black",
-   "mintedFont": "Nouvelle Vague For AB Black",
-   "note": null
- },
- {
-   "nonMintedFont": "OldStyle1HPLHS",
-   "mintedFont": "OldstyleHPLHS-Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Optima Italic",
-   "mintedFont": "OptimaLTItalic",
-   "note": null
- },
- {
-   "nonMintedFont": "Optima Regular",
-   "mintedFont": "Optima LT Roman",
-   "note": null
- },
- {
-   "nonMintedFont": "OstrichSans Heavy",
-   "mintedFont": "Ostrich Sans Black",
-   "note": "with 0.2pt stroke"
- },
- {
-   "nonMintedFont": "P22AllysonPro",
-   "mintedFont": "P22Allyson",
-   "note": null
- },
- {
-   "nonMintedFont": "P22ZanerProFour",
-   "mintedFont": "P22 Zaner Four",
-   "note": null
- },
- {
-   "nonMintedFont": "Palatino Roman",
-   "mintedFont": "Palatino Linotype Roman",
-   "note": null
- },
- {
-   "nonMintedFont": "PalominoSans Two",
-   "mintedFont": "Palomino SansTwo",
-   "note": null
- },
- {
-   "nonMintedFont": "PalominoScr Rg",
-   "mintedFont": "PalominoScript",
-   "note": null
- },
- {
-   "nonMintedFont": "Pangram Regular",
-   "mintedFont": "Pangram",
-   "note": null
- },
- {
-   "nonMintedFont": "PaperCute Regular",
-   "mintedFont": "PaperCuteRegular",
-   "note": null
- },
- {
-   "nonMintedFont": "PaperCuteBold-Regular",
-   "mintedFont": "PaperCuteRegular",
-   "note": "with stroke"
- },
- {
-   "nonMintedFont": "PenSwan Regular",
-   "mintedFont": "Pen Swan Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Perla Regular",
-   "mintedFont": "Perla-Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "PlayfairDisplay Italic",
-   "mintedFont": "PlayfairDisplayItalic",
-   "note": null
- },
- {
-   "nonMintedFont": "PlayfairDisplay Regular",
-   "mintedFont": "PlayfairDisplayRegular",
-   "note": null
- },
- {
-   "nonMintedFont": "PoemScript Regular",
-   "mintedFont": "Poem Script Pro Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "PosterBodoniBT Roman",
-   "mintedFont": "Bodoni LT Poster",
-   "note": null
- },
- {
-   "nonMintedFont": "PriscillaScript Regular",
-   "mintedFont": "PriscillaScript",
-   "note": null
- },
- {
-   "nonMintedFont": "Quicksand Italic",
-   "mintedFont": "Quicksand Book Oblique Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Quicksand Light",
-   "mintedFont": "Quicksand Light Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Quicksand Regular",
-   "mintedFont": "Quicksand Book Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Quicksand-Bold",
-   "mintedFont": "Quicksand Bold Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Raleway Light",
-   "mintedFont": "Raleway Thin",
-   "note": null
- },
- {
-   "nonMintedFont": "Raleway-Black",
-   "mintedFont": "RalewayBlack",
-   "note": null
- },
- {
-   "nonMintedFont": "Raleway-Bold",
-   "mintedFont": "RalewayBold",
-   "note": null
- },
- {
-   "nonMintedFont": "Raleway-Heavy",
-   "mintedFont": "Raleway Black",
-   "note": null
- },
- {
-   "nonMintedFont": "Raleway-Medium",
-   "mintedFont": "Raleway Medium",
-   "note": null
- },
- {
-   "nonMintedFont": "Raleway-Regular",
-   "mintedFont": "RalewayRegular",
-   "note": null
- },
- {
-   "nonMintedFont": "Revista Regular",
-   "mintedFont": "Revista",
-   "note": null
- },
- {
-   "nonMintedFont": "Rockwell Regular",
-   "mintedFont": "Rockwell",
-   "note": null
- },
- {
-   "nonMintedFont": "Sabon-Roman",
-   "mintedFont": "Sabon LT Std Roman",
-   "note": null
- },
- {
-   "nonMintedFont": "Savannah-Alt",
-   "mintedFont": "Savannah Alternate",
-   "note": null
- },
- {
-   "nonMintedFont": "Savannah-Regular",
-   "mintedFont": "SavannahRegular",
-   "note": null
- },
- {
-   "nonMintedFont": "ScotchRomanMT Italic",
-   "mintedFont": "Scotch Roman MT Std Italic",
-   "note": null
- },
- {
-   "nonMintedFont": "Selfie Black",
-   "mintedFont": "Selfie Regular",
-   "note": "with 0.25pt stroke"
- },
- {
-   "nonMintedFont": "Selfie Light",
-   "mintedFont": "SelfieLight",
-   "note": null
- },
- {
-   "nonMintedFont": "Sen Regular",
-   "mintedFont": "Sen",
-   "note": null
- },
- {
-   "nonMintedFont": "SerlioLTStd",
-   "mintedFont": "Serlio LH",
-   "note": null
- },
- {
-   "nonMintedFont": "Shameless",
-   "mintedFont": "Shameless Deluxe",
-   "note": null
- },
- {
-   "nonMintedFont": "Sheraton Script",
-   "mintedFont": "SheratonScript Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Shopping Script Demo",
-   "mintedFont": "Shopping Script Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Showcase Script",
-   "mintedFont": "ShowcaseScript",
-   "note": null
- },
- {
-   "nonMintedFont": "SilkSerif Regular",
-   "mintedFont": "SilkSerif-Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "SloopScript",
-   "mintedFont": "Sloop-ScriptOne",
-   "note": null
- },
- {
-   "nonMintedFont": "SnellBT Regular",
-   "mintedFont": "Snell Roundhand Script",
-   "note": null
- },
- {
-   "nonMintedFont": "SofiaPro Bold",
-   "mintedFont": "SofiaPro-Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "SteelfishRg-Regular",
-   "mintedFont": "Steelfish",
-   "note": null
- },
- {
-   "nonMintedFont": "Sudestada Regular",
-   "mintedFont": "Sudestada",
-   "note": null
- },
- {
-   "nonMintedFont": "Tenez Italic",
-   "mintedFont": "TenezItalic",
-   "note": null
- },
- {
-   "nonMintedFont": "Tenez Regular",
-   "mintedFont": "Tenez-Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "ThankfulScript-Regula",
-   "mintedFont": "Thankful Script Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "TheanoDidot Regular",
-   "mintedFont": "TheanoDidotRegular",
-   "note": null
- },
- {
-   "nonMintedFont": "Think Pink-Regular",
-   "mintedFont": "Think-Pink-Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "Think Pink-Regular",
-   "mintedFont": "Think-Pink-Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "ThirstyScriptBold",
-   "mintedFont": "Thirsty Script Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "ThirstyScriptExtraboldDemo",
-   "mintedFont": "Thirsty Script Extrabold",
-   "note": null
- },
- {
-   "nonMintedFont": "Times Roman",
-   "mintedFont": "Times New Roman",
-   "note": null
- },
- {
-   "nonMintedFont": "TradeGothic-BoldCondTwenty",
-   "mintedFont": "Trade Gothic LT Std Bold Condensed No. 20",
-   "note": null
- },
- {
-   "nonMintedFont": "Trajan Bold",
-   "mintedFont": "Trajan Pro Bold",
-   "note": null
- },
- {
-   "nonMintedFont": "TrajanPro3-Regular",
-   "mintedFont": "Trajan Pro Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "TrendHMSansOne",
-   "mintedFont": "Trend Sans One",
-   "note": null
- },
- {
-   "nonMintedFont": "TrendHMSlabOne",
-   "mintedFont": "Trend Slab One",
-   "note": null
- },
- {
-   "nonMintedFont": "TrueNorthRoughBlack Regular",
-   "mintedFont": "True North Rough Black Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "UVFQuickpen",
-   "mintedFont": "Quickpen",
-   "note": null
- },
- {
-   "nonMintedFont": "Vanitas Regular",
-   "mintedFont": "Vanitas-Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "VeneerCleanRegular",
-   "mintedFont": "Veneer Clean Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "VosterTypeface",
-   "mintedFont": "VosterTypeface Regular",
-   "note": null
- },
- {
-   "nonMintedFont": "WendyLPStd Medium",
-   "mintedFont": "Wendy-Medium",
-   "note": null
- },
- {
-   "nonMintedFont": "Wisdom Script",
-   "mintedFont": "Wisdom Script AI",
-   "note": null
- },
- {
-   "nonMintedFont": "Yadon Medium",
-   "mintedFont": "YadonMedium",
-   "note": null
- },
- {
-   "nonMintedFont": "Yadon Regular",
-   "mintedFont": "YadonRegular",
-   "note": null
- },
- {
-   "nonMintedFont": "YoungBaroqueStd Regular",
-   "mintedFont": "YoungBaroque Plain",
-   "note": null
- },
- {
-   "nonMintedFont": "Zesta Medium",
-   "mintedFont": "ZestaMedium",
-   "note": null
- },
- {
-   "nonMintedFont": "FCaslonTwelveITC-RomanSC",
-   "mintedFont": "Caslon TwelveSC",
-   "note": null
- }
+  {
+    "nonMintedFont": "Absolute Beauty Script Bold",
+    "mintedFont": "Absolute Beauty Script Regular",
+    "note": "with 0.1pt stroke"
+  },
+  {
+    "nonMintedFont": "AcademyEngravedLetPlain ",
+    "mintedFont": "AcademyEngravedStd",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ACaslon RegularSC",
+    "mintedFont": "Caslon Twelve SC",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Adelicia Script",
+    "mintedFont": "Adelicia Script Clean",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Adobe Jenson Pro",
+    "mintedFont": "Adobe Jenson Pro Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Adobe Jenson Pro Capt",
+    "mintedFont": "Adobe Jenson Pro Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "AdoraBoutonRegular",
+    "mintedFont": "AdoraBouton",
+    "note": null
+  },
+  {
+    "nonMintedFont": "AdoraBoutonSwashes1Regular",
+    "mintedFont": "AdoraBoutonSwashes1",
+    "note": null
+  },
+  {
+    "nonMintedFont": "AGaramond Bold",
+    "mintedFont": "Adobe Garamond Pro Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "AGaramond Italic",
+    "mintedFont": "Adobe Garamond Pro Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "AGaramond Regular",
+    "mintedFont": "Adobe Garamond Pro Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Aidanscriptfreetester",
+    "mintedFont": "Aidan",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Aire Light Pro Regular",
+    "mintedFont": "AireLightStd Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "AlexBrush-Regular",
+    "mintedFont": "AlexBrush Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Allexis Regular",
+    "mintedFont": "Allexis Normal",
+    "note": null
+  },
+  {
+    "nonMintedFont": "AmeliaScript DraftVersion",
+    "mintedFont": "AmeliaScript-FineVersion",
+    "note": null
+  },
+  {
+    "nonMintedFont": "AmeliaScript FineVersion",
+    "mintedFont": "AmeliaScript-FineVersion",
+    "note": null
+  },
+  {
+    "nonMintedFont": "AmeliaScriptPP FineVersion",
+    "mintedFont": "AmeliaScript-FineVersion",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Amsterdam 1",
+    "mintedFont": "Amsterdam One",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Amsterdam 1Slant",
+    "mintedFont": "Amsterdam One Slant",
+    "note": null
+  },
+  {
+    "nonMintedFont": "AphroditeSlimStylistic",
+    "mintedFont": "AphroditeSlimPro",
+    "note": null
+  },
+  {
+    "nonMintedFont": "AracneCondensedRegular",
+    "mintedFont": "Aracne Cond Reg-Condensed Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ArchivoNarrow Bold",
+    "mintedFont": "ArchivoNarrowBold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ArchivoNarrow Regular",
+    "mintedFont": "ArchivoNarrowRegular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "AsterismClean Regular",
+    "mintedFont": "Asterism Clean Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ATCRosemary Regular",
+    "mintedFont": "ATC Rosemary ",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ATSolidAntiqueRoman",
+    "mintedFont": "Sackers Solid Antique Roman",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Avenir Black",
+    "mintedFont": "Avenir LT Std-Black",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Avenir Book",
+    "mintedFont": "Avenir LT Std Roman",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Avenir BookOblique",
+    "mintedFont": "Avenir LT Std-Book Oblique",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Avenir Heavy",
+    "mintedFont": "Avenir LT Std-Medium",
+    "note": "with 0.15pt stroke"
+  },
+  {
+    "nonMintedFont": "Avenir Light ",
+    "mintedFont": "Avenir LT Std-Light",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Avenir Medium",
+    "mintedFont": "Avenir LT Std-Medium",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Avenir Next Regular",
+    "mintedFont": "Avenir Next LT Pro Medium",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Avenir Roman",
+    "mintedFont": "Avenir LT Std Roman",
+    "note": null
+  },
+  {
+    "nonMintedFont": "AvenirNext Bold",
+    "mintedFont": "AvenirNext LTPro-Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "AvenirNext DemiBold",
+    "mintedFont": "AvenirNextLTPro-Medium",
+    "note": "with 0.1pt stroke"
+  },
+  {
+    "nonMintedFont": "AvenirNext Medium",
+    "mintedFont": "AvenirNextLTPro-Medium",
+    "note": null
+  },
+  {
+    "nonMintedFont": "AvenirNext UltraLight",
+    "mintedFont": "Avenir Next LT Pro Ultra Light",
+    "note": null
+  },
+  {
+    "nonMintedFont": "AvenirNextCondensed Medium",
+    "mintedFont": "Avenir Next LT Pro Medium Condensed",
+    "note": null
+  },
+  {
+    "nonMintedFont": "AvenirNextCondensed-Regular",
+    "mintedFont": "Avenir Next LT Pro Condensed",
+    "note": null
+  },
+  {
+    "nonMintedFont": "AWConquerorProSans Light",
+    "mintedFont": "AW Conqueror Sans Light",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BambusaPro_Regular",
+    "mintedFont": "Bambusa Pro Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BankGothicBold",
+    "mintedFont": "BankGothicEFOP-Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BankGothicBT Light",
+    "mintedFont": "BankGothicEFOP-Light",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BankGothicBT Medium",
+    "mintedFont": "BankGothicEFOP-Medium",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Baro LineOne",
+    "mintedFont": "BaroLineOne",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Barrio Regular",
+    "mintedFont": "Barrio",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Baskerville Bold",
+    "mintedFont": "Baskerville MT Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Baskerville Italic",
+    "mintedFont": "Baskerville Book BQ Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Baskerville Regular",
+    "mintedFont": "Baskerville Book BQ Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Baskerville Semibold",
+    "mintedFont": "Baskerville MT Semibold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Baskerville SemiboldItalic",
+    "mintedFont": "Baskerville MT Semibold Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Baskerville-BoldItalic",
+    "mintedFont": "Baskerville Book BQ Italic",
+    "note": "with stroke matching OG"
+  },
+  {
+    "nonMintedFont": "BaskervilleBook MedItalic",
+    "mintedFont": "Baskerville Book BQ Medium Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BaskervilleURW-Reg",
+    "mintedFont": "Baskerville Book BQ Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BaskervilleURW-RegIta",
+    "mintedFont": "Baskerville Book BQ Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BauerBodoni-BoldItalic",
+    "mintedFont": "Bodoni Bold Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BauerBodoni-BoldOsF",
+    "mintedFont": "Bodoni Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BauerBodoniBT Roman",
+    "mintedFont": "Bodoni Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Bebas Neue",
+    "mintedFont": "Bebas Neue Regular or Bebas Neue Bold",
+    "note": "always compare OG"
+  },
+  {
+    "nonMintedFont": "BellGothic Black",
+    "mintedFont": "Bell Gothic Std Black",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Bellisiaitalic",
+    "mintedFont": "BellisiaItalic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BellissimaScriptPro",
+    "mintedFont": "BellissimaScriptRedux",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BellMTStd-Regular",
+    "mintedFont": "Bell MT Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BelovedSans Bold",
+    "mintedFont": "BelovedSans-Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BemboStd",
+    "mintedFont": "Bembo",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Bergamot Bold",
+    "mintedFont": "Bergamot",
+    "note": "with stroke"
+  },
+  {
+    "nonMintedFont": "BetterTogetherDemo",
+    "mintedFont": "BetterTogether",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BioRhyme Bold",
+    "mintedFont": "BioRhymeBold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BioRhyme ExtraBold",
+    "mintedFont": "BioRhyme-ExtraBold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BioRhymeExpanded Bold",
+    "mintedFont": "BioRhymeExpandedBold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BioRhymeExpanded ExtraBold",
+    "mintedFont": "BioRhyme Expanded ExtraBold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BioRhymeExpanded Regular",
+    "mintedFont": "BioRhymeExpanded Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BlackDiamond",
+    "mintedFont": "Black Diamond",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BlackJackRegular",
+    "mintedFont": "Black Jack Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BlessedPrint ModernScript",
+    "mintedFont": "ModernScript-Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BlueshiftStickW01 Regular",
+    "mintedFont": "Blueshift Stick Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Blush-Regular",
+    "mintedFont": "Blush",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Bodoni Book",
+    "mintedFont": "Bodoni Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Bodoni BT-BookItalic",
+    "mintedFont": "Bodoni Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BodoniBlack Regular",
+    "mintedFont": "Bodoni LT Poster",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BodoniBT Roman",
+    "mintedFont": "Bodoni Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BodoniFLF Roman",
+    "mintedFont": "BodoniSerial Light",
+    "note": "with stroke"
+  },
+  {
+    "nonMintedFont": "BodoniLTStd Regular",
+    "mintedFont": "Bodoni Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BodoniMT",
+    "mintedFont": "Bodoni Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BodoniMT-Bold",
+    "mintedFont": "Bodoni Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BodoniMT-Italic",
+    "mintedFont": "Bodoni Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BodoniSans-Bold",
+    "mintedFont": "BodoniSansBold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BodoniSicITCBookItalOS",
+    "mintedFont": "Bodoni Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BodoniStd Book",
+    "mintedFont": "Bodoni Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BodoniStd Poster",
+    "mintedFont": "Bodoni LT Poster",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BodoniSvtyTwoITCTT Bold",
+    "mintedFont": "Bodoni Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BodoniSvtyTwoITCTT Book",
+    "mintedFont": "BodoniSerial-Light / Bodoni Regular",
+    "note": "match OG"
+  },
+  {
+    "nonMintedFont": "BodoniSvtyTwoITCTT-BookIta",
+    "mintedFont": "Bodoni Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BodoniSvtyTwoSCITCTT",
+    "mintedFont": "BodoniBertholdBQ RegSC",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BodoniURW Med ",
+    "mintedFont": "Bodoni Regular",
+    "note": "you may need to reduce the font size slightly to match the original submission -per Molly"
+  },
+  {
+    "nonMintedFont": "BodoniURW Regular",
+    "mintedFont": "Bodoni Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BodoniURW-Lig",
+    "mintedFont": "Bodoni Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BodoniURW-RegObl",
+    "mintedFont": "Bodoni Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Book Antique",
+    "mintedFont": "Palatino Linotype Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BookmanOldStyle",
+    "mintedFont": "Bookman Old Style Std Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BookmanOldStyle Italic",
+    "mintedFont": "Bookman Old Style Std Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Bordeaux Regular",
+    "mintedFont": "Bordeaux",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BrandonGrotW01-ThinItalic",
+    "mintedFont": "Brandon Grotesque Thin Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BreulGroteskA Light",
+    "mintedFont": "BreulGroteskA-Light",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Bromello",
+    "mintedFont": "Bromello Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Brothers",
+    "mintedFont": "BrothersRegular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "BrunellaScript",
+    "mintedFont": "Brunella Script",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Business Penmanship Bold",
+    "mintedFont": "Business Penmanship",
+    "note": "compare stroke weight from OG"
+  },
+  {
+    "nonMintedFont": "Camila Black",
+    "mintedFont": "Camila-Black",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Camila Medium",
+    "mintedFont": "Camila-Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Camila Regular",
+    "mintedFont": "Camila-Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Camila Semibold",
+    "mintedFont": "Camila-Semibold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "CampPress Regular",
+    "mintedFont": "CampPress-Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Cantoni Basic",
+    "mintedFont": "Cantoni Pro Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Caslon540ITALIC ",
+    "mintedFont": "Caslon540 BT Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "CaslonGraD",
+    "mintedFont": "CaslonGraphiqueEF",
+    "note": null
+  },
+  {
+    "nonMintedFont": "CaslonOldFaceBT Italic",
+    "mintedFont": "Caslon540 BT Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "CaslonOpenFace Regular",
+    "mintedFont": "Caslon Open Face LT Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "CaslonSB RegularSC",
+    "mintedFont": "Caslon Twelve SC",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Casual Line-Script",
+    "mintedFont": "Casual-Line-Script",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Century Regular",
+    "mintedFont": "CenturyOldstyleBTRoman",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ChasingEmbers",
+    "mintedFont": "Chasing Embers One Regular",
+    "note": "not yet resolved in installing fonts."
+  },
+  {
+    "nonMintedFont": "CherryCordial Regular",
+    "mintedFont": "CherryCordial",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ChevalierStrSCD",
+    "mintedFont": "Chevalier LT Stripes Caps",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ChunkFive",
+    "mintedFont": "ChunkFive Roman",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ClarendonBT Roman",
+    "mintedFont": "Clarendon Roman",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ClarendonBT-Light",
+    "mintedFont": "Clarendon Light",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ClarendonBTHeavy",
+    "mintedFont": "Clarendon Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ClarendonLT",
+    "mintedFont": "Clarendon Roman",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ClarendonLT Bold",
+    "mintedFont": "Clarendon Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ClarendonLTStd",
+    "mintedFont": "Clarendon Roman",
+    "note": "match OG"
+  },
+  {
+    "nonMintedFont": "Classy Alt",
+    "mintedFont": "ClassyAlt",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Classy Regular",
+    "mintedFont": "ClassyRegular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Cochin",
+    "mintedFont": "Cochin LT",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Cochin-Italic",
+    "mintedFont": "Cochin LT Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "CompendiumW00 Regular",
+    "mintedFont": "Compendium-Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Copperplate",
+    "mintedFont": "Copperplate Light",
+    "note": null
+  },
+  {
+    "nonMintedFont": "CopperplateGothic Bold",
+    "mintedFont": "Copperplate Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "CopperplateGothic Light",
+    "mintedFont": "Copperplate Light",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Coquette",
+    "mintedFont": "Coquette Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Coquette-Bold",
+    "mintedFont": "Coquette Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "CormorantGaramond Italic",
+    "mintedFont": "CormorantItalic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Courier",
+    "mintedFont": "Courier New",
+    "note": "0.25pt stroke"
+  },
+  {
+    "nonMintedFont": "CrawModURW Bol",
+    "mintedFont": "Craw Modern URW Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "DeValencia Regular",
+    "mintedFont": "DeValencia-Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "DidonesqueGhost Light",
+    "mintedFont": "DidonesqueGhostLight",
+    "note": null
+  },
+  {
+    "nonMintedFont": "DidonesqueGhost LightItalic",
+    "mintedFont": "DidonesqueGhostLightItalic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "DidonesqueGhost Regular",
+    "mintedFont": "DidonesqueGhostRegular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Didot Bold",
+    "mintedFont": "Didot LT Std Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Didot HTF-M64-Medium-Italic",
+    "mintedFont": "Didot LT Std Italic",
+    "note": "with 0.1pt stroke"
+  },
+  {
+    "nonMintedFont": "Didot Italic",
+    "mintedFont": "Didot LT Std Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Didot Regular",
+    "mintedFont": "Didot LT Std Roman",
+    "note": null
+  },
+  {
+    "nonMintedFont": "DidotHeadline ",
+    "mintedFont": "Didot LT Std Headline",
+    "note": null
+  },
+  {
+    "nonMintedFont": "DidotLH Italic",
+    "mintedFont": "Didot LT Std Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "DidotLH RomanSC",
+    "mintedFont": "Didot LT Std Roman",
+    "note": null
+  },
+  {
+    "nonMintedFont": "DidotLH-Initials",
+    "mintedFont": "Didot Lt Std Headline",
+    "note": null
+  },
+  {
+    "nonMintedFont": "DidotLH-ItalicOsF",
+    "mintedFont": "Didot Lit Std Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "DidotLTPro Roman",
+    "mintedFont": "Didot LT Std Roman",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Dorrotthy Alt1-Regular",
+    "mintedFont": "DorrotthyAlternate1 Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Dorrotthy Regular",
+    "mintedFont": "DorrotthyRegular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EBGaramond12-AllSC",
+    "mintedFont": "Adobe Garamond Pro Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EloquentJFPro Regular",
+    "mintedFont": "EloquentJFRegularPro",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Elsie Regular",
+    "mintedFont": "ElsieRegular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EmmascriptMVBStd",
+    "mintedFont": "Emmascript MVB Std Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EnamelLine",
+    "mintedFont": "Enamel Line",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EnamelLine Regular",
+    "mintedFont": "Enamel Line",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EngraversD-Roma",
+    "mintedFont": "Engravers MT",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EngraversEF Roman",
+    "mintedFont": "Engravers MT",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EngraversGothicBT",
+    "mintedFont": "Engravers' Gothic BT",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EngraversLH-BoldFace",
+    "mintedFont": "Engravers LT Std Bold Face",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EngraversLT Bold",
+    "mintedFont": "Engravers MT Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EngraversLTW01-BoldFace",
+    "mintedFont": "Engravers LT Std Bold Face",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EngraversMTPro",
+    "mintedFont": "Engravers MT",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EngraversMTStd Regular",
+    "mintedFont": "Engravers MT",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EngraversRomanBT Bold",
+    "mintedFont": "Engravers MT Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EngraversSCD Bold",
+    "mintedFont": "Engravers MT Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EstiloText Regular",
+    "mintedFont": "Estilo",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EstiloW01SC Book",
+    "mintedFont": "Estilo Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Euphorigenic Regular",
+    "mintedFont": "Euphorigenic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EvelethDotW01 Regular",
+    "mintedFont": "Eveleth Dot Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "EvelethSlantW01 Light",
+    "mintedFont": "Eveleth Slant Light",
+    "note": null
+  },
+  {
+    "nonMintedFont": "FairwaterScript",
+    "mintedFont": "FairwaterScript-Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "FCaslonTwelveITC-RomanSC",
+    "mintedFont": "Caslon TwelveSC",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Filosofia",
+    "mintedFont": "FilosofiaRegular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Fontbox Loveluck Regular",
+    "mintedFont": "Blooming Elegant Monoline Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "FoxAndBear-Regular",
+    "mintedFont": "FoxandBear Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "FrontageCondensed Regular",
+    "mintedFont": "FrontageCondensed-Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "FrontageW00 Regular",
+    "mintedFont": "Frontage Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Futura Book",
+    "mintedFont": "Futura Std Book",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Futura BookObl",
+    "mintedFont": "Futura Std Book Oblique",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Futura CondensedMedium",
+    "mintedFont": "Futura Std Medium Condensed",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Futura Lt BT Book",
+    "mintedFont": "Futura Medium BT",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Futura LT-Light",
+    "mintedFont": "Futura Light BT",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Futura Medium",
+    "mintedFont": "Futura Medium BT",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Futura MediumItalic",
+    "mintedFont": "Futura Std Medium Oblique",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Futura MedObl",
+    "mintedFont": "Futura Medium Oblique",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Futura Regular",
+    "mintedFont": "Futura Std Medium",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Futura-Bold",
+    "mintedFont": "Futura Md BT Bold / Futura Std Bold",
+    "note": "compare OG"
+  },
+  {
+    "nonMintedFont": "Futura-BoldOblique",
+    "mintedFont": "Futura Std Bold Oblique",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Futura-Dem",
+    "mintedFont": "Futura Std Medium",
+    "note": null
+  },
+  {
+    "nonMintedFont": "FuturaBT HeavyItalic",
+    "mintedFont": "Futura Std Heavy Oblique",
+    "note": null
+  },
+  {
+    "nonMintedFont": "FuturaBT-Heavy",
+    "mintedFont": "Futura Std Heavy",
+    "note": null
+  },
+  {
+    "nonMintedFont": "FuturaPT-Medium",
+    "mintedFont": "Futura Medium BT",
+    "note": null
+  },
+  {
+    "nonMintedFont": "FuturaPTCond-Book",
+    "mintedFont": "Futura Std Light Condensed",
+    "note": "with 0.1pt stroke"
+  },
+  {
+    "nonMintedFont": "GabrielaStencil UltraLight",
+    "mintedFont": "GabrielaStencilUltraLight",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Garamond Regular",
+    "mintedFont": "Adobe Garamond Pro Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Garamond Regular-NormalItalic",
+    "mintedFont": "Adobe Garamond Pro Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Garamond-Bold",
+    "mintedFont": "Adobe Garamond Pro Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Garamond-Italic",
+    "mintedFont": "Adobe Garamond Pro Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "GaramondPremrPro",
+    "mintedFont": "Adobe Garamond Pro Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "GaramondPremrPro Disp",
+    "mintedFont": "Adobe Garamond Pro Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "GaramondPremrPro-It",
+    "mintedFont": "Adobe Garamond Pro Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "GaramondPremrPro-Smbd",
+    "mintedFont": "Adobe Garamond Pro Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Gill Sans Ultra Bold Italic",
+    "mintedFont": "Gill Sans MT Pro Medium Italic",
+    "note": "taysa not sure ni hehey"
+  },
+  {
+    "nonMintedFont": "GillSans",
+    "mintedFont": "Gill Sans MT Pro Medium",
+    "note": null
+  },
+  {
+    "nonMintedFont": "GillSans Bold",
+    "mintedFont": "Gill Sans MT Pro Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "GillSans Italic",
+    "mintedFont": "Gill Sans MT Pro Medium Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "GillSans SemiBold",
+    "mintedFont": "Gill Sans MT Pro Heavy",
+    "note": null
+  },
+  {
+    "nonMintedFont": "GillSans SemiBoldItalic",
+    "mintedFont": "Gill Sans MT Pro Heavy Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "GillSans-Light",
+    "mintedFont": "Gill Sans MT Pro Light",
+    "note": null
+  },
+  {
+    "nonMintedFont": "GillSans-LightItalic",
+    "mintedFont": "Gill Sans MT Pro LightItalic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "GistUprightLineLight",
+    "mintedFont": "Gist Upright Line Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "GistW01 UprightLineReg",
+    "mintedFont": "GistUprightLineRegular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "GistW01-UprightLineXBd",
+    "mintedFont": "Gist Upright Line Regular",
+    "note": "with 0.2pt stroke"
+  },
+  {
+    "nonMintedFont": "Goby-Regular",
+    "mintedFont": "Goby",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Goku",
+    "mintedFont": "Goku Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Goudy Italic",
+    "mintedFont": "Goudy Old Style TL Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "GoudyOldStyleT Bold",
+    "mintedFont": "Goudy Old Style TL Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "GoudyOldStyleT Italic",
+    "mintedFont": "Goudy Old Style TL Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "GoudyOldStyleT Regular",
+    "mintedFont": "Goudy Old Style TL Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "GuadalupeEssentialGota",
+    "mintedFont": "Guadalupe Essential",
+    "note": null
+  },
+  {
+    "nonMintedFont": "GuadalupePro",
+    "mintedFont": "Guadalupe Essential",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Halosense Regular",
+    "mintedFont": "HalosensesRegular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "HeatherSmallCaps Regular",
+    "mintedFont": "Heather Small Caps",
+    "note": null
+  },
+  {
+    "nonMintedFont": "HelloBeautiful Marker",
+    "mintedFont": "Hello Beautiful Marker",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Helsing-Regular",
+    "mintedFont": "Helsing",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Helvetica Regular",
+    "mintedFont": "Helvetica Neue LT Com 55 Roman",
+    "note": null
+  },
+  {
+    "nonMintedFont": "HelveticaNeue Bold",
+    "mintedFont": "Helvetica Neue LT Com 75 Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "HelveticaNeue Thin",
+    "mintedFont": "Helvetica Neue LT Com 35 Thin",
+    "note": null
+  },
+  {
+    "nonMintedFont": "HendersonSlabLight",
+    "mintedFont": "Henderson Slab ExtraLight",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Heuristica Italic",
+    "mintedFont": "HeuristicaItalic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "HijrnotesPERSONALUSEONLY",
+    "mintedFont": "Hijrnotes",
+    "note": null
+  },
+  {
+    "nonMintedFont": "HLTPoemScriptPro",
+    "mintedFont": "Poem Script Pro Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "HLTRollingPen",
+    "mintedFont": "RollingPen Complete",
+    "note": null
+  },
+  {
+    "nonMintedFont": "HousegrindPersonalUseOnly",
+    "mintedFont": "Housegrind",
+    "note": null
+  },
+  {
+    "nonMintedFont": "InkBanditsSans Regular",
+    "mintedFont": "InkBanditsSans",
+    "note": null
+  },
+  {
+    "nonMintedFont": "InkBanditsScript-Regular",
+    "mintedFont": "Ink Bandits Script",
+    "note": null
+  },
+  {
+    "nonMintedFont": "IntroRustBook Base",
+    "mintedFont": "Intro Rust Book Base",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Isidora SemiBold",
+    "mintedFont": "Isidora SemiBold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ITCAvantGardeStd Demi",
+    "mintedFont": "Avant Garde Demi BT",
+    "note": null
+  },
+  {
+    "nonMintedFont": "JosefinSans Bold ",
+    "mintedFont": "JosefinSansBold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "JosefinSans SemiBold",
+    "mintedFont": "JosefinSansSemiBold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "KapraNeue SemiBoldExpanded",
+    "mintedFont": "Kapra Neue SemiBold Expanded",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Kepler Std Scn",
+    "mintedFont": "Kepler Std",
+    "note": null
+  },
+  {
+    "nonMintedFont": "KunstlerScript",
+    "mintedFont": "Kuenstler Script LT Medium",
+    "note": null
+  },
+  {
+    "nonMintedFont": "LeagueGothic Regular",
+    "mintedFont": "League Gothic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "LearningCurve Bold",
+    "mintedFont": "Learning Curve",
+    "note": "with stroke"
+  },
+  {
+    "nonMintedFont": "LibreBaskerville-Regular",
+    "mintedFont": "Baskerville Book BQ Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "LietoMe",
+    "mintedFont": "Lie to Me",
+    "note": null
+  },
+  {
+    "nonMintedFont": "LieveErikaSF-Regular",
+    "mintedFont": "LiebeErika Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "LittleDaysAlt",
+    "mintedFont": "Little Days Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Lora-Italic",
+    "mintedFont": "Lora Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Lora-Regular",
+    "mintedFont": "Lora Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Luella Bold",
+    "mintedFont": "Luella Regular",
+    "note": "with stroke"
+  },
+  {
+    "nonMintedFont": "LUELLABasic",
+    "mintedFont": "LUELLA Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "LuloCleanW01 One",
+    "mintedFont": "Lulo Clean One",
+    "note": null
+  },
+  {
+    "nonMintedFont": "LuloCleanW01-OneBold",
+    "mintedFont": "Lulo Clean-One Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "LuloCleanW01-OutlineBold",
+    "mintedFont": "Lulo Clean One Bold",
+    "note": "with only stroke filled in"
+  },
+  {
+    "nonMintedFont": "LuloOne",
+    "mintedFont": "Lulo Clean One",
+    "note": null
+  },
+  {
+    "nonMintedFont": "LuloOne-Bold",
+    "mintedFont": "Lulo Clean One Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Lust Italic",
+    "mintedFont": "LustScriptDisplay",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Lust Regular",
+    "mintedFont": "LustDisplay-Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "LustDisplay-Regular",
+    "mintedFont": "Lust Display Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Macarons Bold",
+    "mintedFont": "Macarons Regular",
+    "note": "with stroke"
+  },
+  {
+    "nonMintedFont": "MadinaClean",
+    "mintedFont": "MadinaScriptStd",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MadinaScript",
+    "mintedFont": "MadinaScriptStd",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Madison Street Pro Regular",
+    "mintedFont": "MadisonStreetPro",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MadisonStreetPro-Regular",
+    "mintedFont": "Madison Street Pro Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Manhattan Regular",
+    "mintedFont": "Manhattan",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Marguerite Heavy",
+    "mintedFont": "Marguerite Regular",
+    "note": "with stroke"
+  },
+  {
+    "nonMintedFont": "Marion Bold",
+    "mintedFont": "MarionBold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Marion Regular",
+    "mintedFont": "MarionRegular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MCMHellenicWide",
+    "mintedFont": "HellenicWideRegularJF",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Metropolis-Bold",
+    "mintedFont": "MetropolisBold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Mittwoch NorReg",
+    "mintedFont": "MittwochRegular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Mrs Eaves Fractions",
+    "mintedFont": "MrsEavesSmallCaps ",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MrsEaves Italic",
+    "mintedFont": "MrsEavesItalic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MrsEavesAllPetiteCapsOT",
+    "mintedFont": "MrsEavesAllPetiteCaps",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MrsEavesAllSmallCaps",
+    "mintedFont": "MrsEavesPetiteCaps",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MrsEavesAllSmallCapsOT",
+    "mintedFont": "MrsEavesAllPetiteCaps",
+    "note": "increase size by few points"
+  },
+  {
+    "nonMintedFont": "MrsEavesBold",
+    "mintedFont": "MrsEaves-Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MrsEavesLiningOT",
+    "mintedFont": "MrsEavesRoman",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MrsEavesOT-Bold",
+    "mintedFont": "MrsEaves-Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MrsEavesOT-BoldItalic",
+    "mintedFont": "MrsEavesItalic",
+    "note": "with stroke"
+  },
+  {
+    "nonMintedFont": "MrsEavesOT-Italic",
+    "mintedFont": "MrsEavesItalic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MrsEavesOT-Roman",
+    "mintedFont": "MrsEavesRoman",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MrsEavesPetiteCapsOT",
+    "mintedFont": "MrsEavesPetiteCaps",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MrsEavesPetiteCapsPetiteCaps",
+    "mintedFont": "MrsEavesPetiteCaps",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MrsEavesSmartLig Italic",
+    "mintedFont": "MrsEavesItalic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MrsEavesSmartLig-Bold",
+    "mintedFont": "MrsEaves-Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MrsEavesSmartLigRoman",
+    "mintedFont": "MrsEavesRoman",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MrSheffieldPro",
+    "mintedFont": "Mr Sheffield",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MyDear Regular",
+    "mintedFont": "My Dear",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Naive-Bold",
+    "mintedFont": "Naive Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "NaiveInlineBold",
+    "mintedFont": "Naive Inline Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "NaiveInlineLight",
+    "mintedFont": "Naive Inline Light",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Nickainley-Normal",
+    "mintedFont": "Nickainley Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Northwell",
+    "mintedFont": "Northwell Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "NoteraPersonalUseOnly",
+    "mintedFont": "Notera ",
+    "note": null
+  },
+  {
+    "nonMintedFont": "NouvelleVaque Black",
+    "mintedFont": "Nouvelle Vague For AB Black",
+    "note": null
+  },
+  {
+    "nonMintedFont": "OldStyle1HPLHS",
+    "mintedFont": "OldstyleHPLHS-Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Optima Italic",
+    "mintedFont": "OptimaLTItalic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Optima Regular",
+    "mintedFont": "Optima LT Roman",
+    "note": null
+  },
+  {
+    "nonMintedFont": "OstrichSans Heavy",
+    "mintedFont": "Ostrich Sans Black",
+    "note": "with 0.2pt stroke"
+  },
+  {
+    "nonMintedFont": "P22AllysonPro",
+    "mintedFont": "P22Allyson",
+    "note": null
+  },
+  {
+    "nonMintedFont": "P22ZanerProFour",
+    "mintedFont": "P22 Zaner Four",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Palatino Roman",
+    "mintedFont": "Palatino Linotype Roman",
+    "note": null
+  },
+  {
+    "nonMintedFont": "PalominoSans Two",
+    "mintedFont": "Palomino SansTwo",
+    "note": null
+  },
+  {
+    "nonMintedFont": "PalominoScr Rg",
+    "mintedFont": "PalominoScript",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Pangram Regular",
+    "mintedFont": "Pangram",
+    "note": null
+  },
+  {
+    "nonMintedFont": "PaperCute Regular",
+    "mintedFont": "PaperCuteRegular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "PaperCuteBold-Regular",
+    "mintedFont": "PaperCuteRegular",
+    "note": "with stroke"
+  },
+  {
+    "nonMintedFont": "PenSwan Regular",
+    "mintedFont": "Pen Swan Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Perla Regular",
+    "mintedFont": "Perla-Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "PlayfairDisplay Italic",
+    "mintedFont": "PlayfairDisplayItalic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "PlayfairDisplay Regular",
+    "mintedFont": "PlayfairDisplayRegular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "PoemScript Regular",
+    "mintedFont": "Poem Script Pro Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "PosterBodoniBT Roman",
+    "mintedFont": "Bodoni LT Poster",
+    "note": null
+  },
+  {
+    "nonMintedFont": "PriscillaScript Regular",
+    "mintedFont": "PriscillaScript",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Quicksand Italic",
+    "mintedFont": "Quicksand Book Oblique Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Quicksand Light",
+    "mintedFont": "Quicksand Light Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Quicksand Regular",
+    "mintedFont": "Quicksand Book Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Quicksand-Bold",
+    "mintedFont": "Quicksand Bold Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Raleway Light",
+    "mintedFont": "Raleway Thin",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Raleway-Black",
+    "mintedFont": "RalewayBlack",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Raleway-Bold",
+    "mintedFont": "RalewayBold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Raleway-Heavy",
+    "mintedFont": "Raleway Black",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Raleway-Medium",
+    "mintedFont": "Raleway Medium",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Raleway-Regular",
+    "mintedFont": "RalewayRegular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Revista Regular",
+    "mintedFont": "Revista",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Rockwell Regular",
+    "mintedFont": "Rockwell",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Sabon-Roman",
+    "mintedFont": "Sabon LT Std Roman",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Savannah-Alt",
+    "mintedFont": "Savannah Alternate",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Savannah-Regular",
+    "mintedFont": "SavannahRegular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ScotchRomanMT Italic",
+    "mintedFont": "Scotch Roman MT Std Italic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Selfie Black",
+    "mintedFont": "Selfie Regular",
+    "note": "with 0.25pt stroke"
+  },
+  {
+    "nonMintedFont": "Selfie Light",
+    "mintedFont": "SelfieLight",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Sen Regular",
+    "mintedFont": "Sen",
+    "note": null
+  },
+  {
+    "nonMintedFont": "SerlioLTStd",
+    "mintedFont": "Serlio LH",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Shameless",
+    "mintedFont": "Shameless Deluxe",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Sheraton Script",
+    "mintedFont": "SheratonScript Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Shopping Script Demo",
+    "mintedFont": "Shopping Script Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Showcase Script",
+    "mintedFont": "ShowcaseScript",
+    "note": null
+  },
+  {
+    "nonMintedFont": "SilkSerif Regular",
+    "mintedFont": "SilkSerif-Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "SloopScript",
+    "mintedFont": "Sloop-ScriptOne",
+    "note": null
+  },
+  {
+    "nonMintedFont": "SnellBT Regular",
+    "mintedFont": "Snell Roundhand Script",
+    "note": null
+  },
+  {
+    "nonMintedFont": "SofiaPro Bold",
+    "mintedFont": "SofiaPro-Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "SteelfishRg-Regular",
+    "mintedFont": "Steelfish",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Sudestada Regular",
+    "mintedFont": "Sudestada",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Tenez Italic",
+    "mintedFont": "TenezItalic",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Tenez Regular",
+    "mintedFont": "Tenez-Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ThankfulScript-Regula",
+    "mintedFont": "Thankful Script Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "TheanoDidot Regular",
+    "mintedFont": "TheanoDidotRegular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Think Pink-Regular",
+    "mintedFont": "Think-Pink-Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Think Pink-Regular",
+    "mintedFont": "Think-Pink-Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ThirstyScriptBold",
+    "mintedFont": "Thirsty Script Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "ThirstyScriptExtraboldDemo",
+    "mintedFont": "Thirsty Script Extrabold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Times Roman",
+    "mintedFont": "Times New Roman",
+    "note": null
+  },
+  {
+    "nonMintedFont": "TradeGothic-BoldCondTwenty",
+    "mintedFont": "Trade Gothic LT Std Bold Condensed No. 20",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Trajan Bold",
+    "mintedFont": "Trajan Pro Bold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "TrajanPro3-Regular",
+    "mintedFont": "Trajan Pro Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "TrendHMSansOne",
+    "mintedFont": "Trend Sans One",
+    "note": null
+  },
+  {
+    "nonMintedFont": "TrendHMSlabOne",
+    "mintedFont": "Trend Slab One",
+    "note": null
+  },
+  {
+    "nonMintedFont": "TrueNorthRoughBlack Regular",
+    "mintedFont": "True North Rough Black Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "UVFQuickpen",
+    "mintedFont": "Quickpen",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Vanitas Regular",
+    "mintedFont": "Vanitas-Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "VeneerCleanRegular",
+    "mintedFont": "Veneer Clean Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "VosterTypeface",
+    "mintedFont": "VosterTypeface Regular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "WendyLPStd Medium",
+    "mintedFont": "Wendy-Medium",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Wisdom Script",
+    "mintedFont": "Wisdom Script AI ",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Yadon Medium",
+    "mintedFont": "YadonMedium",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Yadon Regular",
+    "mintedFont": "YadonRegular",
+    "note": null
+  },
+  {
+    "nonMintedFont": "YoungBaroqueStd Regular",
+    "mintedFont": "YoungBaroque Plain",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Zesta Medium",
+    "mintedFont": "ZestaMedium",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Lato Light",
+    "mintedFont": "LatoLight",
+    "note": null
+  },
+  {
+    "nonMintedFont": "Lato Semibold",
+    "mintedFont": "LatoSemibold",
+    "note": null
+  },
+  {
+    "nonMintedFont": "MrsEavesXLSerifOT Bold",
+    "mintedFont": "MrsEaves-Bold",
+    "note": null
+  }
 ]
